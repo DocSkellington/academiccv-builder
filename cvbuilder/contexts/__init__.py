@@ -1,0 +1,114 @@
+"""
+Defines default contexts that can be used in the builder.
+"""
+
+from abc import ABC
+from typing import List, Union, Dict
+from dataclasses import dataclass
+from pathlib import Path
+import dateutil.parser
+
+from .. import modules as mod
+
+
+@dataclass
+class Address:
+    """The address"""
+
+    street: str
+    zipcode: Union[str, int]
+    city: str
+    country: str
+
+
+@dataclass
+class PersonalData:
+    """Dataclass for data identifying the CV author"""
+
+    name: str
+    position: str
+    organization: str
+    photo: str = None
+    email: Union[str, List[str]] = None
+    website: str = None
+    github: str = None
+    orcid: str = None
+    linkedin: str = None
+    address: Address = None
+
+    def __post_init__(self) -> None:
+        # Conversion of dictionary to Address
+        if isinstance(self.address, dict):
+            self.address = Address(**self.address)
+
+
+class Context(ABC):
+    """A context used to produce one or multiple files from the JSON file.
+
+    The exact behavior depends on the subclass.
+
+    The context is also responsible for the header/title definition, using an instance of PersonalData
+    """
+
+    def __init__(
+        self, name: str, output_path: Path, date_output_format: str = "%d %b %Y"
+    ) -> None:
+        self.output_path = output_path
+        self.name = name
+        self.date_output_format = date_output_format
+
+    def format_date(self, date_str: str, date_output_format: str = None) -> str:
+        """Format a date string, according to the requested format.
+
+        If the format is None (the default value), the format set for in the class' constructor is used.
+
+        If the input string can not be converted to a date, the function returns the string as is.
+        For instance, if the string is "Present", then "Present" is returned.
+
+        If the input string is None, the function returns None.
+
+        Arguments:
+            date_str -- The input string
+            date_output_format -- The format for the output string
+
+        Returns:
+            The date formatted, or the input string as is, or None
+        """
+        if date_str is None:
+            return None
+        try:
+            date = dateutil.parser.parse(date_str)
+            if date_output_format is None:
+                return date.strftime(self.date_output_format)
+            return date.strftime(date_output_format)
+        except dateutil.parser.ParserError:
+            return date_str
+
+    def write_output(self, modules: List[mod.Module], personal: PersonalData) -> None:
+        """Writes the output of this context into a single file.
+
+        Arguments:
+            modules -- The modules to use
+            personal -- The personal data to use
+        """
+        self.output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with self.output_path.open(mode="w") as file:
+            file.write(self._build_output(modules, personal))
+
+    def _run_modules(self, modules: List[mod.Module]) -> str:
+        output = ""
+        for module in modules:
+            method = None
+            try:
+                method = getattr(module, f"to_{self.name}")
+            except AttributeError as exc:
+                raise NotImplementedError(
+                    f"Each used module must implement the function to_{self.name}"
+                ) from exc
+
+            output += method(self)
+        return output
+
+    def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
+        raise NotImplementedError("Context classes must implement build_output")

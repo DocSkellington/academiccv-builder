@@ -1,0 +1,31 @@
+{
+  "personal": {
+    "name": "John Who",
+    "position": "Doctor",
+    "organization": "The silly old Universe",
+    "photo": "photo.png",
+    "email": "john.who@email.com",
+    "website": "https://homepage.com",
+    "github": "JohnWho",
+    "address": {
+      "street": "De Vinci Building, Avenue Victor Maistriau, 15",
+      "zipcode": 7000,
+      "city": "Mons",
+      "country": "Belgium"
+    }
+  },
+  "work": [
+    {
+      "start": "2016-01-01",
+      "end": "Present",
+      "title": "Job position 2"
+    },
+    {
+      "start": "2010-05-10",
+      "end": "2015-12-30",
+      "title": "Job position 1",
+      "organization": "Somewhere",
+      "description": "Something"
+    }
+  ]
+}
