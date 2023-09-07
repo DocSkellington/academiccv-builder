@@ -4,7 +4,8 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from cvbuilder.contexts.latex import LaTeXContext, JobSetup
+from cvbuilder.setup import Setup
+from cvbuilder.contexts.latex import LaTeXContext
 from cvbuilder.modules.job import Job, JobModule
 
 
@@ -32,16 +33,18 @@ class JobTest(unittest.TestCase):
     def test_style(self):
         data = Job(
             title="Test Style",
-            style=JobSetup(
-                start="\\bfseries",
-                end="\\itshape",
-                title="\\Large",
-                organization="\\color{red}",
-                description="\\ttshape",
-                swap=False,
-                margin_size="3em",
-                space="2em",
-                vspace_after="5pt",
+            style=Setup(
+                {
+                    "start": "\\bfseries",
+                    "end": "\\itshape",
+                    "title": "\\Large",
+                    "organization": "\\color{red}",
+                    "description": "\\ttshape",
+                    "swap": False,
+                    "margin_size": "3em",
+                    "space": "2em",
+                    "vspace_after": "5pt",
+                }
             ),
         )
         module = JobModule()
@@ -80,7 +83,7 @@ class JobTest(unittest.TestCase):
             title="Test All Fields",
             organization="Unittest",
             description="Testing a lot of stuff",
-            style=JobSetup(swap=True),
+            style=Setup({"swap": True}),
         )
         module = JobModule()
         module.jobs = [data]

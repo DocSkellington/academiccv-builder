@@ -5,6 +5,7 @@ Job module.
 from typing import List
 from dataclasses import dataclass
 
+from .. import setup
 from .. import modules as mod
 from .. import contexts
 
@@ -18,7 +19,7 @@ class Job:
     title: str = None
     organization: str = None
     description: str = None
-    style: contexts.latex.JobSetup = None
+    style: setup.Setup = None
 
 
 class JobModule(mod.Module):
@@ -49,8 +50,7 @@ class JobModule(mod.Module):
             latex += contexts.latex.build_variable_string(
                 "description", job.description
             )
-            latex += contexts.latex.setup_to_latex(
-                job.style, "style = ", indent=1, comma=True
-            )
+            if job.style is not None:
+                latex += job.style.to_latex("style = ", indent=1, comma=True)
             latex += "}\n"
         return latex

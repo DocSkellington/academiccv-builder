@@ -6,13 +6,11 @@ The produced document relies on the academiccv package.
 
 from pathlib import Path
 import sys
-from abc import ABC
 from typing import List, Any, Dict
-from dataclasses import dataclass
-import dataclasses
 
 from . import Context, PersonalData
 from .. import modules as mod
+from ..setup import Setup
 
 
 def build_variable_string(latex_name: str, value: Any) -> str:
@@ -35,90 +33,6 @@ def build_variable_string(latex_name: str, value: Any) -> str:
             string += f"{{{value}}}"
         return string + ",\n"
     return ""
-
-
-# TODO: move to Setup
-def setup_to_latex(setup, before: str, indent: int = 0, comma: bool = False) -> str:
-    """Converts a setup dataclass to a succession of key-value pairs.
-
-    Arguments:
-        setup -- The setup dataclass
-        before -- The string to add before the key-value pairs
-
-    Returns:
-        A string starting with `before{`, followed by the key-value pairs, and then `}`.
-    """
-    if setup is None:
-        return ""
-    latex = "\t" * indent
-    latex += f"{before}{{\n"
-    for field in dataclasses.fields(setup):
-        name = field.name.replace("_", "-")
-        var = build_variable_string(name, getattr(setup, field.name))
-        if var != "":
-            latex += "\t" * indent
-            latex += var
-    return latex + "\t" * indent + "}" + ("," if comma else "") + "\n"
-
-
-# TODO: move this to Builder and make it more abstract (no need for subclasses)
-class Setup(ABC):
-    """Default class for all classes holding setup data."""
-
-
-@dataclass
-class TitleSetup(Setup):
-    """Dataclass storing the setup configuration for the LaTeX title."""
-
-    author: str = None
-    position: str = None
-    organization: str = None
-
-    address: str = None
-    street: str = None
-    zipcode: str = None
-    city: str = None
-    country: str = None
-
-    links: str = None
-    email: str = None
-    website: str = None
-    github: str = None
-    orcid: str = None
-    linkedin: str = None
-
-    date: str = None
-    vertical_space: str = None
-    portion_photo: float = None
-
-
-@dataclass
-class JobSetup(Setup):
-    """Dataclass storing the setup configuration for job positions."""
-
-    start: str = None
-    end: str = None
-    title: str = None
-    organization: str = None
-    description: str = None
-    swap: bool = None
-    margin_size: str = None
-    space: str = None
-    vspace_after: str = None
-
-
-@dataclass
-class PublicationSetup(Setup):
-    title: str = None
-    authors: str = None
-    year: str = None
-    reference: str = None
-    where: str = None
-    shortWhere: str = None
-    doi: str = None
-    doi_prefix: str = None
-    arxiv: str = None
-    arxiv_prefix: str = None
 
 
 class LaTeXContext(Context):
@@ -174,7 +88,7 @@ class LaTeXContext(Context):
             latex += f"\\usepackage{package}\n"
 
         for name, setup in self.setups.items():
-            latex += setup_to_latex(setup, f"\\{name}Setup") + "\n"
+            latex += setup.to_latex(f"\\{name}Setup") + "\n"
 
         for other in self.other_preamble:
             latex += other + "\n"

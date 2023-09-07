@@ -4,11 +4,12 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
+from cvbuilder.setup import Setup
 from cvbuilder.contexts import PersonalData, Address
-from cvbuilder.contexts.latex import LaTeXContext, TitleSetup
+from cvbuilder.contexts.latex import LaTeXContext
 
 
-class Title(unittest.TestCase):
+class TitleTest(unittest.TestCase):
     def test_minimal(self):
         data = PersonalData(
             name="Testy", position="Testing", organization="Tests, Inc."
@@ -80,8 +81,8 @@ class Title(unittest.TestCase):
         data = PersonalData(
             name="Testy", position="Testing", organization="Tests, Inc."
         )
-        setup = TitleSetup(
-            author="\\normalfont", vertical_space="3em", portion_photo=0.2
+        setup = Setup(
+            {"author": "\\normalfont", "vertical_space": "3em", "portion_photo": 0.2}
         )
         context = LaTeXContext(None)
         context.set_setup("title", setup)

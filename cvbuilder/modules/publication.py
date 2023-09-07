@@ -5,6 +5,7 @@ Module for publications.
 from dataclasses import dataclass
 from typing import Union, List
 
+from .. import setup
 from .. import contexts
 from .. import modules as mod
 
@@ -21,7 +22,7 @@ class Publication:
     shortWhere: str = None
     doi: str = None
     arxiv: str = None
-    style: contexts.latex.PublicationSetup = None
+    style: setup.Setup = None
 
 
 class PublicationModule(mod.Module):
@@ -37,18 +38,23 @@ class PublicationModule(mod.Module):
 
     def to_latex(self, _context: contexts.Context) -> str:
         latex = "\\section{Work Experience}\n\n"
-        for job in self.publications:
+        for publication in self.publications:
             latex += "\\job{\n"
-            latex += contexts.latex.build_variable_string("title", job.title)
-            latex += contexts.latex.build_variable_string("authors", job.authors)
-            latex += contexts.latex.build_variable_string("year", job.year)
-            latex += contexts.latex.build_variable_string("reference", job.reference)
-            latex += contexts.latex.build_variable_string("where", job.where)
-            latex += contexts.latex.build_variable_string("shortWhere", job.shortWhere)
-            latex += contexts.latex.build_variable_string("doi", job.doi)
-            latex += contexts.latex.build_variable_string("arxiv", job.arxiv)
-            latex += contexts.latex.setup_to_latex(
-                job.style, "style = ", indent=1, comma=True
+            latex += contexts.latex.build_variable_string("title", publication.title)
+            latex += contexts.latex.build_variable_string(
+                "authors", publication.authors
             )
+            latex += contexts.latex.build_variable_string("year", publication.year)
+            latex += contexts.latex.build_variable_string(
+                "reference", publication.reference
+            )
+            latex += contexts.latex.build_variable_string("where", publication.where)
+            latex += contexts.latex.build_variable_string(
+                "shortWhere", publication.shortWhere
+            )
+            latex += contexts.latex.build_variable_string("doi", publication.doi)
+            latex += contexts.latex.build_variable_string("arxiv", publication.arxiv)
+            if publication.style is not None:
+                latex += publication.style.to_latex("style = ", indent=1, comma=True)
             latex += "}\n"
         return latex
