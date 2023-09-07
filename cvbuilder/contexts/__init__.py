@@ -3,7 +3,7 @@ Defines default contexts that can be used in the builder.
 """
 
 from abc import ABC
-from typing import List, Union, Dict
+from typing import List, Union, Dict, Any
 from dataclasses import dataclass
 from pathlib import Path
 import dateutil.parser
@@ -42,6 +42,14 @@ class PersonalData:
             self.address = Address(**self.address)
 
 
+class Style:
+    """Default class for style data."""
+
+    def __init__(self, key_values: Dict[str, Any]) -> None:
+        for key, value in key_values.items():
+            setattr(self, key, value)
+
+
 class Context(ABC):
     """A context used to produce one or multiple files from the JSON file.
 
@@ -56,6 +64,44 @@ class Context(ABC):
         self.output_path = output_path
         self.name = name
         self.date_output_format = date_output_format
+        self.styles: Dict[str, Style] = {}
+
+    def set_style(self, name: str, style: Style) -> None:
+        """Sets a style.
+
+        Arguments:
+            name -- The name of the style
+            style -- The new style
+        """
+        self.styles[name] = style
+
+    def format_variable(self, name: str, value: str) -> str:
+        """Constructs a string to set the variable named "name" to the given value, in the appropriate manner for the context.
+
+        Arguments:
+            name -- The context appropriate name for the variable
+            value -- The value of the variable
+
+        Returns:
+            Empty string if value is None, or a context appropriate string
+        """
+        raise NotImplementedError(
+            "Contexts should implement format_variable(self, name: str, value: str)"
+        )
+
+    def format_style(self, style: Style, **kwargs) -> str:
+        """Converts a style instance to a context-appropriate output
+
+        Arguments:
+            style -- The style
+            **kwargs -- Subclass-specific arguments
+
+        Returns:
+            A context-appropriate output for the style
+        """
+        raise NotImplementedError(
+            "Contexts should implement format_style(self, style: Style, *args, **kwargs)"
+        )
 
     def format_date(self, date_str: str, date_output_format: str = None) -> str:
         """Format a date string, according to the requested format.

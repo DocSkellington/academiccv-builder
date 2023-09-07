@@ -4,8 +4,7 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from cvbuilder.setup import Setup
-from cvbuilder.contexts import PersonalData, Address
+from cvbuilder.contexts import PersonalData, Address, Style
 from cvbuilder.contexts.latex import LaTeXContext
 
 
@@ -81,14 +80,15 @@ class TitleTest(unittest.TestCase):
         data = PersonalData(
             name="Testy", position="Testing", organization="Tests, Inc."
         )
-        setup = Setup(
+        style = Style(
             {"author": "\\normalfont", "vertical_space": "3em", "portion_photo": 0.2}
         )
         context = LaTeXContext(None)
-        context.set_setup("title", setup)
+        context.set_style("title", style)
         # pylint: disable=protected-access
         document = context._build_output([], data)
         # pylint: enable=protected-access
+        print(document)
 
         target = """\\documentclass{academiccv}
 

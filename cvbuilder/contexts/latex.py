@@ -6,33 +6,10 @@ The produced document relies on the academiccv package.
 
 from pathlib import Path
 import sys
-from typing import List, Any, Dict
+from typing import List
 
-from . import Context, PersonalData
+from . import Context, PersonalData, Style
 from .. import modules as mod
-from ..setup import Setup
-
-
-def build_variable_string(latex_name: str, value: Any) -> str:
-    """Constructs a string setting a LaTeX variable in a key-value context.
-
-    Arguments:
-        latex_name -- The LaTeX name for the variable
-        value -- The value of the variable
-
-    Returns:
-        Empty string if value is None, or `latex_name = value,\\n` otherwise.
-    """
-    if value is not None:
-        string = f"\t{latex_name} = "
-        if value is True:
-            string += "true"
-        elif value is False:
-            string += "false"
-        else:
-            string += f"{{{value}}}"
-        return string + ",\n"
-    return ""
 
 
 class LaTeXContext(Context):
@@ -42,16 +19,61 @@ class LaTeXContext(Context):
 
     It produces a document relying on the academiccv class.
 
-    By default, no other package is loaded, no setup is done. That is, the document contains the
-    document class, immediately followed by the document environment, the \\makecvtitle and the
-    strings produced by the modules.
+    By default, no other package is loaded, and no style configuration is done.
+    That is, the document contains the document class, immediately followed by the document
+    environment, the \\makecvtitle and the strings produced by the modules.
+
+    For styles, the name is used to add \\{name}Setup before the key-value pairs in the preamble.
     """
 
     def __init__(self, output_path: Path) -> None:
         super().__init__("latex", output_path)
         self.packages: List[str] = []
-        self.setups: Dict[str, Setup] = {}
         self.other_preamble: List[str] = []
+
+    def format_variable(self, name: str, value: str) -> str:
+        if value is not None:
+            string = f"\t{name} = "
+            if value is True:
+                string += "true"
+            elif value is False:
+                string += "false"
+            else:
+                string += f"{{{value}}}"
+            return string + ",\n"
+        return ""
+
+    def format_style(self, style: Style, **kwargs) -> str:
+        """Converts a style instance to a succession of key-value pairs for a LaTeX output.
+
+        Arguments:
+            style -- The style
+        Keyword arguments:
+            before -- The string to add before the key-value pairs
+            indent -- The indentation level
+            comma -- Whether to put a comma after the closing curly brace
+
+        Any other keyword argument is ignored.
+
+        Returns:
+            A string starting with `before{`, followed by the key-value pairs, and then `}`.
+        """
+        if style is None:
+            return ""
+
+        before = kwargs.get("before", "")
+        indent = kwargs.get("indent", 0)
+        comma = kwargs.get("comma", False)
+
+        latex = "\t" * indent
+        latex += f"{before}{{\n"
+        for field, value in vars(style).items():
+            name = field.replace("_", "-")
+            var = self.format_variable(name, value)
+            if var != "":
+                latex += "\t" * indent
+                latex += var
+        return latex + "\t" * indent + "}" + ("," if comma else "") + "\n"
 
     def add_package(self, package: str) -> None:
         """Adds a new package that must be loaded in the preamble.
@@ -70,25 +92,14 @@ class LaTeXContext(Context):
         """
         self.other_preamble.append(other)
 
-    def set_setup(self, name: str, setup: Setup) -> None:
-        """Sets a setup.
-
-        The name is used to add \\{name}Setup before the key-value pairs.
-
-        Arguments:
-            name -- The name of the setup
-            setup -- The new setup
-        """
-        self.setups[name] = setup
-
     def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
         latex = "\\documentclass{academiccv}\n\n"
 
         for package in self.packages:
             latex += f"\\usepackage{package}\n"
 
-        for name, setup in self.setups.items():
-            latex += setup.to_latex(f"\\{name}Setup") + "\n"
+        for name, style in self.styles.items():
+            latex += self.format_style(style, before=f"\\{name}Setup") + "\n"
 
         for other in self.other_preamble:
             latex += other + "\n"
@@ -103,25 +114,25 @@ class LaTeXContext(Context):
 
     def _cv_title(self, personal: PersonalData) -> str:
         title = "\\makecvtitle{\n"
-        title += build_variable_string("author", personal.name)
-        title += build_variable_string("position", personal.position)
-        title += build_variable_string("organization", personal.organization)
-        title += build_variable_string("photo", personal.photo)
+        title += self.format_variable("author", personal.name)
+        title += self.format_variable("position", personal.position)
+        title += self.format_variable("organization", personal.organization)
+        title += self.format_variable("photo", personal.photo)
         if isinstance(personal.email, str):
-            title += build_variable_string("email", personal.email)
+            title += self.format_variable("email", personal.email)
         elif isinstance(personal.email, list):
             for mail in personal.email:
-                title += build_variable_string("email", mail)
+                title += self.format_variable("email", mail)
         elif personal.email is not None:
             print("Personal data: email must be a string or a list", file=sys.stderr)
-        title += build_variable_string("website", personal.website)
-        title += build_variable_string("github", personal.github)
-        title += build_variable_string("orcid", personal.orcid)
-        title += build_variable_string("linkedIn", personal.linkedin)
+        title += self.format_variable("website", personal.website)
+        title += self.format_variable("github", personal.github)
+        title += self.format_variable("orcid", personal.orcid)
+        title += self.format_variable("linkedIn", personal.linkedin)
         if personal.address is not None:
-            title += build_variable_string("street", personal.address.street)
-            title += build_variable_string("zipcode", personal.address.zipcode)
-            title += build_variable_string("city", personal.address.city)
-            title += build_variable_string("country", personal.address.country)
+            title += self.format_variable("street", personal.address.street)
+            title += self.format_variable("zipcode", personal.address.zipcode)
+            title += self.format_variable("city", personal.address.city)
+            title += self.format_variable("country", personal.address.country)
         title += "}\n\n"
         return title

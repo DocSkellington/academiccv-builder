@@ -4,7 +4,7 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from cvbuilder.setup import Setup
+from cvbuilder.contexts import Style
 from cvbuilder.contexts.latex import LaTeXContext
 from cvbuilder.modules.job import Job, JobModule
 
@@ -33,7 +33,7 @@ class JobTest(unittest.TestCase):
     def test_style(self):
         data = Job(
             title="Test Style",
-            style=Setup(
+            style=Style(
                 {
                     "start": "\\bfseries",
                     "end": "\\itshape",
@@ -83,7 +83,7 @@ class JobTest(unittest.TestCase):
             title="Test All Fields",
             organization="Unittest",
             description="Testing a lot of stuff",
-            style=Setup({"swap": True}),
+            style=Style({"swap": True}),
         )
         module = JobModule()
         module.jobs = [data]

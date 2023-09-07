@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from cvbuilder.builder import Builder
-from cvbuilder.contexts.latex import LaTeXContext, Setup
+from cvbuilder.contexts.latex import LaTeXContext, Style
 from cvbuilder.modules.job import JobModule
 from cvbuilder.modules.publication import PublicationModule
 
@@ -10,7 +10,7 @@ if __name__ == "__main__":
     builder = Builder()
 
     latex = LaTeXContext(Path("output/example.tex"))
-    latex.set_setup("title", Setup({"author": "\\bfseries"}))
+    latex.set_style("title", Style({"author": "\\bfseries"}))
 
     builder.add_context(latex)
 

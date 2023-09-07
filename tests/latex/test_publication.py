@@ -4,7 +4,7 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from cvbuilder.setup import Setup
+from cvbuilder.contexts import Style
 from cvbuilder.contexts.latex import LaTeXContext
 from cvbuilder.modules.publication import Publication, PublicationModule
 
@@ -15,7 +15,7 @@ class PublicationTest(unittest.TestCase):
             title="Test Style",
             authors="Authors",
             year=2023,
-            style=Setup(
+            style=Style(
                 {
                     "title": "\\bfseries",
                     "authors": "\\itshape",
@@ -73,7 +73,7 @@ class PublicationTest(unittest.TestCase):
             shortWhere="Sw",
             doi="0000",
             arxiv="0001",
-            style=Setup({"title": "\\bfseries"}),
+            style=Style({"title": "\\bfseries"}),
         )
         module = PublicationModule()
         module.publications = [data]

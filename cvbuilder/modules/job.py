@@ -5,7 +5,6 @@ Job module.
 from typing import List
 from dataclasses import dataclass
 
-from .. import setup
 from .. import modules as mod
 from .. import contexts
 
@@ -19,7 +18,7 @@ class Job:
     title: str = None
     organization: str = None
     description: str = None
-    style: setup.Setup = None
+    style: contexts.Style = None
 
 
 class JobModule(mod.Module):
@@ -37,20 +36,13 @@ class JobModule(mod.Module):
         latex = "\\section{Work Experience}\n\n"
         for job in self.jobs:
             latex += "\\job{\n"
-            latex += contexts.latex.build_variable_string(
-                "start", context.format_date(job.start)
+            latex += context.format_variable("start", context.format_date(job.start))
+            latex += context.format_variable("end", context.format_date(job.end))
+            latex += context.format_variable("title", job.title)
+            latex += context.format_variable("organization", job.organization)
+            latex += context.format_variable("description", job.description)
+            latex += context.format_style(
+                job.style, before="style = ", indent=1, comma=True
             )
-            latex += contexts.latex.build_variable_string(
-                "end", context.format_date(job.end)
-            )
-            latex += contexts.latex.build_variable_string("title", job.title)
-            latex += contexts.latex.build_variable_string(
-                "organization", job.organization
-            )
-            latex += contexts.latex.build_variable_string(
-                "description", job.description
-            )
-            if job.style is not None:
-                latex += job.style.to_latex("style = ", indent=1, comma=True)
             latex += "}\n"
         return latex
