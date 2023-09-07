@@ -51,7 +51,6 @@ class JobTest(unittest.TestCase):
         # pylint: disable=protected-access
         document = context._build_output([module], None)
         # pylint: enable=protected-access
-        self.maxDiff = None
         target = """\\documentclass{academiccv}
 
 \\begin{document}
@@ -60,16 +59,16 @@ class JobTest(unittest.TestCase):
 \\job{
 \ttitle = {Test Style},
 \tstyle = {
-\tstart = {\\bfseries},
-\tend = {\\itshape},
-\ttitle = {\\Large},
-\torganization = {\\color{red}},
-\tdescription = {\\ttshape},
-\tswap = false,
-\tmargin-size = {3em},
-\tspace = {2em},
-\tvspace-after = {5pt},
-},
+\t\tstart = {\\bfseries},
+\t\tend = {\\itshape},
+\t\ttitle = {\\Large},
+\t\torganization = {\\color{red}},
+\t\tdescription = {\\ttshape},
+\t\tswap = false,
+\t\tmargin-size = {3em},
+\t\tspace = {2em},
+\t\tvspace-after = {5pt},
+\t},
 }
 \\end{document}"""
         self.assertEqual(document, target)
@@ -102,8 +101,8 @@ class JobTest(unittest.TestCase):
 \torganization = {Unittest},
 \tdescription = {Testing a lot of stuff},
 \tstyle = {
-\tswap = true,
-},
+\t\tswap = true,
+\t},
 }
 \\end{document}"""
         self.assertEqual(document, target)

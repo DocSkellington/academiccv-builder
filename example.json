@@ -27,5 +27,21 @@
       "organization": "Somewhere",
       "description": "Something"
     }
+  ],
+  "publications": [
+    {
+      "title": "Publication 1",
+      "authors": "Authors 1",
+      "year": "2023"
+    },
+    {
+      "title": "Publications 2",
+      "authors": "Authors 2",
+      "year": "2022",
+      "where": "Somewhere",
+      "shortWhere": "SW",
+      "doi": "0000",
+      "arxiv": "0000"
+    }
   ]
 }

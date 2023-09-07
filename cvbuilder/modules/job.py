@@ -49,6 +49,8 @@ class JobModule(mod.Module):
             latex += contexts.latex.build_variable_string(
                 "description", job.description
             )
-            latex += contexts.latex.setup_to_latex(job.style, "\tstyle = ", comma=True)
+            latex += contexts.latex.setup_to_latex(
+                job.style, "style = ", indent=1, comma=True
+            )
             latex += "}\n"
         return latex

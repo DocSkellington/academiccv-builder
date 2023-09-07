@@ -37,7 +37,8 @@ def build_variable_string(latex_name: str, value: Any) -> str:
     return ""
 
 
-def setup_to_latex(setup, before: str, comma: bool = False) -> str:
+# TODO: move to Setup
+def setup_to_latex(setup, before: str, indent: int = 0, comma: bool = False) -> str:
     """Converts a setup dataclass to a succession of key-value pairs.
 
     Arguments:
@@ -49,13 +50,18 @@ def setup_to_latex(setup, before: str, comma: bool = False) -> str:
     """
     if setup is None:
         return ""
-    latex = f"{before}{{\n"
+    latex = "\t" * indent
+    latex += f"{before}{{\n"
     for field in dataclasses.fields(setup):
         name = field.name.replace("_", "-")
-        latex += build_variable_string(name, getattr(setup, field.name))
-    return latex + "}" + ("," if comma else "") + "\n"
+        var = build_variable_string(name, getattr(setup, field.name))
+        if var != "":
+            latex += "\t" * indent
+            latex += var
+    return latex + "\t" * indent + "}" + ("," if comma else "") + "\n"
 
 
+# TODO: move this to Builder and make it more abstract (no need for subclasses)
 class Setup(ABC):
     """Default class for all classes holding setup data."""
 
@@ -99,6 +105,20 @@ class JobSetup(Setup):
     margin_size: str = None
     space: str = None
     vspace_after: str = None
+
+
+@dataclass
+class PublicationSetup(Setup):
+    title: str = None
+    authors: str = None
+    year: str = None
+    reference: str = None
+    where: str = None
+    shortWhere: str = None
+    doi: str = None
+    doi_prefix: str = None
+    arxiv: str = None
+    arxiv_prefix: str = None
 
 
 class LaTeXContext(Context):
