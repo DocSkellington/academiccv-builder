@@ -93,15 +93,33 @@ class HTMLContext(Context):
 
         return f'<a class="{class_name}" href="{link}">{content}</a>{after}'
 
+    def open_list(self, numbered: bool, class_name: str, indent: int) -> str:
+        if numbered:
+            return "\t" * indent + f'<ol class="{class_name}">\n'
+        return "\t" * indent + f'<ul class="{class_name}">\n'
+
+    def close_list(self, numbered: bool, indent: int) -> str:
+        if numbered:
+            return "\t" * indent + "</ol>\n"
+        return "\t" * indent + "</ul>\n"
+
+    def list_item(self, class_name: str, content: str, indent: int) -> str:
+        if content is None:
+            return ""
+        return "\t" * indent + f'<li class="{class_name}">{content}</li>'
+
     def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
         html = '<!DOCTYPE html>\n<html lang="en">\n'
         html += self._head(personal)
         html += "\n"
         html += self._body(modules, personal)
-        html += "\n\n</html>"
+        html += "</html>"
         return html
 
     def _head(self, personal: PersonalData) -> str:
+        if personal is None:
+            return '\t<head>\n\t\t<meta charset="UTF-8">\n\t</head>\n'
+
         title = ""
         if self.title_fct is None:
             title = f"{personal.name} - {personal.position}"
@@ -139,11 +157,14 @@ class HTMLContext(Context):
         return main
 
     def _sidebar(self, _modules: mod.Module, personal: PersonalData) -> str:
+        if personal is None:
+            return ""
+
         indent = 3
-        sidebar = "\t" * indent + '<div class="sidebar">\n'
+        sidebar = self.open_div("sidebar", indent)
         indent += 1
 
-        sidebar += "\t" * indent + '<div class="profile-container">\n'
+        sidebar += self.open_div("profile-container", indent)
         indent += 1
 
         if personal.photo is not None:
@@ -151,14 +172,117 @@ class HTMLContext(Context):
                 "\t" * indent
                 + f'<img class="profile" src="{personal.photo}" alt=""/>\n'
             )
-        sidebar += "\t" * indent + f"<h1>{personal.name}</h1>\n"
-        sidebar += "\t" * indent + f"<h3>{personal.position}</h3>\n"
+        sidebar += self.simple_div_block("name", personal.name, indent)
+        sidebar += self.simple_div_block("position", personal.position, indent)
+        sidebar += self.simple_div_block("organization", personal.organization, indent)
 
         indent -= 1
-        sidebar += "\t" * indent + "</div>\n"  # profile-container
+        sidebar += self.close_div(indent)  # profile-container
+
+        sidebar += self.open_section(2, "CONTACT", "contact", indent)
+        indent += 1
+
+        sidebar += self.open_list(False, "contact-list", indent)
+        indent += 1
+
+        if isinstance(personal.email, list):
+            for email in personal.email:
+                sidebar += self.list_item(
+                    "mail",
+                    self.link_block("mail-link", f"mailto:{email}", email, ""),
+                    indent,
+                )
+        else:
+            sidebar += self.list_item(
+                "mail",
+                self.link_block(
+                    "mail-link", f"mailto:{personal.email}", personal.email, ""
+                ),
+                indent,
+            )
+
+        if personal.address is not None:
+            sidebar += self.list_item(
+                "address",
+                self.link_block(
+                    "address-link",
+                    personal.address.link,
+                    personal.address.street
+                    + ", "
+                    + str(personal.address.zipcode)
+                    + ", "
+                    + personal.address.city
+                    + ", "
+                    + personal.address.country,
+                    "",
+                ),
+                indent,
+            )
+
+        if personal.pdf is not None:
+            sidebar += self.list_item(
+                "pdf",
+                self.link_block("pdf-link", personal.pdf, "Curriculum vitae", ""),
+                indent,
+            )
+
+        if personal.github is not None:
+            sidebar += self.list_item(
+                "github",
+                self.link_block(
+                    "github-link",
+                    f"https://github.com/{personal.github}",
+                    personal.github,
+                    "",
+                ),
+                indent,
+            )
+
+        if personal.orcid is not None:
+            sidebar += self.list_item(
+                "orcid",
+                self.link_block(
+                    "orcid-link", f"https://orcid.org/{personal.orcid}", personal.orcid, ""
+                ),
+                indent,
+            )
+
+        if personal.linkedin is not None:
+            sidebar += self.list_item(
+                "linkedin",
+                self.link_block(
+                    "linkedin-link",
+                    f"https://linkedin.com/in/{personal.linkedin}",
+                    personal.linkedin,
+                    "",
+                ),
+                indent,
+            )
 
         indent -= 1
-        sidebar += "\t" * indent + "</div>\n\n"  # sidebar
+        sidebar += self.close_list(False, indent)
+
+        indent -= 1
+        sidebar += self.close_section(2, indent) # contact
+
+        if len(personal.languages) > 0:
+            sidebar += self.open_section(2, "LANGUAGES", "languages", indent)
+            indent += 1
+
+            sidebar += self.open_list(False, "languages-list", indent)
+            indent += 1
+
+            for language in personal.languages:
+                sidebar += self.list_item("language", self.span_block("language-name", language.name) + " " + self.span_block("language-level", f"({language.level})"), indent)
+
+            indent -= 1
+            sidebar += self.close_list(False, indent)
+
+            indent -= 1
+            sidebar += self.close_section(indent) # languages
+
+        indent -= 1
+        sidebar += self.close_div(indent) + "\n"  # sidebar
         return sidebar
 
     def _footer(self, _modules: mod.Module, _personal: PersonalData) -> str:
