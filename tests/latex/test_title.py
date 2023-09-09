@@ -88,7 +88,6 @@ class TitleTest(unittest.TestCase):
         # pylint: disable=protected-access
         document = context._build_output([], data)
         # pylint: enable=protected-access
-        print(document)
 
         target = """\\documentclass{academiccv}
 

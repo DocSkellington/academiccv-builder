@@ -5,6 +5,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from cvbuilder.contexts import Style
+from cvbuilder.contexts.html import HTMLContext
 from cvbuilder.contexts.latex import LaTeXContext
 from cvbuilder.modules.publication import Publication, PublicationModule
 
@@ -31,7 +32,7 @@ class PublicationTest(unittest.TestCase):
             ),
         )
         module = PublicationModule()
-        module.publications = [data]
+        module.data = [(None, [data])]
 
         context = LaTeXContext(None)
         # pylint: disable=protected-access
@@ -41,7 +42,7 @@ class PublicationTest(unittest.TestCase):
         target = """\\documentclass{academiccv}
 
 \\begin{document}
-\\section{Work Experience}
+\\section{Publications}
 
 \\job{
 \ttitle = {Test Style},
@@ -76,7 +77,7 @@ class PublicationTest(unittest.TestCase):
             style=Style({"title": "\\bfseries"}),
         )
         module = PublicationModule()
-        module.publications = [data]
+        module.data = [("Proceedings", [data])]
 
         context = LaTeXContext(None)
         # pylint: disable=protected-access
@@ -85,7 +86,9 @@ class PublicationTest(unittest.TestCase):
         target = """\\documentclass{academiccv}
 
 \\begin{document}
-\\section{Work Experience}
+\\section{Publications}
+
+\\subsection{Proceedings}
 
 \\job{
 \ttitle = {Publication Test},
