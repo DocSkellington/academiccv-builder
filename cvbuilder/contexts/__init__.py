@@ -59,9 +59,12 @@ class Context(ABC):
     """
 
     def __init__(
-        self, name: str, output_path: Path, date_output_format: str = "%d %b %Y"
+        self, name: str, output_path: Union[Path, str], date_output_format: str = "%d %b %Y"
     ) -> None:
-        self.output_path = output_path
+        if isinstance(output_path, str):
+            self.output_path = Path(output_path)
+        else:
+            self.output_path = output_path
         self.name = name
         self.date_output_format = date_output_format
         self.styles: Dict[str, Style] = {}
@@ -139,7 +142,7 @@ class Context(ABC):
         """
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with self.output_path.open(mode="w") as file:
+        with self.output_path.open(mode="w", encoding="UTF8") as file:
             file.write(self._build_output(modules, personal))
 
     def _run_modules(self, modules: List[mod.Module]) -> str:

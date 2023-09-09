@@ -6,7 +6,7 @@ The produced document relies on the academiccv package.
 
 from pathlib import Path
 import sys
-from typing import List
+from typing import List, Union
 
 from . import Context, PersonalData, Style
 from .. import modules as mod
@@ -26,7 +26,7 @@ class LaTeXContext(Context):
     For styles, the name is used to add \\{name}Setup before the key-value pairs in the preamble.
     """
 
-    def __init__(self, output_path: Path) -> None:
+    def __init__(self, output_path: Union[Path, str]) -> None:
         super().__init__("latex", output_path)
         self.packages: List[str] = []
         self.other_preamble: List[str] = []

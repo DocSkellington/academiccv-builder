@@ -2,7 +2,7 @@
 The CV builder reads a JSON file and uses this file to produce new documents.
 """
 
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from pathlib import Path
 import json
 from . import modules, contexts
@@ -41,7 +41,7 @@ class Builder:
         """
         self.modules.append((in_json, module))
 
-    def build(self, json_file_path: Path) -> None:
+    def build(self, json_file_path: Union[Path, str]) -> None:
         """Builds the documents from the JSON file at the given location.
 
         Modules and contexts are treated in the same order they were added.
@@ -49,7 +49,10 @@ class Builder:
         Arguments:
             json_file -- The path to the JSON file
         """
-        with json_file_path.open() as file:
+        if isinstance(json_file_path, str):
+            json_file_path = Path(json_file_path)
+
+        with json_file_path.open(encoding="UTF8") as file:
             content = json.load(file)
 
         personal = contexts.PersonalData(**content["personal"])
