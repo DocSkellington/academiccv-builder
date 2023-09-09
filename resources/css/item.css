@@ -1,0 +1,29 @@
+div.item {
+    margin-bottom: 20px;
+}
+
+div.item .upper {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+
+div.item .upper .title {
+    margin: 0px;
+    max-width: 90%;
+    font-weight: bold;
+}
+
+div.item .upper .time {
+    position: absolute;
+    box-sizing: border-box;
+    right: 0;
+    /* The following puts the text at the top of the box. Replace top by bottom to align at the bottom */
+    top: 0;
+    margin: auto;
+}
+
+div.item .organization {
+    margin-bottom: 2px;
+}

@@ -3,45 +3,75 @@
     "name": "John Who",
     "position": "Doctor",
     "organization": "The silly old Universe",
-    "photo": "photo.png",
+    "photo": "resources/photo.png",
     "email": "john.who@email.com",
     "website": "https://homepage.com",
     "github": "JohnWho",
+    "orcid": "0000-0000-0000-0000",
+    "pdf": "resources/CV.pdf",
     "address": {
       "street": "De Vinci Building, Avenue Victor Maistriau, 15",
       "zipcode": 7000,
       "city": "Mons",
-      "country": "Belgium"
-    }
+      "country": "Belgium",
+      "link": "https://www.openstreetmap.org/search?query=B%C3%A2timent%20De%20Vinci%2C%20Avenue%20Victor%20Maistriau%2C%2015%207000%20Mons%20Belgium%20"
+    },
+    "languages": [
+      {
+        "name": "English",
+        "level": "B2"
+      },
+      {
+        "name": "French",
+        "level": "Native speaker"
+      }
+    ]
   },
   "work": [
     {
-      "start": "2016-01-01",
-      "end": "Present",
-      "title": "Job position 2"
+      "Current positions": [
+        {
+          "start": "2016-01-01",
+          "end": "Present",
+          "title": "Job position 2"
+        }
+      ]
     },
     {
-      "start": "2010-05-10",
-      "end": "2015-12-30",
-      "title": "Job position 1",
-      "organization": "Somewhere",
-      "description": "Something"
+      "Past positions": [
+        {
+          "start": "2010-05-10",
+          "end": "2015-12-30",
+          "title": "Job position 1",
+          "organization": "Somewhere",
+          "description": "Something"
+        }
+      ]
     }
   ],
   "publications": [
     {
-      "title": "Publication 1",
-      "authors": "Authors 1",
-      "year": "2023"
+      "Proceedings": [
+        {
+          "title": "Publication 2 with a Rather Long Title Intended to Provoke an Overflow With the Year and Show that, In Fact, No Overflow Occurs",
+          "reference": "[Aut22]",
+          "authors": "Authors 2",
+          "year": "2022",
+          "where": "Somewhere",
+          "shortWhere": "SW",
+          "doi": "0000",
+          "arxiv": "0000"
+        }
+      ]
     },
     {
-      "title": "Publications 2",
-      "authors": "Authors 2",
-      "year": "2022",
-      "where": "Somewhere",
-      "shortWhere": "SW",
-      "doi": "0000",
-      "arxiv": "0000"
+      "Preprint": [
+        {
+          "title": "Publication 1",
+          "authors": "Authors 1",
+          "year": "2023"
+        }
+      ]
     }
   ]
 }

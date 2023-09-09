@@ -1,0 +1,40 @@
+main .sidebar {
+    background: #1f5a8e;
+    color: whitesmoke;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    min-height: 850px;
+    text-align: center;
+}
+
+main .sidebar ~ * {
+    margin-left: 300px;
+}
+    
+main .sidebar .profile-container {
+    background: #003b6f;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+main .sidebar .name {
+    font-size: xx-large;
+    margin-bottom: 10px;
+}
+
+main .sidebar .position {
+    font-size: larger;
+    margin-bottom: 10px;
+}
+
+main .sidebar .organization {
+    font-size: large;
+}
+
+main .sidebar .links-container {
+    font-size: small;
+}

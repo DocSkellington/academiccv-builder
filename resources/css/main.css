@@ -1,0 +1,15 @@
+body {
+    background: #F5F4FE;
+}
+
+main {
+    background: white;
+    box-sizing: border-box;
+    position: relative;
+    max-width: 1300px;
+    margin: 0 auto;
+    height: 100%;
+    min-height: 850px;
+    padding-right: 50px;
+    padding-left: 50px;
+}
