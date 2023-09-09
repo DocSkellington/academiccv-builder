@@ -40,10 +40,10 @@ class HTMLContext(Context):
         section = (
             "\t" * indent
             + ("<article" if level == 1 else "<section")
-            + f' class="{class_name}"'
+            + f' class="section {class_name}"'
             + ">\n"
         )
-        section += self.header(level, name, class_name, indent+1)
+        section += self.header(level, name, class_name, indent + 1)
         return section
 
     def header(self, level: int, name: str, class_name: str, indent: int = -1) -> str:
@@ -52,7 +52,7 @@ class HTMLContext(Context):
 
         if indent == -1:
             indent = 2 + level - 1
-        return "\t" * indent + f"<h{level} class=\"{class_name}\">{name}</h{level}>\n"
+        return "\t" * indent + f'<h{level} class="{class_name}">{name}</h{level}>\n'
 
     def close_section(self, level: int, indent: int = -1) -> str:
         if indent == -1:
@@ -60,7 +60,7 @@ class HTMLContext(Context):
         return "\t" * indent + ("</article>" if level == 1 else "</section>") + "\n\n"
 
     def open_div(self, class_name: str, indent: int) -> str:
-        return "\t" * indent + f"<div class=\"{class_name}\">\n"
+        return "\t" * indent + f'<div class="{class_name}">\n'
 
     def close_div(self, indent: int) -> str:
         return "\t" * indent + "</div>\n"
@@ -76,7 +76,7 @@ class HTMLContext(Context):
     def paragraph_block(self, class_name: str, content: str, indent: int) -> str:
         if content is None:
             return ""
-        p = "\t" * indent + f"<p class=\"{class_name}\">\n"
+        p = "\t" * indent + f'<p class="{class_name}">\n'
         p += "\t" * (indent + 1) + content + "\n"
         p += "\t" * indent + "</p>\n"
         return p
@@ -85,13 +85,13 @@ class HTMLContext(Context):
         if content is None:
             return ""
 
-        return f"<span class=\"{class_name}\">{content} </span>"
+        return f'<span class="{class_name}">{content} </span>'
 
     def link_block(self, class_name: str, link: str, content: str, after: str) -> str:
         if content is None:
             return ""
 
-        return f"<a class=\"{class_name}\" href=\"{link}\">{content}</a>{after}"
+        return f'<a class="{class_name}" href="{link}">{content}</a>{after}'
 
     def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
         html = '<!DOCTYPE html>\n<html lang="en">\n'

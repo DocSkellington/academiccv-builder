@@ -67,7 +67,7 @@ class Module(ABC):
 
     def to_html(self, context: "contexts.html.HTMLContext") -> str:
         class_name = self._get_class_name()
-        html = context.open_section(self.level + 1, self.section, f"section {class_name}-section")
+        html = context.open_section(self.level + 1, self.section, f"{class_name}")
         indent = 4
         section_level = self.level + 2
 
