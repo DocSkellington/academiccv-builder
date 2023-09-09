@@ -24,7 +24,7 @@ class Job:
 class JobModule(mod.Module):
     """Job module, holding data for the job positions defined in the JSON file."""
 
-    def __init__(self, level: int = 1, section: str = "Work Experience"):
+    def __init__(self, level: int = 2, section: str = "Work Experience"):
         super().__init__(level, section)
         self.jobs: List[Job] = []
 
@@ -47,3 +47,37 @@ class JobModule(mod.Module):
             )
             latex += "}\n"
         return latex
+
+    def to_html(self, context: contexts.html.HTMLContext) -> str:
+        html = context.open_section(self.level, self.section, "section work-section")
+        indent = 4
+
+        for job in self.jobs:
+            html += context.open_div("item", indent)
+            indent += 1
+
+            html += context.open_div("upper", indent)
+            indent += 1
+
+            html += context.header(3, job.title, "job", indent)
+
+            html += context.simple_div_block(
+                "time",
+                context.format_date(job.start)
+                + " &hyphen; "
+                + context.format_date(job.end),
+                indent,
+            )
+
+            indent -= 1
+            html += context.close_div(indent) # upper
+
+            html += context.simple_div_block("organization", job.organization, indent)
+
+            html += context.simple_div_block("details", job.description, indent)
+
+            indent -= 1
+            html += context.close_div(indent) # item
+
+        html += context.close_section(self.level)
+        return html
