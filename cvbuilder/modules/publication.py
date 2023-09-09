@@ -53,3 +53,65 @@ class PublicationModule(mod.Module):
             )
             latex += "}\n"
         return latex
+
+    def to_html(self, context: contexts.html.HTMLContext) -> str:
+        html = context.open_section(
+            self.level, self.section, "section publications-section"
+        )
+        indent = 4
+
+        # TODO: subsections
+
+        for publication in self.publications:
+            html += context.open_div("item", indent)
+            indent += 1
+
+            html += context.open_div("upper", indent)
+            indent += 1
+
+            if publication.reference is not None:
+                html += context.header(
+                    3,
+                    context.span_block("reference", publication.reference)
+                    + " "
+                    + publication.title,
+                    "title",
+                    indent,
+                )
+            else:
+                html += context.header(3, publication.title, "title", indent)
+
+            html += context.simple_div_block("time", publication.year, indent)
+
+            indent -= 1
+            html += context.close_div(indent)  # upper
+
+            details = context.span_block("authors", publication.authors + ".")
+            if publication.where is not None:
+                details += context.span_block("where", publication.where + ".")
+            if publication.shortWhere is not None:
+                details += context.span_block(
+                    "shortWhere", publication.shortWhere + "."
+                )
+            if publication.doi is not None:
+                details += context.link_block(
+                    "doi",
+                    "https://doi.org/" + publication.doi,
+                    "DOI: " + publication.doi,
+                    ". ",
+                )
+            if publication.arxiv is not None:
+                details += context.link_block(
+                    "doi arxiv",
+                    "https://doi.org/" + publication.arxiv,
+                    "arXiv: " + publication.arxiv,
+                    ". ",
+                )
+
+            html += context.paragraph_block("details", details, indent)
+
+            indent -= 1
+            html += context.close_div(indent)  # item
+
+        html += context.close_section(self.level)
+        return html
