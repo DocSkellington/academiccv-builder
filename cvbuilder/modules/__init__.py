@@ -8,6 +8,10 @@ from abc import ABC
 class Module(ABC):
     """Base class for modules."""
 
+    def __init__(self, level: int, section: str) -> None:
+        self.level = level
+        self.section = section
+
     def load(self, json_value) -> None:
         """Loads the data from the JSON value (usually, a dictionary).
 

@@ -24,7 +24,8 @@ class Job:
 class JobModule(mod.Module):
     """Job module, holding data for the job positions defined in the JSON file."""
 
-    def __init__(self):
+    def __init__(self, level: int = 1, section: str = "Work Experience"):
+        super().__init__(level, section)
         self.jobs: List[Job] = []
 
     def load(self, json_value):
@@ -32,8 +33,8 @@ class JobModule(mod.Module):
             job = Job(**value)
             self.jobs.append(job)
 
-    def to_latex(self, context: contexts.Context) -> str:
-        latex = "\\section{Work Experience}\n\n"
+    def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
+        latex = context.open_section(self.level, self.section) + "\n"
         for job in self.jobs:
             latex += "\\job{\n"
             latex += context.format_variable("start", context.format_date(job.start))
