@@ -48,14 +48,13 @@ class Publication(mod.Data):
         indent += 1
 
         if self.reference is not None:
-            html += context.header(
-                3,
-                context.span_block("reference", self.reference) + " " + self.title,
+            html += context.simple_div_block(
                 "title",
+                context.span_block("reference", self.reference) + " " + self.title,
                 indent,
             )
         else:
-            html += context.header(3, self.title, "title", indent)
+            html += context.simple_div_block("title", self.title, indent)
 
         html += context.simple_div_block("time", self.year, indent)
 
