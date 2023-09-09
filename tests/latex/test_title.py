@@ -46,6 +46,7 @@ class TitleTest(unittest.TestCase):
                 zipcode="0000",
                 city="City",
                 country="Country",
+                link="",
             ),
         )
         context = LaTeXContext(None)

@@ -5,15 +5,16 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from cvbuilder.contexts import Style
+from cvbuilder.contexts.html import HTMLContext
 from cvbuilder.contexts.latex import LaTeXContext
-from cvbuilder.modules.job import Job, JobModule, Section
+from cvbuilder.modules.job import Job, JobModule
 
 
 class JobTest(unittest.TestCase):
     def test_minimal(self):
         data = Job(title="Test Minimal")
         module = JobModule()
-        module.jobs = [(Section.NONE, [data])]
+        module.data = [(None, [data])]
 
         context = LaTeXContext(None)
         # pylint: disable=protected-access
@@ -48,7 +49,7 @@ class JobTest(unittest.TestCase):
             ),
         )
         module = JobModule()
-        module.jobs = [(Section.NONE, [data])]
+        module.data = [(None, [data])]
 
         context = LaTeXContext(None)
         # pylint: disable=protected-access
@@ -86,7 +87,7 @@ class JobTest(unittest.TestCase):
             style=Style({"swap": True}),
         )
         module = JobModule()
-        module.jobs = [(Section.NONE, [data])]
+        module.data = [("Past", [data])]
 
         context = LaTeXContext(None)
         # pylint: disable=protected-access
@@ -96,6 +97,8 @@ class JobTest(unittest.TestCase):
 
 \\begin{document}
 \\section{Work Experience}
+
+\\subsection{Past}
 
 \\job{
 \tstart = {01 Aug 1970},
