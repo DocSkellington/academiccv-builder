@@ -34,6 +34,7 @@ class Builder:
 
         Each module is filled from data stored in the JSON file.
         The 'in_json' argument defines which key contains the data to be used for this module.
+        If None, no value is read.
 
         Arguments:
             in_json -- The JSON key
@@ -58,7 +59,8 @@ class Builder:
         personal = contexts.PersonalData(**content["personal"])
 
         for in_json, module in self.modules:
-            module.load(content[in_json])
+            if in_json is not None:
+                module.load(content[in_json])
 
         all_modules = [module for _, module in self.modules]
         for context in self.contexts:
