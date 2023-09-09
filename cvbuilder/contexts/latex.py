@@ -96,15 +96,15 @@ class LaTeXContext(Context):
         if level == 0:
             return ""
         if level == 1:
-            return f"\\section{{{name}}}\n"
+            return f"\\section{{{name}}}\n\n"
         if level == 2:
-            return f"\\subsection{{{name}}}\n"
+            return f"\\subsection{{{name}}}\n\n"
         if level == 3:
-            return f"\\subsubsection{{{name}}}\n"
+            return f"\\subsubsection{{{name}}}\n\n"
         if level == 4:
-            return f"\\paragraph{{{name}}}\n"
+            return f"\\paragraph{{{name}}}\n\n"
         if level == 5:
-            return f"\\subparagraph{{{name}}}\n"
+            return f"\\subparagraph{{{name}}}\n\n"
         raise ValueError(f"LaTeX context: heading of level {level} is invalid.")
 
     def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
