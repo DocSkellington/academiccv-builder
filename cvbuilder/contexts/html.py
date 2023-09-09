@@ -32,6 +32,9 @@ class HTMLContext(Context):
     def open_section(
         self, level: int, name: str, class_name: str, indent: int = -1
     ) -> str:
+        if level <= 0 or level > 6:
+            return ""
+
         if indent == -1:
             indent = 2 + level - 1
         section = (
@@ -40,10 +43,13 @@ class HTMLContext(Context):
             + f' class="{class_name}"'
             + ">\n"
         )
-        section += "\t" * (indent + 1) + f"<h{level}>{name}</h{level}>\n"
+        section += self.header(level, name, class_name, indent+1)
         return section
 
     def header(self, level: int, name: str, class_name: str, indent: int = -1) -> str:
+        if level <= 0 or level > 6:
+            return ""
+
         if indent == -1:
             indent = 2 + level - 1
         return "\t" * indent + f"<h{level} class=\"{class_name}\">{name}</h{level}>\n"
