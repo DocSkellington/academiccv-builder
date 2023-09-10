@@ -202,12 +202,15 @@ class HTMLContext(Context):
         if isinstance(personal.email, list):
             for email in personal.email:
                 sidebar += self.list_item(
-                    "mail", self.link_block("mail-link", f"mailto:{email}", email, "")
+                    "mail",
+                    self.idiomatic_block("contact-icon iconoir-mail", "")
+                    + self.link_block("mail-link", f"mailto:{email}", email, ""),
                 )
         else:
             sidebar += self.list_item(
                 "mail",
-                self.link_block(
+                self.idiomatic_block("contact-icon iconoir-mail", "")
+                + self.link_block(
                     "mail-link", f"mailto:{personal.email}", personal.email, ""
                 ),
             )
@@ -215,7 +218,8 @@ class HTMLContext(Context):
         if personal.address is not None:
             sidebar += self.list_item(
                 "address",
-                self.link_block(
+                self.idiomatic_block("contact-icon iconoir-pin-alt", "")
+                + self.link_block(
                     "address-link",
                     personal.address.link,
                     personal.address.street
@@ -232,13 +236,15 @@ class HTMLContext(Context):
         if personal.pdf is not None:
             sidebar += self.list_item(
                 "pdf",
-                self.link_block("pdf-link", personal.pdf, "Curriculum vitae", ""),
+                self.idiomatic_block("contact-icon iconoir-user", "")
+                + self.link_block("pdf-link", personal.pdf, "Curriculum vitae", ""),
             )
 
         if personal.github is not None:
             sidebar += self.list_item(
                 "github",
-                self.link_block(
+                self.idiomatic_block("contact-icon iconoir-github", "")
+                + self.link_block(
                     "github-link",
                     f"https://github.com/{personal.github}",
                     personal.github,
@@ -249,7 +255,12 @@ class HTMLContext(Context):
         if personal.orcid is not None:
             sidebar += self.list_item(
                 "orcid",
-                self.link_block(
+                self.img_block(
+                    "contact-icon orcid",
+                    "https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png",
+                    "",
+                )
+                + self.link_block(
                     "orcid-link",
                     f"https://orcid.org/{personal.orcid}",
                     personal.orcid,
@@ -260,7 +271,8 @@ class HTMLContext(Context):
         if personal.linkedin is not None:
             sidebar += self.list_item(
                 "linkedin",
-                self.link_block(
+                self.idiomatic_block("contact-icon iconoir-linkedin", "")
+                + self.link_block(
                     "linkedin-link",
                     f"https://linkedin.com/in/{personal.linkedin}",
                     personal.linkedin,
