@@ -27,6 +27,20 @@
       }
     ]
   },
+  "logos": [
+    "resources/photo.png",
+    "resources/photo.png",
+    "resources/photo.png"
+  ],
+  "summary": [
+    "Do you know who I am?",
+    [
+      "I am an idiot...",
+      "With a blue box!",
+      "And a screwdriver."
+    ],
+    "Do you want a jelly baby?"
+  ],
   "work": [
     {
       "Current positions": [
@@ -54,7 +68,7 @@
       "Proceedings": [
         {
           "title": "Publication 2 with a Rather Long Title Intended to Provoke an Overflow With the Year and Show that, In Fact, No Overflow Occurs",
-          "reference": "[Aut22]",
+          "reference": "Aut22",
           "authors": "Authors 2",
           "year": "2022",
           "where": "Somewhere",
@@ -71,6 +85,81 @@
           "authors": "Authors 1",
           "year": "2023"
         }
+      ]
+    }
+  ],
+  "talks": [
+    {
+      "date": "2005/04/30",
+      "title": "Oldest talk",
+      "conference": "Some conference",
+      "where": "Somewhere in the universe"
+    },
+    {
+      "date": "2023/02/21",
+      "title": "Newest talk"
+    },
+    {
+      "date": "2023/02/20",
+      "title": "Two talks the same year!",
+      "conference": "Some conference again",
+      "where": "Earth"
+    },
+    {
+      "date": "2010/11/03",
+      "title": "Middle talk",
+      "conference": "Some other conference"
+    }
+  ],
+  "events": [
+    {
+      "year": 2023,
+      "name": "Some very nice event",
+      "where": "United Kingdom"
+    },
+    {
+      "year": "2022",
+      "name": "Some earlier event",
+      "where": "I forgot"
+    },
+    {
+      "year": "2023",
+      "name": "Another event?!",
+      "where": "Fragmented Empire"
+    }
+  ],
+  "teaching": [
+    {
+      "year": "Academic years 2005 to 2010",
+      "course": "Writing and Acting",
+      "role": "Teacher",
+      "level": "First year of Physics Science, Second year of Computer Science, Third year of Mathematical Science, Fourth year of Long Line Science",
+      "organization": "Bright Brilliant Courses",
+      "description": "Teach"
+    }
+  ],
+  "supervision": [
+    {
+      "year": "1980",
+      "name": "I forgot his name",
+      "role": "PhD advisor",
+      "organization": "Union of Nine Intermediate Torsos"
+    }
+  ],
+  "projects": [
+    {
+      "name": "A Top Secret Project",
+      "shortName": "Project",
+      "role": "Developer",
+      "description": [
+        "Simple line",
+        [
+          "Followed by some list",
+          "Spanning over",
+          "multiple",
+          "rows."
+        ],
+        "And a simple line again."
       ]
     }
   ]

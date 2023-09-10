@@ -11,10 +11,16 @@ main .sidebar {
     text-align: center;
 }
 
-main .sidebar ~ * {
+main .sidebar~div,
+main .sidebar~article,
+main .sidebar~section {
     margin-left: 300px;
 }
-    
+
+main .sidebar h2 {
+    color: beige;
+}
+
 main .sidebar .profile-container {
     background: #003b6f;
     padding-top: 30px;
@@ -35,6 +41,38 @@ main .sidebar .organization {
     font-size: large;
 }
 
-main .sidebar .links-container {
-    font-size: small;
+main .sidebar section {
+    font-size: 15px;
+}
+
+main .sidebar section ul {
+    text-align: left;
+}
+
+main .sidebar section li {
+    list-style-type: none;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+main .sidebar a {
+    color: antiquewhite;
+}
+
+main .sidebar a:hover {
+    color: #003b6f;
+}
+
+i.contact-icon,
+img.contact-icon {
+    text-align: center;
+    vertical-align: top;
+    padding-top: 4px;
+    margin: auto;
+    margin-right: 10px;
+}
+
+i.contact-icon::before {
+    font-size: 15px;
+    color: antiquewhite;
 }

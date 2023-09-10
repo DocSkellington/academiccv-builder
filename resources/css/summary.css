@@ -1,0 +1,17 @@
+.logos div.align {
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.logos div.align img {
+    float: left;
+    width: 25%;
+    padding: 20px;
+    top: 0;
+    margin: auto;
+    height: 100%;
+}

@@ -7,7 +7,14 @@ from cvbuilder.contexts.latex import LaTeXContext
 from cvbuilder.contexts.html import HTMLContext
 from cvbuilder.modules.text import TextModule, LinkModule
 from cvbuilder.modules.job import JobModule
+from cvbuilder.modules.talk import TalkModule
+from cvbuilder.modules.teach import TeachModule
 from cvbuilder.modules.publication import PublicationModule
+from cvbuilder.modules.supervision import SupervisionModule
+from cvbuilder.modules.project import ProjectModule
+from cvbuilder.modules.summary import SummaryModule
+from cvbuilder.modules.logos import LogosModule
+from cvbuilder.modules.event import EventModule
 
 
 if __name__ == "__main__":
@@ -21,16 +28,12 @@ if __name__ == "__main__":
     html.add_css_file("resources/css/main.css")
     html.add_css_file("resources/css/sidebar.css")
     html.add_css_file("resources/css/item.css")
+    html.add_css_file("resources/css/summary.css")
 
     builder.add_context(html)
 
-    builder.add_module(
-        None,
-        TextModule(
-            section="Summary",
-            text="Do you know what I am? I am an idiot! With a blue box and a screwdriver!",
-        ),
-    )
+    builder.add_module("logos", LogosModule())
+    builder.add_module("summary", SummaryModule())
     builder.add_module("work", JobModule())
     builder.add_module(
         None,
@@ -40,6 +43,19 @@ if __name__ == "__main__":
             link="publications.html",
             text="Publications",
             after=" page.",
+            icon="iconoir-journal"
+        ),
+    )
+    builder.add_module("talks", TalkModule())
+    builder.add_module("teaching", TeachModule())
+    builder.add_module("supervision", SupervisionModule())
+    builder.add_module("projects", ProjectModule())
+    builder.add_module("events", EventModule())
+    builder.add_module(
+        None,
+        TextModule(
+            section="Closing Words",
+            text="Doctor, I let you go.",
         ),
     )
 
@@ -70,5 +86,9 @@ if __name__ == "__main__":
 
     builder.add_module("work", JobModule())
     builder.add_module("publications", PublicationModule())
+    builder.add_module("talks", TalkModule())
+    builder.add_module("teaching", TeachModule())
+    builder.add_module("supervision", SupervisionModule())
+    builder.add_module("projects", ProjectModule())
 
     builder.build(Path("example.json"))
