@@ -19,7 +19,7 @@ class Job(mod.Data):
     description: str = None
     style: contexts.Style = None
 
-    def to_latex(self, context: contexts.latex.LaTeXContext, _indent: int) -> str:
+    def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\job{\n"
         latex += context.format_variable(
             "start", context.format_date(self.start)
@@ -35,34 +35,29 @@ class Job(mod.Data):
 
         return latex
 
-    def to_html(self, context: contexts.html.HTMLContext, indent: int) -> str:
-        html = context.open_div("item", indent)
-        indent += 1
+    def to_html(self, context: contexts.html.HTMLContext) -> str:
+        html = context.open_div("item")
 
-        html += context.open_div("upper", indent)
-        indent += 1
+        html += context.open_div("upper")
 
-        html += context.simple_div_block("title", self.title, indent)
+        html += context.simple_div_block("title", self.title)
 
         html += context.simple_div_block(
             "time",
             context.format_date(self.start)
             + " &hyphen; "
             + context.format_date(self.end),
-            indent,
         )
 
-        indent -= 1
-        html += context.close_div(indent)  # upper
+        html += context.close_block()  # upper
 
         html += context.simple_div_block(
-            "organization", self.organization, indent
+            "organization", self.organization
         )
 
-        html += context.simple_div_block("details", self.description, indent)
+        html += context.simple_div_block("details", self.description)
 
-        indent -= 1
-        html += context.close_div(indent)  # item
+        html += context.close_block()  # item
 
         return html
 

@@ -8,10 +8,10 @@ from typing import Dict, Any, Tuple, Union, List
 class Data(ABC):
     """Base class for data held by modules."""
 
-    def to_latex(self, context: "contexts.latex.LaTeXContext", indent: int) -> None:
+    def to_latex(self, context: "contexts.latex.LaTeXContext") -> None:
         raise NotImplementedError()
 
-    def to_html(self, context: "contexts.html.HTMLContext", indent: int) -> None:
+    def to_html(self, context: "contexts.html.HTMLContext") -> None:
         raise NotImplementedError()
 
 
@@ -61,33 +61,30 @@ class Module(ABC):
                 latex += context.open_section(self.level + 1, section)
 
             for data in data_list:
-                latex += data.to_latex(context, 1)
+                latex += data.to_latex(context)
 
         return latex
 
     def to_html(self, context: "contexts.html.HTMLContext") -> str:
         class_name = self._get_class_name()
         html = context.open_section(self.level + 1, self.section, f"{class_name}")
-        indent = 4
         section_level = self.level + 2
 
         for section, data_list in self.data:
             if section is not None:
                 html += context.open_section(
-                    section_level, section, section.lower().replace(" ", ""), indent
+                    section_level, section, section.lower().replace(" ", "")
                 )
-                indent += 1
                 section_level += 1
 
             for data in data_list:
-                html += data.to_html(context, indent)
+                html += data.to_html(context)
 
             if section is not None:
-                indent -= 1
                 section_level -= 1
-                html += context.close_section(self.level + 1, indent)
+                html += context.close_block()
 
-        html += context.close_section(self.level)
+        html += context.close_block()
         return html
 
     def _get_class_name(self) -> str:

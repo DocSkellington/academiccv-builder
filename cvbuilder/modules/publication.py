@@ -23,7 +23,7 @@ class Publication(mod.Data):
     arxiv: str = None
     style: contexts.Style = None
 
-    def to_latex(self, context: contexts.latex.LaTeXContext, indent: int) -> str:
+    def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\job{\n"
         latex += context.format_variable("title", self.title)
         latex += context.format_variable("authors", self.authors)
@@ -40,32 +40,28 @@ class Publication(mod.Data):
 
         return latex
 
-    def to_html(self, context: contexts.html.HTMLContext, indent: int) -> str:
-        html = context.open_div("item", indent)
-        indent += 1
+    def to_html(self, context: contexts.html.HTMLContext) -> str:
+        html = context.open_div("item")
 
-        html += context.open_div("upper", indent)
-        indent += 1
+        html += context.open_div("upper")
 
         if self.reference is not None:
             html += context.simple_div_block(
                 "title",
                 context.span_block("reference", self.reference) + " " + self.title,
-                indent,
             )
         else:
-            html += context.simple_div_block("title", self.title, indent)
+            html += context.simple_div_block("title", self.title)
 
-        html += context.simple_div_block("time", self.year, indent)
+        html += context.simple_div_block("time", self.year)
 
-        indent -= 1
-        html += context.close_div(indent)  # upper
+        html += context.close_block()  # upper
 
-        details = context.span_block("authors", self.authors + ".")
+        details = context.span_block("authors", self.authors + ". ")
         if self.where is not None:
-            details += context.span_block("where", self.where + ".")
+            details += context.span_block("where", self.where + ". ")
         if self.shortWhere is not None:
-            details += context.span_block("shortWhere", self.shortWhere + ".")
+            details += context.span_block("shortWhere", self.shortWhere + ". ")
         if self.doi is not None:
             details += context.link_block(
                 "doi",
@@ -81,10 +77,9 @@ class Publication(mod.Data):
                 ". ",
             )
 
-        html += context.paragraph_block("details", details, indent)
+        html += context.paragraph_block("details", details)
 
-        indent -= 1
-        html += context.close_div(indent)  # item
+        html += context.close_block()  # item
 
         return html
 

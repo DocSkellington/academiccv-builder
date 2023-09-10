@@ -25,8 +25,8 @@ class TextModule(Module):
             self.section,
             self.section.lower().replace(" ", "-"),
         )
-        html += context.paragraph_block("text", self.text, 3 + self.level - 1)
-        html += context.close_section(self.level)
+        html += context.paragraph_block("text", self.text)
+        html += context.close_block()
         return html
 
 
@@ -70,13 +70,11 @@ class LinkModule(Module):
     def to_html(self, context: contexts.html.HTMLContext) -> None:
         content = self.before + context.link_block("", self.link, self.text, self.after)
 
-        indent = 4 + self.level - 1
-
         link = context.open_section(
             self.level,
             self.section,
             self.section.lower().replace(" ", "-"),
         )
-        link += context.paragraph_block("text", content, indent)
-        link += context.close_section(self.level)
+        link += context.paragraph_block("text", content)
+        link += context.close_block()
         return link
