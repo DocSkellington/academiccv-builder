@@ -47,7 +47,7 @@ class HTMLContext(Context):
             return ""
 
         indent = self._get_indent()
-        tag = "article" if level == 1 else "section"
+        tag = "section"
         self.stack.append((tag, indent))
 
         section = "\t" * indent + f'<{tag} class="section {class_name}">\n'
