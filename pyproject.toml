@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "academiccv-builder"
-version = "0.1.0"
+version = "0.2.0"
 authors = [
   { name="Gaëtan 'DocSkellington' Staquet", email="gaetan.staquet@gmail.com" },
 ]
