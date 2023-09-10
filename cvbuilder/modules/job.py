@@ -21,9 +21,7 @@ class Job(mod.Data):
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\job{\n"
-        latex += context.format_variable(
-            "start", context.format_date(self.start)
-        )
+        latex += context.format_variable("start", context.format_date(self.start))
         latex += context.format_variable("end", context.format_date(self.end))
         latex += context.format_variable("title", self.title)
         latex += context.format_variable("organization", self.organization)
@@ -42,18 +40,22 @@ class Job(mod.Data):
 
         html += context.simple_div_block("title", self.title)
 
-        html += context.simple_div_block(
-            "time",
-            context.format_date(self.start)
-            + " &hyphen; "
-            + context.format_date(self.end),
-        )
+        if self.start is not None:
+            if self.end is None:
+                html += context.simple_div_block(
+                    "time", context.format_date(self.start) + " &hyphen; "
+                )
+            else:
+                html += context.simple_div_block(
+                    "time",
+                    context.format_date(self.start)
+                    + " &hyphen; "
+                    + context.format_date(self.end),
+                )
 
         html += context.close_block()  # upper
 
-        html += context.simple_div_block(
-            "organization", self.organization
-        )
+        html += context.simple_div_block("organization", self.organization)
 
         html += context.simple_div_block("details", self.description)
 
