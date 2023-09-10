@@ -78,8 +78,8 @@ class Module(ABC):
             if len(value) == 1:
                 key = list(value)[0]
                 data_list = []
-                for jobs_list in value.values():
-                    for job_object in jobs_list:
+                for values in value.values():
+                    for job_object in values:
                         data_list.append(self._load(job_object))
                 self.data.append((key, data_list))
             else:
