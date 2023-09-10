@@ -7,13 +7,13 @@ from typing import List, Union, Dict, Any
 from dataclasses import dataclass
 from pathlib import Path
 import dateutil.parser
+import datetime
 
 from .. import modules as mod
 
 
 @dataclass
 class Language:
-
     name: str
     level: str
 
@@ -75,7 +75,10 @@ class Context(ABC):
     """
 
     def __init__(
-        self, name: str, output_path: Union[Path, str], date_output_format: str = "%d %b %Y"
+        self,
+        name: str,
+        output_path: Union[Path, str],
+        date_output_format: str = "%d %b %Y",
     ) -> None:
         if isinstance(output_path, str):
             self.output_path = Path(output_path)
@@ -122,32 +125,38 @@ class Context(ABC):
             "Contexts should implement format_style(self, style: Style, *args, **kwargs)"
         )
 
-    def format_date(self, date_str: str, date_output_format: str = None) -> str:
-        """Format a date string, according to the requested format.
+    def format_date(
+        self, date_input: Union[datetime.datetime, str], date_output_format: str = None
+    ) -> str:
+        """Format a date to the requested format.
 
         If the format is None (the default value), the format set for in the class' constructor is used.
 
-        If the input string can not be converted to a date, the function returns the string as is.
+        If the input is a string that can not be converted to a date, the function returns the string as is.
         For instance, if the string is "Present", then "Present" is returned.
 
         If the input string is None, the function returns None.
 
         Arguments:
-            date_str -- The input string
+            date_input -- The input date
             date_output_format -- The format for the output string
 
         Returns:
             The date formatted, or the input string as is, or None
         """
-        if date_str is None:
+        if date_input is None:
             return None
+        if isinstance(date_input, datetime.datetime):
+            if date_output_format is None:
+                return date_input.strftime(self.date_output_format)
+            return date_input.strftime(date_output_format)
         try:
-            date = dateutil.parser.parse(date_str)
+            date = dateutil.parser.parse(date_input)
             if date_output_format is None:
                 return date.strftime(self.date_output_format)
             return date.strftime(date_output_format)
         except dateutil.parser.ParserError:
-            return date_str
+            return date_input
 
     def write_output(self, modules: List[mod.Module], personal: PersonalData) -> None:
         """Writes the output of this context into a single file.
