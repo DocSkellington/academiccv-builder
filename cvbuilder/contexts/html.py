@@ -42,7 +42,9 @@ class HTMLContext(Context):
         else:
             return 3
 
-    def open_section(self, level: int, name: str, class_name: str) -> str:
+    def open_section(
+        self, level: int, name: str, class_name: str, icon: str = None
+    ) -> str:
         if level <= 0 or level > 6:
             return ""
 
@@ -51,16 +53,21 @@ class HTMLContext(Context):
         self.stack.append((tag, indent))
 
         section = "\t" * indent + f'<{tag} class="section {class_name}">\n'
-        section += self.header(level, name, class_name)
+        section += self.header(level, name, class_name, icon)
         return section
 
-    def header(self, level: int, name: str, class_name: str) -> str:
+    def header(self, level: int, name: str, class_name: str, icon: str = None) -> str:
         if level <= 0 or level > 6:
             return ""
 
+        if icon is None:
+            icon = ""
+        else:
+            icon = self.idiomatic_block("section-icon " + icon, "")
+
         return (
             "\t" * self._get_indent()
-            + f'<h{level} class="{class_name}">{name}</h{level}>\n'
+            + f'<h{level} class="{class_name}">{icon}{name}</h{level}>\n'
         )
 
     def open_div(self, class_name: str) -> str:
@@ -120,6 +127,9 @@ class HTMLContext(Context):
             + f'<img class="{class_name}" src="{img}" alt="{alt}"/>\n'
         )
 
+    def idiomatic_block(self, class_name: str, content: str) -> str:
+        return "\t" * self._get_indent() + f'<i class="{class_name}">{content}</i>'
+
     def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
         html = '<!DOCTYPE html>\n<html lang="en">\n'
         html += self._head(personal)
@@ -144,6 +154,7 @@ class HTMLContext(Context):
 \t\t<meta http-equiv="X-UA-Compatible" content="ie=edge">
 \t\t<title>{title}</title>
 \t\t<link rel="icon" href="./favicon.ico" type="image/x-icon">
+\t\t<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css">
 """
         for css in self.css_files:
             head += f'\t\t<link rel="stylesheet" href="{css}">\n'

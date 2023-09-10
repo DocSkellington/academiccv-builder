@@ -58,8 +58,13 @@ class Supervision(mod.Data):
 
 
 class SupervisionModule(mod.Module):
-    def __init__(self, level: int = 1, section: str = "Supervision"):
-        super().__init__(level, section)
+    def __init__(
+        self,
+        level: int = 1,
+        section: str = "Supervision",
+        icon: str = "iconoir-path-arrow",
+    ):
+        super().__init__(level, section, icon)
 
     def _load(self, json_object) -> Supervision:
         return Supervision(**json_object)

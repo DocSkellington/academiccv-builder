@@ -71,8 +71,13 @@ class Job(mod.Data):
 class JobModule(mod.Module):
     """Job module, holding data for the job positions defined in the JSON file."""
 
-    def __init__(self, level: int = 1, section: str = "Work Experience"):
-        super().__init__(level, section)
+    def __init__(
+        self,
+        level: int = 1,
+        section: str = "Research Experience",
+        icon: str = "iconoir-brain-research",
+    ):
+        super().__init__(level, section, icon)
 
     def _load(self, json_object) -> Job:
         return Job(**json_object)

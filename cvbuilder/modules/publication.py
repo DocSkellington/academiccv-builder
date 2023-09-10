@@ -48,7 +48,9 @@ class Publication(mod.Data):
         if self.reference is not None:
             html += context.simple_div_block(
                 "title",
-                context.span_block("reference", f"[{self.reference}]") + " " + self.title,
+                context.span_block("reference", f"[{self.reference}]")
+                + " "
+                + self.title,
             )
         else:
             html += context.simple_div_block("title", self.title)
@@ -87,8 +89,13 @@ class Publication(mod.Data):
 class PublicationModule(mod.Module):
     """Publication module, holding data for the job positions defined in the JSON file."""
 
-    def __init__(self, level: int = 1, section: str = "Publications"):
-        super().__init__(level, section)
+    def __init__(
+        self,
+        level: int = 1,
+        section: str = "Publications",
+        icon: str = "iconoir-journal",
+    ):
+        super().__init__(level, section, icon)
 
     def _load(self, json_object):
         return Publication(**json_object)

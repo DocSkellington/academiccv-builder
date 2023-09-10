@@ -56,8 +56,10 @@ class TalkModule(mod.Module):
     Talks are automatically sorted by their date, and grouped together by year.
     """
 
-    def __init__(self, level: int = 1, section: str = "Talks") -> None:
-        super().__init__(level, section)
+    def __init__(
+        self, level: int = 1, section: str = "Talks", icon: str = "iconoir-sound-high"
+    ) -> None:
+        super().__init__(level, section, icon)
 
     def load(self, json_value: List[Dict[str, Any]]) -> None:
         talks = list(map(self._load, json_value))

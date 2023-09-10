@@ -12,8 +12,8 @@ class TextModule(Module):
     Set the level to any value that is not between 1 and 6 to disable the sectioning.
     """
 
-    def __init__(self, section: str, text: str, level: int = 2) -> None:
-        super().__init__(level, section)
+    def __init__(self, section: str, text: str, level: int = 2, icon: str = "") -> None:
+        super().__init__(level, section, icon)
         self.text = text
 
     def to_latex(self, _context: contexts.latex.LaTeXContext) -> None:
@@ -24,6 +24,7 @@ class TextModule(Module):
             self.level,
             self.section,
             self.section.lower().replace(" ", "-"),
+            self.section_icon,
         )
         html += context.paragraph_block("text", self.text)
         html += context.close_block()
@@ -44,11 +45,12 @@ class LinkModule(Module):
         text: str,
         after: str,
         level: int = 2,
+        icon: str = "",
     ) -> None:
         if section == "":
-            super().__init__(0, "")
+            super().__init__(0, "", icon)
         else:
-            super().__init__(level, section)
+            super().__init__(level, section, icon)
 
         self.section = section
         self.before = before
@@ -74,6 +76,7 @@ class LinkModule(Module):
             self.level,
             self.section,
             self.section.lower().replace(" ", "-"),
+            self.section_icon,
         )
         link += context.paragraph_block("text", content)
         link += context.close_block()

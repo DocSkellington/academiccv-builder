@@ -18,10 +18,14 @@ class Project(mod.Data):
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\project{\n"
-        latex += context.format_variable("shortName", context.format_date(self.shortName))
+        latex += context.format_variable(
+            "shortName", context.format_date(self.shortName)
+        )
         latex += context.format_variable("name", context.format_date(self.name))
         latex += context.format_variable("role", self.role)
-        latex += context.format_variable("description", self.description.to_latex(context))
+        latex += context.format_variable(
+            "description", self.description.to_latex(context)
+        )
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
         )
@@ -50,8 +54,13 @@ class Project(mod.Data):
 
 
 class ProjectModule(mod.Module):
-    def __init__(self, level: int = 1, section: str = "Projects"):
-        super().__init__(level, section)
+    def __init__(
+        self,
+        level: int = 1,
+        section: str = "Projects",
+        icon: str = "iconoir-light-bulb",
+    ):
+        super().__init__(level, section, icon)
 
     def _load(self, json_object) -> Project:
         return Project(**json_object)

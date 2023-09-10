@@ -5,6 +5,7 @@ Defines default modules that can be used in the builder.
 from abc import ABC
 from typing import Dict, Any, Tuple, Union, List
 
+
 class Data(ABC):
     """Base class for data held by modules."""
 
@@ -61,10 +62,11 @@ class Description(Data):
 class Module(ABC):
     """Base class for modules."""
 
-    def __init__(self, level: int, section: str) -> None:
+    def __init__(self, level: int, section: str, section_icon: str = "") -> None:
         self.level = level
         self.section = section
         self.data: List[Tuple[Union[None, str], List[Data]]] = []
+        self.section_icon = section_icon
 
     def load(self, json_value) -> None:
         """Loads the module's data from the given JSON value.
@@ -110,13 +112,15 @@ class Module(ABC):
 
     def to_html(self, context: "contexts.html.HTMLContext") -> str:
         class_name = self._get_class_name()
-        html = context.open_section(self.level + 1, self.section, f"{class_name}")
+        html = context.open_section(
+            self.level + 1, self.section, f"{class_name}", self.section_icon
+        )
         section_level = self.level + 2
 
         for section, data_list in self.data:
             if section is not None:
                 html += context.open_section(
-                    section_level, section, section.lower().replace(" ", "")
+                    section_level, section, section.lower().replace(" ", "-")
                 )
                 section_level += 1
 

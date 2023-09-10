@@ -62,8 +62,13 @@ class Teach(mod.Data):
 
 
 class TeachModule(mod.Module):
-    def __init__(self, level: int = 1, section: str = "Teaching"):
-        super().__init__(level, section)
+    def __init__(
+        self,
+        level: int = 1,
+        section: str = "Teaching",
+        icon: str = "iconoir-graduation-cap",
+    ):
+        super().__init__(level, section, icon)
 
     def _load(self, json_object) -> Teach:
         return Teach(**json_object)
