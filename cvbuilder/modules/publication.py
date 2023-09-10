@@ -43,7 +43,7 @@ class Publication(mod.Data):
     def to_html(self, context: contexts.html.HTMLContext) -> str:
         html = context.open_div("item")
 
-        html += context.open_div("upper")
+        html += context.open_div("align")
 
         if self.reference is not None:
             html += context.simple_div_block(
@@ -55,7 +55,7 @@ class Publication(mod.Data):
 
         html += context.simple_div_block("time", self.year)
 
-        html += context.close_block()  # upper
+        html += context.close_block()  # align
 
         details = context.span_block("authors", self.authors + ". ")
         if self.where is not None:

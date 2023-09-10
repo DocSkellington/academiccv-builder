@@ -36,7 +36,7 @@ class Job(mod.Data):
     def to_html(self, context: contexts.html.HTMLContext) -> str:
         html = context.open_div("item")
 
-        html += context.open_div("upper")
+        html += context.open_div("align")
 
         html += context.simple_div_block("title", self.title)
 
@@ -53,7 +53,7 @@ class Job(mod.Data):
                     + context.format_date(self.end),
                 )
 
-        html += context.close_block()  # upper
+        html += context.close_block()  # align
 
         html += context.simple_div_block("organization", self.organization)
 

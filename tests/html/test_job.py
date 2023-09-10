@@ -26,7 +26,7 @@ class JobTest(unittest.TestCase):
         target += """\t\t\t<section class="section work">
 \t\t\t\t<h2 class="work">Work Experience</h2>
 \t\t\t\t<div class="item">
-\t\t\t\t\t<div class="upper">
+\t\t\t\t\t<div class="align">
 \t\t\t\t\t\t<div class="title">
 \t\t\t\t\t\t\tTest Minimal
 \t\t\t\t\t\t</div>
@@ -60,7 +60,7 @@ class JobTest(unittest.TestCase):
 \t\t\t\t<section class="section past">
 \t\t\t\t\t<h3 class="past">Past</h3>
 \t\t\t\t\t<div class="item">
-\t\t\t\t\t\t<div class="upper">
+\t\t\t\t\t\t<div class="align">
 \t\t\t\t\t\t\t<div class="title">
 \t\t\t\t\t\t\t\tTest All Fields
 \t\t\t\t\t\t\t</div>
