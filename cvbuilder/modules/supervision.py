@@ -10,8 +10,12 @@ class Supervision(mod.Data):
     name: str = None
     role: str = None
     organization: str = None
-    description: str = None
+    description: mod.Description = None
     style: contexts.Style = None
+
+    def __post_init__(self) -> None:
+        if self.description is not None:
+            self.description = mod.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\supervision{\n"

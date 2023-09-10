@@ -71,6 +71,8 @@ class HTMLContext(Context):
     def simple_div_block(self, class_name: str, content: str) -> str:
         if content is None:
             return ""
+        if isinstance(content, mod.Description):
+            content = content.to_html(self)
         div = self.open_div(class_name)
         div += "\t" * self._get_indent() + content + "\n"
         div += self.close_block()
@@ -79,6 +81,8 @@ class HTMLContext(Context):
     def paragraph_block(self, class_name: str, content: str) -> str:
         if content is None:
             return ""
+        if isinstance(content, mod.Description):
+            content = content.to_html(self)
         indent = self._get_indent()
         p = "\t" * indent + f'<p class="{class_name}">\n'
         p += "\t" * (indent + 1) + content + "\n"
@@ -103,9 +107,11 @@ class HTMLContext(Context):
         self.stack.append((tag, indent))
         return "\t" * indent + f'<{tag} class="{class_name}">\n'
 
-    def list_item(self, class_name: str, content: str) -> str:
+    def list_item(self, class_name: str, content: Union[str, mod.Description]) -> str:
         if content is None:
             return ""
+        if isinstance(content, mod.Description):
+            content = content.to_html(self)
         return "\t" * self._get_indent() + f'<li class="{class_name}">{content}</li>\n'
 
     def img_block(self, class_name: str, img: str, alt: str) -> str:

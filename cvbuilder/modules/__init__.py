@@ -15,6 +15,49 @@ class Data(ABC):
         raise NotImplementedError()
 
 
+class Description(Data):
+    """A description is a type of data that can produce lists.
+
+    More precisely, the data can be a string or a list.
+    In the first case, the produce output is the string itself.
+    In the second case, each string of the list is produced as-is.
+    However, if the list contains a list, then that inner list is transformed into an unnumbered list.
+    """
+
+    def __init__(self, description: Union[str, List[Any]]) -> None:
+        self.description = description
+
+    def to_latex(self, context: "contexts.latex.LaTeXContext") -> None:
+        if isinstance(self.description, str):
+            return f"{{{self.description}}}"
+        elif isinstance(self.description, list):
+            latex = ""
+            for part in self.description:
+                if isinstance(part, str):
+                    latex += f"{{{part}}}\n"
+                elif isinstance(part, list):
+                    latex += "\\begin{itemize}\n"
+                    for line in part:
+                        latex += f"\t\\item {{{line}}}\n"
+                    latex += "\\end{itemize}\n"
+            return latex
+
+    def to_html(self, context: "contexts.html.HTMLContext") -> None:
+        if isinstance(self.description, str):
+            return self.description
+        elif isinstance(self.description, list):
+            html = ""
+            for part in self.description:
+                if isinstance(part, str):
+                    html += part + "\n"
+                elif isinstance(part, list):
+                    html += context.open_list(False, "description-list")
+                    for line in part:
+                        html += context.list_item("description-list-item", line)
+                    html += context.close_block()
+            return html
+
+
 class Module(ABC):
     """Base class for modules."""
 

@@ -31,13 +31,15 @@ class LaTeXContext(Context):
         self.packages: List[str] = []
         self.other_preamble: List[str] = []
 
-    def format_variable(self, name: str, value: str) -> str:
+    def format_variable(self, name: str, value: Union[bool, str, mod.Description]) -> str:
         if value is not None:
             string = f"\t{name} = "
             if value is True:
                 string += "true"
             elif value is False:
                 string += "false"
+            elif isinstance(value, mod.Description):
+                string += value.to_latex(self)
             else:
                 string += f"{{{value}}}"
             return string + ",\n"
