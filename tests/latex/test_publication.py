@@ -44,7 +44,7 @@ class PublicationTest(unittest.TestCase):
 \\begin{document}
 \\section{Publications}
 
-\\job{
+\\publication{
 \ttitle = {Test Style},
 \tauthors = {Authors},
 \tyear = {2023},
@@ -90,7 +90,7 @@ class PublicationTest(unittest.TestCase):
 
 \\subsection{Proceedings}
 
-\\job{
+\\publication{
 \ttitle = {Publication Test},
 \tauthors = {Authors},
 \tyear = {2023},

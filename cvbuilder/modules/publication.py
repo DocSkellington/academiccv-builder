@@ -24,7 +24,7 @@ class Publication(mod.Data):
     style: contexts.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
-        latex = "\\job{\n"
+        latex = "\\publication{\n"
         latex += context.format_variable("title", self.title)
         latex += context.format_variable("authors", self.authors)
         latex += context.format_variable("year", self.year)
@@ -48,7 +48,7 @@ class Publication(mod.Data):
         if self.reference is not None:
             html += context.simple_div_block(
                 "title",
-                context.span_block("reference", self.reference) + " " + self.title,
+                context.span_block("reference", f"[{self.reference}]") + " " + self.title,
             )
         else:
             html += context.simple_div_block("title", self.title)
