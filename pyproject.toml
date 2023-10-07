@@ -30,4 +30,4 @@ dependencies = [
 "Bug Tracker" = "https://github.com/DocSkellington/academiccv-builder/issues"
 
 [tool.hatch.build]
-exclude = ["main.py", "/tests"]
+exclude = ["example.py", "/tests"]

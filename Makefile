@@ -1,5 +1,5 @@
 build:
-	pipenv run python main.py
+	pipenv run python example.py
 
 dependencies:
 	mkdir .venv
