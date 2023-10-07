@@ -1,7 +1,7 @@
 from pathlib import Path
 from shutil import copytree
 
-from cvbuilder.builder import Builder
+from cvbuilder import Builder
 from cvbuilder.contexts import Style
 from cvbuilder.contexts.latex import LaTeXContext
 from cvbuilder.contexts.html import HTMLContext
@@ -17,6 +17,8 @@ from cvbuilder.modules.summary import SummaryModule
 from cvbuilder.modules.logos import LogosModule
 from cvbuilder.modules.event import EventModule
 from cvbuilder.modules.award import AwardModule
+from cvbuilder.modules.language import LanguageModule
+from cvbuilder.modules.contact import ContactModule
 
 # Copy resources folder
 copytree("resources/", "output/html/resources/", dirs_exist_ok=True)
@@ -30,6 +32,9 @@ html.add_css_file("resources/css/sidebar.css")
 html.add_css_file("resources/css/summary.css")
 
 builder.add_context(html)
+
+builder.add_module("contact", ContactModule(), "sidebar")
+builder.add_module("languages", LanguageModule(), "sidebar")
 
 builder.add_module("logos", LogosModule())
 builder.add_module("summary", SummaryModule())
@@ -82,6 +87,7 @@ latex.set_style("title", Style({"author": "\\bfseries"}))
 
 builder.add_context(latex)
 
+builder.add_module("contact", ContactModule(), "title")
 builder.add_module("work", JobModule())
 builder.add_module("publications", PublicationModule())
 builder.add_module("talks", TalkModule())
