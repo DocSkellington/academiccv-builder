@@ -13,7 +13,7 @@ class Talk(mod.Data):
     title: str = None
     conference: str = None
     where: str = None
-    style: contexts.Style = None
+    style: contexts.latex.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\talk{\n"
@@ -91,7 +91,7 @@ class TalkModule(mod.Module):
         )
         where = json_object["where"] if "where" in json_object else Talk.where
         style = (
-            contexts.Style(**json_object["style"])
+            contexts.latex.Style(**json_object["style"])
             if "style" in json_object
             else Talk.style
         )

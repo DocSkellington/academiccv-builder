@@ -8,7 +8,7 @@ from .. import contexts
 class Award(mod.Data):
     year: str = None
     description: mod.Description = None
-    style: contexts.Style = None
+    style: contexts.latex.Style = None
 
     def __post_init__(self) -> None:
         if self.description is not None:

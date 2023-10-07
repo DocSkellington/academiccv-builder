@@ -5,12 +5,19 @@ The produced document relies on the academiccv package.
 """
 
 from pathlib import Path
-import sys
-from typing import List, Union
+from typing import List, Union, Dict, Any
 
-from . import Context, PersonalData, Style
+from . import Context, PersonalData
 from .. import modules as mod
 from .. import ModuleDescriptor
+
+
+class Style:
+    """Default class for style data."""
+
+    def __init__(self, key_values: Dict[str, Any]) -> None:
+        for key, value in key_values.items():
+            setattr(self, key, value)
 
 
 class LaTeXContext(Context):
@@ -31,8 +38,11 @@ class LaTeXContext(Context):
         super().__init__("latex", output_path)
         self.packages: List[str] = []
         self.other_preamble: List[str] = []
+        self.styles: Dict[str, Style] = {}
 
-    def format_variable(self, name: str, value: Union[bool, str, mod.Description]) -> str:
+    def format_variable(
+        self, name: str, value: Union[bool, str, mod.Description]
+    ) -> str:
         if value is not None:
             string = f"\t{name} = "
             if value is True:
@@ -45,6 +55,15 @@ class LaTeXContext(Context):
                 string += f"{{{value}}}"
             return string + ",\n"
         return ""
+
+    def set_style(self, name: str, style: Style) -> None:
+        """Sets a style.
+
+        Arguments:
+            name -- The name of the style
+            style -- The new style
+        """
+        self.styles[name] = style
 
     def format_style(self, style: Style, **kwargs) -> str:
         """Converts a style instance to a succession of key-value pairs for a LaTeX output.
@@ -110,7 +129,9 @@ class LaTeXContext(Context):
             return f"\\subparagraph{{{name}}}\n\n"
         raise ValueError(f"LaTeX context: heading of level {level} is invalid.")
 
-    def _build_output(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
+    def _build_output(
+        self, modules: List[ModuleDescriptor], personal: PersonalData
+    ) -> str:
         latex = "\\documentclass{academiccv}\n\n"
 
         for package in self.packages:

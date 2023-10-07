@@ -22,16 +22,8 @@ class PersonalData:
     photo: str = None
 
 
-class Style:
-    """Default class for style data."""
-
-    def __init__(self, key_values: Dict[str, Any]) -> None:
-        for key, value in key_values.items():
-            setattr(self, key, value)
-
-
 class Context(ABC):
-    """A context used to produce one or multiple files from the JSON file.
+    """A context used to produce one file from the JSON file.
 
     The exact behavior depends on the subclass.
 
@@ -50,16 +42,6 @@ class Context(ABC):
             self.output_path = output_path
         self.name = name
         self.date_output_format = date_output_format
-        self.styles: Dict[str, Style] = {}
-
-    def set_style(self, name: str, style: Style) -> None:
-        """Sets a style.
-
-        Arguments:
-            name -- The name of the style
-            style -- The new style
-        """
-        self.styles[name] = style
 
     def format_variable(self, name: str, value: str) -> str:
         """Constructs a string to set the variable named "name" to the given value, in the appropriate manner for the context.
@@ -73,20 +55,6 @@ class Context(ABC):
         """
         raise NotImplementedError(
             "Contexts should implement format_variable(self, name: str, value: str)"
-        )
-
-    def format_style(self, style: Style, **kwargs) -> str:
-        """Converts a style instance to a context-appropriate output
-
-        Arguments:
-            style -- The style
-            **kwargs -- Subclass-specific arguments
-
-        Returns:
-            A context-appropriate output for the style
-        """
-        raise NotImplementedError(
-            "Contexts should implement format_style(self, style: Style, *args, **kwargs)"
         )
 
     def format_date(
@@ -122,7 +90,9 @@ class Context(ABC):
         except dateutil.parser.ParserError:
             return date_input
 
-    def write_output(self, modules: List["ModuleDescriptor"], personal: PersonalData) -> None:
+    def write_output(
+        self, modules: List["ModuleDescriptor"], personal: PersonalData
+    ) -> None:
         """Writes the output of this context into a single file.
 
         Arguments:
@@ -134,7 +104,9 @@ class Context(ABC):
         with self.output_path.open(mode="w", encoding="UTF8") as file:
             file.write(self._build_output(modules, personal))
 
-    def _run_modules(self, modules: List["ModuleDescriptor"], category: str = "default") -> str:
+    def _run_modules(
+        self, modules: List["ModuleDescriptor"], category: str = "default"
+    ) -> str:
         output = ""
         for module in modules:
             if module.category != category:

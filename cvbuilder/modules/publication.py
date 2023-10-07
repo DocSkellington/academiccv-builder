@@ -22,7 +22,7 @@ class Publication(mod.Data):
     doi: str = None
     arxiv: str = None
     note: str = None
-    style: contexts.Style = None
+    style: contexts.latex.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\publication{\n"

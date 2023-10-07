@@ -11,7 +11,7 @@ class Supervision(mod.Data):
     role: str = None
     organization: str = None
     description: mod.Description = None
-    style: contexts.Style = None
+    style: contexts.latex.Style = None
 
     def __post_init__(self) -> None:
         if self.description is not None:

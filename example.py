@@ -2,8 +2,7 @@ from pathlib import Path
 from shutil import copytree
 
 from cvbuilder import Builder
-from cvbuilder.contexts import Style
-from cvbuilder.contexts.latex import LaTeXContext
+from cvbuilder.contexts.latex import LaTeXContext, Style
 from cvbuilder.contexts.html import HTMLContext
 from cvbuilder.contexts.markdown import MarkdownContext
 from cvbuilder.modules.text import TextModule, LinkModule

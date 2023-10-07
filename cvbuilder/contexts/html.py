@@ -1,9 +1,10 @@
 from typing import List, Union, Callable, Tuple
 from pathlib import Path
 
-from . import Context, Style, PersonalData
+from . import Context, PersonalData
 from .. import modules as mod
 from .. import ModuleDescriptor
+
 
 class HTMLStack:
     """A stack for an HTML context.
@@ -132,15 +133,12 @@ class HTMLContext(Context, HTMLStack):
             "Contexts should implement format_variable(self, name: str, value: str)"
         )
 
-    def format_style(self, style: Style, **kwargs) -> str:
-        raise NotImplementedError(
-            "Contexts should implement format_style(self, style: Style, *args, **kwargs)"
-        )
-
     def set_title_fct(self, title_fct: Callable[[PersonalData], str]) -> None:
         self.title_fct = title_fct
 
-    def _build_output(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
+    def _build_output(
+        self, modules: List[ModuleDescriptor], personal: PersonalData
+    ) -> str:
         html = '<!DOCTYPE html>\n<html lang="en">\n'
         html += self._head(personal)
         html += "\n"
