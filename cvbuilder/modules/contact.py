@@ -17,7 +17,7 @@ class Address:
     zipcode: Union[str, int]
     city: str
     country: str
-    link: str
+    link: str = None
 
 
 @dataclass
