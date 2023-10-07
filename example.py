@@ -37,7 +37,7 @@ builder.add_module("languages", LanguageModule(), "sidebar")
 
 builder.add_module("logos", LogosModule())
 builder.add_module("summary", SummaryModule())
-builder.add_module("work", JobModule())
+builder.add_module("jobs", JobModule())
 builder.add_module(
     None,
     LinkModule(
@@ -87,7 +87,7 @@ latex.set_style("title", Style({"author": "\\bfseries"}))
 builder.add_context(latex)
 
 builder.add_module("contact", ContactModule(), "title")
-builder.add_module("work", JobModule())
+builder.add_module("jobs", JobModule())
 builder.add_module("publications", PublicationModule())
 builder.add_module("talks", TalkModule())
 builder.add_module("teaching", TeachModule())
@@ -104,7 +104,7 @@ builder.add_context(markdown)
 
 builder.add_module("logos", LogosModule())
 builder.add_module("summary", SummaryModule())
-builder.add_module("work", JobModule())
+builder.add_module("jobs", JobModule())
 builder.add_module("projects", ProjectModule())
 builder.add_module("awards", AwardModule())
 builder.add_module("publications", PublicationModule())
