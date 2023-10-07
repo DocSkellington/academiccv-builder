@@ -5,42 +5,26 @@ from . import Context, Style, PersonalData
 from .. import modules as mod
 
 
-class HTMLContext(Context):
-    def __init__(self, output_path: Union[Path, str]) -> None:
-        super().__init__("html", output_path)
-        self.css_files = []
-        self.title_fct = None
+class HTMLStack:
+    """A stack for an HTML context.
+
+    It provides utilities to open and close headers, div blocks, paragraphs, and so on.
+    """
+
+    def __init__(self) -> None:
         self.stack: List[Tuple[str, int]] = []
-
-    def add_css_file(self, css_path: Union[Path, str]) -> None:
-        if isinstance(css_path, str):
-            css_path = Path(css_path)
-        self.css_files.append(css_path)
-
-    def format_variable(self, name: str, value: str) -> str:
-        raise NotImplementedError(
-            "Contexts should implement format_variable(self, name: str, value: str)"
-        )
-
-    def format_style(self, style: Style, **kwargs) -> str:
-        raise NotImplementedError(
-            "Contexts should implement format_style(self, style: Style, *args, **kwargs)"
-        )
-
-    def set_title_fct(self, title_fct: Callable[[PersonalData], str]) -> None:
-        self.title_fct = title_fct
 
     def close_block(self) -> str:
         if len(self.stack) > 0:
             tag, indent = self.stack.pop()
-            return "\t" * indent + f"</{tag}>\n"
+            if tag is not None:
+                return "\t" * indent + f"</{tag}>\n"
         return ""
 
     def _get_indent(self) -> int:
         if len(self.stack) > 0:
             return self.stack[-1][1] + 1
-        else:
-            return 3
+        return 3
 
     def open_section(
         self, level: int, name: str, class_name: str, icon: str = None
@@ -129,6 +113,32 @@ class HTMLContext(Context):
 
     def idiomatic_block(self, class_name: str, content: str) -> str:
         return "\t" * self._get_indent() + f'<i class="{class_name}">{content}</i>'
+
+
+class HTMLContext(Context, HTMLStack):
+    def __init__(self, output_path: Union[Path, str]) -> None:
+        Context.__init__(self, "html", output_path)
+        HTMLStack.__init__(self)
+        self.css_files = []
+        self.title_fct = None
+
+    def add_css_file(self, css_path: Union[Path, str]) -> None:
+        if isinstance(css_path, str):
+            css_path = Path(css_path)
+        self.css_files.append(css_path)
+
+    def format_variable(self, name: str, value: str) -> str:
+        raise NotImplementedError(
+            "Contexts should implement format_variable(self, name: str, value: str)"
+        )
+
+    def format_style(self, style: Style, **kwargs) -> str:
+        raise NotImplementedError(
+            "Contexts should implement format_style(self, style: Style, *args, **kwargs)"
+        )
+
+    def set_title_fct(self, title_fct: Callable[[PersonalData], str]) -> None:
+        self.title_fct = title_fct
 
     def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
         html = '<!DOCTYPE html>\n<html lang="en">\n'
