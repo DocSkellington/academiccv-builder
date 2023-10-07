@@ -18,9 +18,10 @@ class Summary(mod.Data):
         )
 
     def to_html(self, context: contexts.html.HTMLContext) -> str:
-        html = context.simple_div_block("details", self.text)
+        return context.simple_div_block("details", self.text)
 
-        return html
+    def to_markdown(self, context: contexts.markdown.MarkdownContext) -> str:
+        return context.paragraph(self.text)
 
 
 class SummaryModule(mod.Module):

@@ -9,11 +9,14 @@ from typing import Dict, Any, Tuple, Union, List
 class Data(ABC):
     """Base class for data held by modules."""
 
-    def to_latex(self, context: "contexts.latex.LaTeXContext") -> None:
+    def to_latex(self, context: "contexts.latex.LaTeXContext") -> str:
         raise NotImplementedError()
 
-    def to_html(self, context: "contexts.html.HTMLContext") -> None:
+    def to_html(self, context: "contexts.html.HTMLContext") -> str:
         raise NotImplementedError()
+
+    def to_markdown(self, context: "contexts.markdown.MarkdownContext") -> str:
+        return self.to_html(context)
 
 
 class Description(Data):
@@ -28,7 +31,7 @@ class Description(Data):
     def __init__(self, description: Union[str, List[Any]]) -> None:
         self.description = description
 
-    def to_latex(self, context: "contexts.latex.LaTeXContext") -> None:
+    def to_latex(self, context: "contexts.latex.LaTeXContext") -> str:
         if isinstance(self.description, str):
             return f"{{{self.description}}}"
         elif isinstance(self.description, list):
@@ -43,10 +46,10 @@ class Description(Data):
                     latex += "\\end{itemize}\n"
             return latex
 
-    def to_html(self, context: "contexts.html.HTMLContext") -> None:
+    def to_html(self, context: "contexts.html.HTMLContext") -> str:
         if isinstance(self.description, str):
             return self.description
-        elif isinstance(self.description, list):
+        if isinstance(self.description, list):
             html = ""
             for part in self.description:
                 if isinstance(part, str):
@@ -57,6 +60,21 @@ class Description(Data):
                         html += context.list_item("description-list-item", line)
                     html += context.close_block()
             return html
+
+    def to_markdown(self, context: "contexts.markdown.MarkdownContext") -> str:
+        if isinstance(self.description, str):
+            return self.description
+        if isinstance(self.description, list):
+            markdown = ""
+            for part in self.description:
+                if isinstance(part, str):
+                    markdown += part
+                elif isinstance(part, list):
+                    markdown += "\n\n"
+                    for line in part:
+                        markdown += " * " + line + "\n"
+                    markdown += "\n"
+            return markdown
 
 
 class Module(ABC):
@@ -122,17 +140,26 @@ class Module(ABC):
                 html += context.open_section(
                     section_level, section, section.lower().replace(" ", "-")
                 )
-                section_level += 1
 
             for data in data_list:
                 html += data.to_html(context)
 
             if section is not None:
-                section_level -= 1
                 html += context.close_block()
 
         html += context.close_block()
         return html
+
+    def to_markdown(self, context: "contexts.markdown.MarkdownContext") -> str:
+        markdown = context.open_section(1, self.section)
+        for section, data_list in self.data:
+            if section is not None:
+                markdown += context.open_section(2, section)
+            
+            for data in data_list:
+                markdown += data.to_markdown(context)
+
+        return markdown
 
     def _get_class_name(self) -> str:
         raise NotImplementedError()

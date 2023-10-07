@@ -5,6 +5,7 @@ from cvbuilder.builder import Builder
 from cvbuilder.contexts import Style
 from cvbuilder.contexts.latex import LaTeXContext
 from cvbuilder.contexts.html import HTMLContext
+from cvbuilder.contexts.markdown import MarkdownContext
 from cvbuilder.modules.text import TextModule, LinkModule
 from cvbuilder.modules.job import JobModule
 from cvbuilder.modules.talk import TalkModule
@@ -75,7 +76,6 @@ builder.add_module("publications", PublicationModule())
 builder.build("example.json")
 
 # Example for LaTeX
-# TODO: add Markdown context
 builder = Builder()
 latex = LaTeXContext("output/latex/example.tex")
 latex.set_style("title", Style({"author": "\\bfseries"}))
@@ -88,5 +88,33 @@ builder.add_module("talks", TalkModule())
 builder.add_module("teaching", TeachModule())
 builder.add_module("supervision", SupervisionModule())
 builder.add_module("projects", ProjectModule())
+
+builder.build(Path("example.json"))
+
+# Example for Markdown
+builder = Builder()
+markdown = MarkdownContext("output/markdown/index.md", "Academic CV")
+
+builder.add_context(markdown)
+
+builder.add_module("logos", LogosModule())
+builder.add_module("summary", SummaryModule())
+builder.add_module("work", JobModule())
+builder.add_module("projects", ProjectModule())
+builder.add_module("awards", AwardModule())
+builder.add_module("publications", PublicationModule())
+builder.add_module("talks", TalkModule())
+builder.add_module(
+    None,
+    LinkModule(
+        section="Events",
+        before="Consult the ",
+        link="events.md",
+        text="Events",
+        after=" page.",
+    ),
+)
+builder.add_module("teaching", TeachModule())
+builder.add_module("supervision", SupervisionModule())
 
 builder.build(Path("example.json"))

@@ -16,10 +16,10 @@ class TextModule(Module):
         super().__init__(level, section, icon)
         self.text = text
 
-    def to_latex(self, _context: contexts.latex.LaTeXContext) -> None:
+    def to_latex(self, _context: contexts.latex.LaTeXContext) -> str:
         return f"\\section{{{self.section}}}\n{self.text}\n"
 
-    def to_html(self, context: contexts.html.HTMLContext) -> None:
+    def to_html(self, context: contexts.html.HTMLContext) -> str:
         html = context.open_section(
             self.level,
             self.section,
@@ -29,6 +29,9 @@ class TextModule(Module):
         html += context.paragraph_block("text", self.text)
         html += context.close_block()
         return html
+
+    def to_markdown(self, context: contexts.markdown.MarkdownContext) -> str:
+        return context.open_section(self.level, self.section) + self.text + context.close_block()
 
 
 class LinkModule(Module):
@@ -58,7 +61,7 @@ class LinkModule(Module):
         self.text = text
         self.after = after
 
-    def to_latex(self, context: contexts.latex.LaTeXContext) -> None:
+    def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         section = context.open_section(self.level, self.section)
 
         url = ""
@@ -69,7 +72,7 @@ class LinkModule(Module):
 
         return f"{section}{self.before}{url}{self.after}\n"
 
-    def to_html(self, context: contexts.html.HTMLContext) -> None:
+    def to_html(self, context: contexts.html.HTMLContext) -> str:
         content = self.before + context.link_block("", self.link, self.text, self.after)
 
         link = context.open_section(
@@ -81,3 +84,8 @@ class LinkModule(Module):
         link += context.paragraph_block("text", content)
         link += context.close_block()
         return link
+
+    def to_markdown(self, context: contexts.markdown.MarkdownContext) -> str:
+        content = self.before + context.link(self.link, self.text) + self.after
+
+        return context.open_section(self.level, self.section) + content + context.close_block()
