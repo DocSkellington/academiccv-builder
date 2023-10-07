@@ -3,7 +3,7 @@ from pathlib import Path
 
 from . import Context, Style, PersonalData
 from .. import modules as mod
-
+from .. import ModuleDescriptor
 
 class HTMLStack:
     """A stack for an HTML context.
@@ -140,7 +140,7 @@ class HTMLContext(Context, HTMLStack):
     def set_title_fct(self, title_fct: Callable[[PersonalData], str]) -> None:
         self.title_fct = title_fct
 
-    def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
+    def _build_output(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
         html = '<!DOCTYPE html>\n<html lang="en">\n'
         html += self._head(personal)
         html += "\n"
@@ -171,7 +171,7 @@ class HTMLContext(Context, HTMLStack):
         head += "\t</head>\n"
         return head
 
-    def _body(self, modules: List[mod.Module], personal: PersonalData) -> str:
+    def _body(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
         body = "\t<body>\n"
         body += self._header(modules, personal)
         body += self._main(modules, personal)
@@ -179,17 +179,17 @@ class HTMLContext(Context, HTMLStack):
         body += "\t</body>\n"
         return body
 
-    def _header(self, _modules: mod.Module, _personal: PersonalData) -> str:
+    def _header(self, _modules: ModuleDescriptor, _personal: PersonalData) -> str:
         return ""
 
-    def _main(self, modules: List[mod.Module], personal: PersonalData) -> str:
+    def _main(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
         main = "\t\t<main>\n"
         main += self._sidebar(modules, personal)
         main += self._run_modules(modules)
         main += "\t\t</main>\n"
         return main
 
-    def _sidebar(self, _modules: mod.Module, personal: PersonalData) -> str:
+    def _sidebar(self, modules: ModuleDescriptor, personal: PersonalData) -> str:
         if personal is None:
             return ""
 
@@ -314,5 +314,5 @@ class HTMLContext(Context, HTMLStack):
         sidebar += self.close_block() + "\n"  # sidebar
         return sidebar
 
-    def _footer(self, _modules: mod.Module, _personal: PersonalData) -> str:
+    def _footer(self, _modules: List[ModuleDescriptor], _personal: PersonalData) -> str:
         return ""

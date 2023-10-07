@@ -10,6 +10,7 @@ from typing import List, Union
 
 from . import Context, PersonalData, Style
 from .. import modules as mod
+from .. import ModuleDescriptor
 
 
 class LaTeXContext(Context):
@@ -109,7 +110,7 @@ class LaTeXContext(Context):
             return f"\\subparagraph{{{name}}}\n\n"
         raise ValueError(f"LaTeX context: heading of level {level} is invalid.")
 
-    def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
+    def _build_output(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
         latex = "\\documentclass{academiccv}\n\n"
 
         for package in self.packages:
@@ -123,13 +124,13 @@ class LaTeXContext(Context):
 
         latex += "\\begin{document}\n"
         if personal is not None:
-            latex += self._cv_title(personal)
+            latex += self._cv_title(modules, personal)
         latex += self._run_modules(modules)
         latex += "\\end{document}"
 
         return latex
 
-    def _cv_title(self, personal: PersonalData) -> str:
+    def _cv_title(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
         title = "\\makecvtitle{\n"
         title += self.format_variable("author", personal.name)
         title += self.format_variable("position", personal.position)

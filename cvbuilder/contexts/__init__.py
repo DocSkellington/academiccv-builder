@@ -158,7 +158,7 @@ class Context(ABC):
         except dateutil.parser.ParserError:
             return date_input
 
-    def write_output(self, modules: List[mod.Module], personal: PersonalData) -> None:
+    def write_output(self, modules: List["ModuleDescriptor"], personal: PersonalData) -> None:
         """Writes the output of this context into a single file.
 
         Arguments:
@@ -170,12 +170,15 @@ class Context(ABC):
         with self.output_path.open(mode="w", encoding="UTF8") as file:
             file.write(self._build_output(modules, personal))
 
-    def _run_modules(self, modules: List[mod.Module]) -> str:
+    def _run_modules(self, modules: List["ModuleDescriptor"], category: str = "default") -> str:
         output = ""
         for module in modules:
+            if module.category != category:
+                continue
+
             method = None
             try:
-                method = getattr(module, f"to_{self.name}")
+                method = getattr(module.module, f"to_{self.name}")
             except AttributeError as exc:
                 raise NotImplementedError(
                     f"Each used module must implement the function to_{self.name}"

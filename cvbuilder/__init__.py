@@ -68,6 +68,5 @@ class Builder:
             if module.in_json is not None:
                 module.module.load(content[module.in_json])
 
-        all_modules = [module.module for module in self.modules]
         for context in self.contexts:
-            context.write_output(all_modules, personal)
+            context.write_output(self.modules, personal)
