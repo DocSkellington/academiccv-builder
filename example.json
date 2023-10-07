@@ -1,4 +1,5 @@
 {
+  "$schema": "schema.json",
   "personal": {
     "name": "John Who",
     "position": "Doctor",
@@ -27,6 +28,14 @@
     {
       "name": "French",
       "level": "Native speaker"
+    },
+    {
+      "Computer": [
+        {
+          "name": "C++",
+          "level": "Beginner"
+        }
+      ]
     }
   ],
   "logos": [
@@ -43,7 +52,7 @@
     ],
     "Do you want a jelly baby?"
   ],
-  "work": [
+  "jobs": [
     {
       "Current positions": [
         {
