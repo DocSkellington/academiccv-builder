@@ -4,7 +4,7 @@ Defines default contexts that can be used in the builder.
 
 from abc import ABC
 from typing import List, Union, Dict, Any
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 import dateutil.parser
 import datetime
@@ -44,7 +44,7 @@ class PersonalData:
     linkedin: str = None
     pdf: str = None
     address: Address = None
-    languages: List[Language] = None
+    languages: List[Language] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         # Conversion of dictionary to Address
