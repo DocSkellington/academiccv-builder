@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "academiccv-builder"
-version = "0.2.0"
+version = "1.0.0"
 authors = [
   { name="Gaëtan 'DocSkellington' Staquet", email="gaetan.staquet@gmail.com" },
 ]
-description = "A tool for researchers to build CV from a JSON file"
+description = "A tool for researchers to build CV from a JSON file, as LaTeX, HTML, or Markdown files."
 readme = "README.md"
 license = {file = "LICENSE"}
-requires-python = ">=3.7"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -21,7 +21,13 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Text Processing :: Markup :: LaTeX",
 ]
+dependencies = [
+  "python-dateutil"
+]
 
 [project.urls]
 "Homepage" = "https://github.com/DocSkellington/academiccv-builder"
 "Bug Tracker" = "https://github.com/DocSkellington/academiccv-builder/issues"
+
+[tool.hatch.build]
+exclude = ["main.py", "/tests"]
