@@ -1,4 +1,4 @@
-main .sidebar {
+.sidebar {
     background: #1f5a8e;
     color: whitesmoke;
     box-sizing: border-box;
@@ -8,63 +8,67 @@ main .sidebar {
     width: 300px;
     height: 100%;
     min-height: 850px;
-    text-align: center;
 }
 
-main .sidebar~div,
-main .sidebar~article,
-main .sidebar~section {
+.sidebar~div,
+.sidebar~article,
+.sidebar~section {
     margin-left: 300px;
 }
 
-main .sidebar h2 {
+.sidebar h2 {
     color: beige;
 }
 
-main .sidebar .profile-container {
+.sidebar .profile-container {
     background: #003b6f;
     padding-top: 30px;
     padding-bottom: 30px;
+    text-align: center;
 }
 
-main .sidebar .name {
+.sidebar .name {
     font-size: xx-large;
     margin-bottom: 10px;
 }
 
-main .sidebar .position {
+.sidebar .position {
     font-size: larger;
     margin-bottom: 10px;
 }
 
-main .sidebar .organization {
+.sidebar .organization {
     font-size: large;
 }
 
-main .sidebar section {
+.sidebar section {
     font-size: 15px;
 }
 
-main .sidebar section ul {
+.sidebar section h2 {
+    text-align: center;
+}
+
+.sidebar section ul {
     text-align: left;
 }
 
-main .sidebar section li {
+.sidebar section li {
     list-style-type: none;
     margin-bottom: 8px;
     font-size: 14px;
 }
 
-main .sidebar a {
+.sidebar a {
     color: antiquewhite;
 }
 
-main .sidebar a:hover {
+.sidebar a:hover {
     color: #003b6f;
 }
 
-i.contact-icon,
-img.contact-icon {
+.sidebar i.contact-icon,
+.sidebar img.contact-icon {
     text-align: center;
     vertical-align: top;
     padding-top: 4px;
@@ -72,7 +76,16 @@ img.contact-icon {
     margin-right: 10px;
 }
 
-i.contact-icon::before {
+.sidebar .contact-icon::before {
     font-size: 15px;
     color: antiquewhite;
+}
+
+.sidebar i.section-icon::before {
+    color: white;
+}
+
+.sidebar section ul,
+.sidebar section div {
+    padding-left: 15px;
 }
