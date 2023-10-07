@@ -1,0 +1,95 @@
+:root {
+    --background-body: #F5F4FE;
+    --background-main: white;
+    --color-main: #003b6f;
+    --color-secondary: #79889B;
+}
+
+body {
+    background: var(--background-body);
+}
+
+main {
+    background: var(--background-main);
+    box-sizing: border-box;
+    position: relative;
+    max-width: 1300px;
+    margin: 0 auto;
+    height: 100%;
+    min-height: 850px;
+    padding-top: 10px;
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-bottom: 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-main);
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 35px;
+}
+
+h3 {
+    font-size: 25px;
+}
+
+i.section-icon {
+    text-align: center;
+    vertical-align: top;
+    padding-top: 7px;
+    margin: auto;
+    margin-right: 20px;
+}
+
+i.section-icon::before {
+    font-size: 35px;
+    color: var(--color-main);
+}
+
+div.item {
+    margin-bottom: 20px;
+}
+
+div.item .align {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+div.item .align:first-child div:first-child {
+    font-weight: bold;
+    color: black;
+    font-size: 16pt;
+}
+
+div.item .align div {
+    margin: 0px;
+}
+
+div.item .align div:first-child {
+    margin: 0px;
+    max-width: 60%;
+    color: var(--color-main);
+    font-weight: normal;
+    font-size: 14px;
+}
+
+div.item .align div:last-child {
+    color: var(--color-secondary);
+    font-size: 15px;
+    max-width: 30%;
+    position: absolute;
+    box-sizing: border-box;
+    right: 0;
+    /* The following puts the text at the top of the box. Replace top by bottom to align at the bottom */
+    top: 0;
+    margin: auto;
+}
