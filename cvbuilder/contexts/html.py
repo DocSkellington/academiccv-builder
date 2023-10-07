@@ -45,10 +45,13 @@ class HTMLStack:
         if level <= 0 or level > 6:
             return ""
 
-        if icon is None:
+        if icon is None or icon == "":
             icon = ""
         else:
             icon = self.idiomatic_block("section-icon " + icon, "")
+
+        if name == "" and icon == "":
+            return ""
 
         return (
             "\t" * self._get_indent()

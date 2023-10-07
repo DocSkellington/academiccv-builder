@@ -115,7 +115,7 @@ class LaTeXContext(Context):
         self.other_preamble.append(other)
 
     def open_section(self, level: int, name: str) -> str:
-        if level == 0:
+        if level == 0 or name == "":
             return ""
         if level == 1:
             return f"\\section{{{name}}}\n\n"
