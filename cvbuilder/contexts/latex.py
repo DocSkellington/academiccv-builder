@@ -136,21 +136,8 @@ class LaTeXContext(Context):
         title += self.format_variable("position", personal.position)
         title += self.format_variable("organization", personal.organization)
         title += self.format_variable("photo", personal.photo)
-        if isinstance(personal.email, str):
-            title += self.format_variable("email", personal.email)
-        elif isinstance(personal.email, list):
-            for mail in personal.email:
-                title += self.format_variable("email", mail)
-        elif personal.email is not None:
-            print("Personal data: email must be a string or a list", file=sys.stderr)
-        title += self.format_variable("website", personal.website)
-        title += self.format_variable("github", personal.github)
-        title += self.format_variable("orcid", personal.orcid)
-        title += self.format_variable("linkedIn", personal.linkedin)
-        if personal.address is not None:
-            title += self.format_variable("street", personal.address.street)
-            title += self.format_variable("zipcode", personal.address.zipcode)
-            title += self.format_variable("city", personal.address.city)
-            title += self.format_variable("country", personal.address.country)
+
+        title += self._run_modules(modules, "title")
+
         title += "}\n\n"
         return title

@@ -13,23 +13,6 @@ from .. import modules as mod
 
 
 @dataclass
-class Language:
-    name: str
-    level: str
-
-
-@dataclass
-class Address:
-    """The address"""
-
-    street: str
-    zipcode: Union[str, int]
-    city: str
-    country: str
-    link: str
-
-
-@dataclass
 class PersonalData:
     """Dataclass for data identifying the CV author"""
 
@@ -37,25 +20,6 @@ class PersonalData:
     position: str
     organization: str
     photo: str = None
-    email: Union[str, List[str]] = None
-    website: str = None
-    github: str = None
-    orcid: str = None
-    linkedin: str = None
-    pdf: str = None
-    address: Address = None
-    languages: List[Language] = field(default_factory=list)
-
-    def __post_init__(self) -> None:
-        # Conversion of dictionary to Address
-        if isinstance(self.address, dict):
-            self.address = Address(**self.address)
-        if isinstance(self.languages, list) and len(self.languages) > 0:
-            languages = []
-            for language in self.languages:
-                if isinstance(language, dict):
-                    languages.append(Language(**language))
-            self.languages = languages
 
 
 class Style:
