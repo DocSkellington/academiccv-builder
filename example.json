@@ -163,5 +163,11 @@
         "And a simple line again."
       ]
     }
+  ],
+  "awards": [
+    {
+      "year": "2023",
+      "description": "Best paper award for some reason."
+    }
   ]
 }
