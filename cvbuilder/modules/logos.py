@@ -50,4 +50,4 @@ class LogosModule(mod.Module):
         return Logos(json_object)
 
     def _get_class_name(self) -> str:
-        return "summary"
+        return "logos"

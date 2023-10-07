@@ -76,4 +76,4 @@ class EventModule(mod.Module):
         return Event(**json_object)
 
     def _get_class_name(self) -> str:
-        return "summary"
+        return "event"
