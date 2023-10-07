@@ -21,6 +21,7 @@ class Publication(mod.Data):
     shortWhere: str = None
     doi: str = None
     arxiv: str = None
+    note: str = None
     style: contexts.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
@@ -33,6 +34,7 @@ class Publication(mod.Data):
         latex += context.format_variable("shortWhere", self.shortWhere)
         latex += context.format_variable("doi", self.doi)
         latex += context.format_variable("arxiv", self.arxiv)
+        latex += context.format_variable("note", self.note)
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
         )
@@ -78,6 +80,8 @@ class Publication(mod.Data):
                 "arXiv: " + self.arxiv,
                 ". ",
             )
+        if self.note is not None:
+            details += context.span_block("note", self.note + ". ")
 
         html += context.paragraph_block("details", details)
 
