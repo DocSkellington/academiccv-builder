@@ -16,8 +16,14 @@
     margin-left: 300px;
 }
 
-.sidebar h2 {
+.sidebar h1,
+.sidebar h2,
+.sidebar h3,
+.sidebar h4,
+.sidebar h5,
+.sidebar h6 {
     color: beige;
+    text-align: center;
 }
 
 .sidebar .profile-container {
@@ -43,10 +49,6 @@
 
 .sidebar section {
     font-size: 15px;
-}
-
-.sidebar section h2 {
-    text-align: center;
 }
 
 .sidebar section ul {
