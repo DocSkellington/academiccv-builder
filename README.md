@@ -54,6 +54,7 @@ The implementation provides three different contexts:
     Otherwise, the output will not be correct.
   - `HTMLContext` which produces an HTML file.
     Paths to CSS files can be added via the `add_css_file(css_path)` function.
+    While a default style is provided in the [`resources`](resources/) folder, we highly recommend you design your own.
     The generated webpage has a sidebar and a main content.
     The sidebar always contains the identification information.
     Any module with the category `sidebar` will be added to the sidebar.
