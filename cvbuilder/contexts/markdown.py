@@ -1,12 +1,11 @@
-from typing import List, Union
 from pathlib import Path
 
 from . import Context, PersonalData, html
-from .. import modules as mod
+from .. import modules
 
 
 class MarkdownContext(Context, html.HTMLStack):
-    def __init__(self, output_path: Union[Path, str], title: str) -> None:
+    def __init__(self, output_path: Path | str, title: str) -> None:
         Context.__init__(self, "markdown", output_path)
         html.HTMLStack.__init__(self)
         self.title = title
@@ -25,17 +24,17 @@ class MarkdownContext(Context, html.HTMLStack):
             return "\n" + "#" * level + " " + name + "\n\n"
         return ""
 
-    def paragraph(self, contents: str | mod.Description) -> str:
+    def paragraph(self, contents: str | modules.Description) -> str:
         if contents is None:
             return ""
 
-        if isinstance(contents, mod.Description):
+        if isinstance(contents, modules.Description):
             return contents.to_markdown(self)
         return contents
 
     def link(self, url: str, text: str) -> str:
         return f"[{text}]({url})"
 
-    def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
-        markdown = f"title: {self.title}\n\n{self._run_modules(modules)}"
+    def _build_output(self, personal: PersonalData) -> str:
+        markdown = f"title: {self.title}\n\n{self._run_modules()}"
         return markdown

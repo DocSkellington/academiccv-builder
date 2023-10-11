@@ -1,5 +1,4 @@
-from pathlib import Path
-from shutil import copytree
+import shutil
 
 from cvbuilder import Builder
 from cvbuilder.contexts.latex import LaTeXContext, Style
@@ -20,25 +19,24 @@ from cvbuilder.modules.language import LanguageModule
 from cvbuilder.modules.contact import ContactModule
 
 # Copy resources folder
-copytree("resources/", "output/html/resources/", dirs_exist_ok=True)
+shutil.copytree("resources/", "output/html/resources/", dirs_exist_ok=True)
 
-# HTML (producing two different files)
 builder = Builder()
 
-html = HTMLContext("output/html/index.html")
-html.add_css_file("resources/css/style.css")
-html.add_css_file("resources/css/sidebar.css")
-html.add_css_file("resources/css/summary.css")
+# Main page of HTML
+main_html = HTMLContext("output/html/index.html")
+builder.add_context(main_html)
 
-builder.add_context(html)
+main_html.add_css_file("resources/css/style.css")
+main_html.add_css_file("resources/css/sidebar.css")
+main_html.add_css_file("resources/css/summary.css")
 
-builder.add_module("contact", ContactModule(), "sidebar")
-builder.add_module("languages", LanguageModule(), "sidebar")
-
-builder.add_module("logos", LogosModule())
-builder.add_module("summary", SummaryModule())
-builder.add_module("jobs", JobModule())
-builder.add_module(
+main_html.add_module("contact", ContactModule(), "sidebar")
+main_html.add_module("languages", LanguageModule(), "sidebar")
+main_html.add_module("logos", LogosModule())
+main_html.add_module("summary", SummaryModule())
+main_html.add_module("jobs", JobModule())
+main_html.add_module(
     None,
     LinkModule(
         section="Publications",
@@ -49,13 +47,13 @@ builder.add_module(
         icon="iconoir-journal"
     ),
 )
-builder.add_module("talks", TalkModule())
-builder.add_module("teaching", TeachModule())
-builder.add_module("supervision", SupervisionModule())
-builder.add_module("projects", ProjectModule())
-builder.add_module("events", EventModule())
-builder.add_module("awards", AwardModule())
-builder.add_module(
+main_html.add_module("talks", TalkModule())
+main_html.add_module("teaching", TeachModule())
+main_html.add_module("supervision", SupervisionModule())
+main_html.add_module("projects", ProjectModule())
+main_html.add_module("events", EventModule())
+main_html.add_module("awards", AwardModule())
+main_html.add_module(
     None,
     TextModule(
         section="Closing Words",
@@ -63,53 +61,42 @@ builder.add_module(
     ),
 )
 
-builder.build("example.json")
+# HTML publications page
+publication_html = HTMLContext("output/html/publications.html")
+builder.add_context(publication_html)
 
-builder = Builder()
+publication_html.set_title_fct(lambda personal: f"{personal.name} - Publications")
+publication_html.add_css_file("resources/css/style.css")
+publication_html.add_css_file("resources/css/sidebar.css")
 
-html = HTMLContext("output/html/publications.html")
-html.set_title_fct(lambda personal: f"{personal.name} - Publications")
+publication_html.add_module("publications", PublicationModule())
 
-html.add_css_file("resources/css/style.css")
-html.add_css_file("resources/css/sidebar.css")
-
-builder.add_context(html)
-
-builder.add_module("publications", PublicationModule())
-
-builder.build("example.json")
-
-# Example for LaTeX
-builder = Builder()
+# LaTeX output
 latex = LaTeXContext("output/latex/example.tex")
-latex.set_style("title", Style({"author": "\\bfseries"}))
-
 builder.add_context(latex)
 
-builder.add_module("contact", ContactModule(), "title")
-builder.add_module("jobs", JobModule())
-builder.add_module("publications", PublicationModule())
-builder.add_module("talks", TalkModule())
-builder.add_module("teaching", TeachModule())
-builder.add_module("supervision", SupervisionModule())
-builder.add_module("projects", ProjectModule())
+latex.set_style("title", Style({"author": "\\bfseries"}))
 
-builder.build(Path("example.json"))
+latex.add_module("contact", ContactModule(), "title")
+latex.add_module("jobs", JobModule())
+latex.add_module("publications", PublicationModule())
+latex.add_module("talks", TalkModule())
+latex.add_module("teaching", TeachModule())
+latex.add_module("supervision", SupervisionModule())
+latex.add_module("projects", ProjectModule())
 
-# Example for Markdown
-builder = Builder()
+# Markdown
 markdown = MarkdownContext("output/markdown/index.md", "Academic CV")
-
 builder.add_context(markdown)
 
-builder.add_module("logos", LogosModule())
-builder.add_module("summary", SummaryModule())
-builder.add_module("jobs", JobModule())
-builder.add_module("projects", ProjectModule())
-builder.add_module("awards", AwardModule())
-builder.add_module("publications", PublicationModule())
-builder.add_module("talks", TalkModule())
-builder.add_module(
+markdown.add_module("logos", LogosModule())
+markdown.add_module("summary", SummaryModule())
+markdown.add_module("jobs", JobModule())
+markdown.add_module("projects", ProjectModule())
+markdown.add_module("awards", AwardModule())
+markdown.add_module("publications", PublicationModule())
+markdown.add_module("talks", TalkModule())
+markdown.add_module(
     None,
     LinkModule(
         section="Events",
@@ -119,7 +106,8 @@ builder.add_module(
         after=" page.",
     ),
 )
-builder.add_module("teaching", TeachModule())
-builder.add_module("supervision", SupervisionModule())
+markdown.add_module("teaching", TeachModule())
+markdown.add_module("supervision", SupervisionModule())
 
-builder.build(Path("example.json"))
+# Build every context from the file
+builder.build("example.json")

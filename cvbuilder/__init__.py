@@ -8,12 +8,6 @@ from pathlib import Path
 import json
 from . import modules, contexts
 
-@dataclass
-class ModuleDescriptor:
-    in_json: str
-    module: modules.Module
-    category: str
-
 # Modules are processed in the order they are added
 class Builder:
     """The builder reads a JSON file to create documents in other formats, dictated by 'contexts'.
@@ -24,7 +18,6 @@ class Builder:
     """
 
     def __init__(self) -> None:
-        self.modules: List[ModuleDescriptor] = []
         self.contexts: List[contexts.Context] = []
 
     def add_context(self, context: contexts.Context) -> None:
@@ -34,19 +27,6 @@ class Builder:
             context -- The context
         """
         self.contexts.append(context)
-
-    def add_module(self, in_json: str, module: modules.Module, category: str = "default") -> None:
-        """Adds a new module.
-
-        Each module is filled from data stored in the JSON file.
-        The 'in_json' argument defines which key contains the data to be used for this module.
-        If None, no value is read.
-
-        Arguments:
-            in_json -- The JSON key
-            module -- The module
-        """
-        self.modules.append(ModuleDescriptor(in_json, module, category))
 
     def build(self, json_file_path: Union[Path, str]) -> None:
         """Builds the documents from the JSON file at the given location.
@@ -64,9 +44,6 @@ class Builder:
 
         personal = contexts.PersonalData(**content["personal"])
 
-        for module in self.modules:
-            if module.in_json is not None:
-                module.module.load(content[module.in_json])
-
         for context in self.contexts:
-            context.write_output(self.modules, personal)
+            context.load_data_from_document(content)
+            context.write_output(personal)

@@ -5,17 +5,16 @@ The produced document relies on the academiccv package.
 """
 
 from pathlib import Path
-from typing import List, Union, Dict, Any
+from typing import Any
 
 from . import Context, PersonalData
-from .. import modules as mod
-from .. import ModuleDescriptor
+from .. import modules
 
 
 class Style:
     """Default class for style data."""
 
-    def __init__(self, key_values: Dict[str, Any]) -> None:
+    def __init__(self, key_values: dict[str, Any]) -> None:
         for key, value in key_values.items():
             setattr(self, key, value)
 
@@ -34,14 +33,14 @@ class LaTeXContext(Context):
     For styles, the name is used to add \\{name}Setup before the key-value pairs in the preamble.
     """
 
-    def __init__(self, output_path: Union[Path, str]) -> None:
+    def __init__(self, output_path: Path | str) -> None:
         super().__init__("latex", output_path)
-        self.packages: List[str] = []
-        self.other_preamble: List[str] = []
-        self.styles: Dict[str, Style] = {}
+        self.packages: list[str] = []
+        self.other_preamble: list[str] = []
+        self.styles: dict[str, Style] = {}
 
     def format_variable(
-        self, name: str, value: Union[bool, str, mod.Description]
+        self, name: str, value: bool | str | modules.Description
     ) -> str:
         if value is not None:
             string = f"\t{name} = "
@@ -49,7 +48,7 @@ class LaTeXContext(Context):
                 string += "true"
             elif value is False:
                 string += "false"
-            elif isinstance(value, mod.Description):
+            elif isinstance(value, modules.Description):
                 string += value.to_latex(self)
             else:
                 string += f"{{{value}}}"
@@ -129,9 +128,7 @@ class LaTeXContext(Context):
             return f"\\subparagraph{{{name}}}\n\n"
         raise ValueError(f"LaTeX context: heading of level {level} is invalid.")
 
-    def _build_output(
-        self, modules: List[ModuleDescriptor], personal: PersonalData
-    ) -> str:
+    def _build_output(self, personal: PersonalData) -> str:
         latex = "\\documentclass{academiccv}\n\n"
 
         for package in self.packages:
@@ -145,20 +142,20 @@ class LaTeXContext(Context):
 
         latex += "\\begin{document}\n"
         if personal is not None:
-            latex += self._cv_title(modules, personal)
-        latex += self._run_modules(modules)
+            latex += self._cv_title(personal)
+        latex += self._run_modules()
         latex += "\\end{document}"
 
         return latex
 
-    def _cv_title(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
+    def _cv_title(self, personal: PersonalData) -> str:
         title = "\\makecvtitle{\n"
         title += self.format_variable("author", personal.name)
         title += self.format_variable("position", personal.position)
         title += self.format_variable("organization", personal.organization)
         title += self.format_variable("photo", personal.photo)
 
-        title += self._run_modules(modules, "title")
+        title += self._run_modules("title")
 
         title += "}\n\n"
         return title
