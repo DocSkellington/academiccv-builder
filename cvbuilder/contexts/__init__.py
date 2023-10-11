@@ -115,7 +115,7 @@ class Context(ABC):
 
     def load_data_from_document(self, json_document: dict[str, Any]) -> None:
         for module in self.modules:
-            if module.in_json is not None:
+            if module.in_json is not None and module.in_json in json_document:
                 module.module.load(json_document[module.in_json])
 
     def write_output(self, personal: PersonalData) -> None:

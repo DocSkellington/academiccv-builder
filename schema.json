@@ -1,13 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/DocSkellington/academiccv-builder/schema.json",
+  "$id": "https://github.com/DocSkellington/academiccv-builder/blob/main/schema.json",
   "title": "academiccv-builder",
   "description": "Schema for a JSON file containing the academic CV of a researcher",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "personal"
-  ],
   "definitions": {
     "description": {
       "description": "A string or a list of strings or lists. Nested lists are converted into lists in the output (ul for HTML, itemize for LaTeX, and so on)",
@@ -186,6 +183,9 @@
         },
         "style": {
           "$ref": "#/definitions/style"
+        },
+        "description": {
+          "$ref": "#/definitions/description"
         }
       }
     },
@@ -321,6 +321,10 @@
         },
         "pdf": {
           "description": "Path to the PDF version of the CV",
+          "type": "string"
+        },
+        "website": {
+          "description": "Website URL",
           "type": "string"
         }
       }

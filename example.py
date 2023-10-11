@@ -44,7 +44,7 @@ main_html.add_module(
         link="publications.html",
         text="Publications",
         after=" page.",
-        icon="iconoir-journal"
+        icon="iconoir-journal",
     ),
 )
 main_html.add_module("talks", TalkModule())
@@ -110,4 +110,10 @@ markdown.add_module("teaching", TeachModule())
 markdown.add_module("supervision", SupervisionModule())
 
 # Build every context from the file
-builder.build("example.json")
+builder.build(
+    [
+        "json_example/example.json",
+        "json_example/summary.json",
+        "json_example/publications.json",
+    ]
+)
