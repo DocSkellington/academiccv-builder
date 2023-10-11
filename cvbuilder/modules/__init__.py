@@ -3,7 +3,7 @@ Defines default modules that can be used in the builder.
 """
 
 from abc import ABC
-from typing import Dict, Any, Tuple, Union, List
+from typing import Any
 
 
 class Data(ABC):
@@ -28,7 +28,7 @@ class Description(Data):
     However, if the list contains a list, then that inner list is transformed into an unnumbered list.
     """
 
-    def __init__(self, description: Union[str, List[Any]]) -> None:
+    def __init__(self, description: str | list[Any]) -> None:
         self.description = description
 
     def to_latex(self, context: "contexts.latex.LaTeXContext") -> str:
@@ -83,7 +83,7 @@ class Module(ABC):
     def __init__(self, level: int, section: str, section_icon: str = "") -> None:
         self.level = level
         self.section = section
-        self.data: List[Tuple[Union[None, str], List[Data]]] = []
+        self.data: list[tuple[None | str, list[Data]]] = []
         self.section_icon = section_icon
 
     def load(self, json_value) -> None:

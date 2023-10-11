@@ -3,7 +3,6 @@ Languages module.
 """
 
 from dataclasses import dataclass
-from typing import Union, List
 
 from .. import modules as mod
 from .. import contexts
@@ -14,7 +13,7 @@ class Address:
     """The address"""
 
     street: str
-    zipcode: Union[str, int]
+    zipcode: str | int
     city: str
     country: str
     link: str = None
@@ -22,7 +21,7 @@ class Address:
 
 @dataclass
 class Contact(mod.Data):
-    email: Union[str, List[str]] = None
+    email: str | list[str] = None
     website: str = None
     github: str = None
     orcid: str = None

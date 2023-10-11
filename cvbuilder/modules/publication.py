@@ -3,7 +3,6 @@ Module for publications.
 """
 
 from dataclasses import dataclass
-from typing import Union
 
 from .. import contexts
 from .. import modules as mod
@@ -15,7 +14,7 @@ class Publication(mod.Data):
 
     title: str
     authors: str
-    year: Union[str, int]
+    year: str | int
     reference: str = None
     where: str = None
     shortWhere: str = None

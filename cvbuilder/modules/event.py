@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Dict, Any, Union
+from typing import Any
 
 from .. import modules as mod
 from .. import contexts
@@ -7,7 +7,7 @@ from .. import contexts
 
 @dataclass
 class Event(mod.Data):
-    year: Union[str, int] = None
+    year: str | int = None
     name: str = None
     where: str = None
 
@@ -46,7 +46,7 @@ class EventModule(mod.Module):
     ):
         super().__init__(level, section, icon)
 
-    def load(self, json_value: List[Dict[str, Any]]) -> None:
+    def load(self, json_value: list[dict[str, Any]]) -> None:
         events = list(map(self._load, json_value))
 
         # If you wish to disable the subsections, replace the rest of this function by

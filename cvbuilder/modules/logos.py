@@ -1,5 +1,3 @@
-from typing import List
-
 from .. import modules as mod
 from .. import contexts
 
@@ -7,7 +5,7 @@ from .. import contexts
 class Logos(mod.Data):
     def __init__(
         self,
-        logos: List[str],
+        logos: list[str],
     ):
         self.logos = logos
 

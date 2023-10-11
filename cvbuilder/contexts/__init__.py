@@ -3,7 +3,7 @@ Defines default contexts that can be used in the builder.
 """
 
 from abc import ABC
-from typing import List, Union, Dict, Any
+from typing import Any
 from dataclasses import dataclass, field
 from pathlib import Path
 import dateutil.parser
@@ -40,7 +40,7 @@ class Context(ABC):
     def __init__(
         self,
         name: str,
-        output_path: Union[Path, str],
+        output_path: Path | str,
         date_output_format: str = "%d %b %Y",
     ) -> None:
         if isinstance(output_path, str):
@@ -49,7 +49,7 @@ class Context(ABC):
             self.output_path = output_path
         self.name = name
         self.date_output_format = date_output_format
-        self.modules: List[ModuleDescriptor] = []
+        self.modules: list[ModuleDescriptor] = []
 
     def add_module(
         self, in_json: str, module: modules.Module, category: str = "default"
@@ -81,7 +81,7 @@ class Context(ABC):
         )
 
     def format_date(
-        self, date_input: Union[datetime.datetime, str], date_output_format: str = None
+        self, date_input: datetime.datetime | str, date_output_format: str = None
     ) -> str:
         """Format a date to the requested format.
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Any
+from typing import Any
 import datetime
 import dateutil.parser
 
@@ -61,7 +61,7 @@ class TalkModule(mod.Module):
     ) -> None:
         super().__init__(level, section, icon)
 
-    def load(self, json_value: List[Dict[str, Any]]) -> None:
+    def load(self, json_value: list[dict[str, Any]]) -> None:
         talks = list(map(self._load, json_value))
 
         # If you wish to disable the subsections, replace the rest of this function by
