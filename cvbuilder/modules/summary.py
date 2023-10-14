@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .. import modules as mod
 from .. import contexts
 

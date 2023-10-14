@@ -2,6 +2,7 @@
 Module for publications.
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 
 from .. import contexts

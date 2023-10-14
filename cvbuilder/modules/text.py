@@ -2,6 +2,8 @@
 Text and Link modules to produce text that does not depend on the JSON document.
 """
 
+from __future__ import annotations
+
 from . import Module
 from .. import contexts
 
