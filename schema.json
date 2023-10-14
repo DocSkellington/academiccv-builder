@@ -43,6 +43,71 @@
         }
       }
     },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "description": "The postal address",
+          "type": "object",
+          "required": [
+            "street",
+            "zipcode",
+            "city",
+            "country"
+          ],
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "zipcode": {
+              "type": [
+                "string",
+                "integer"
+              ]
+            },
+            "city": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "link": {
+              "description": "A link to a map",
+              "type": "string"
+            }
+          }
+        },
+        "email": {
+          "type": [
+            "string",
+            "array"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "github": {
+          "description": "Your GitHub username",
+          "type": "string"
+        },
+        "orcid": {
+          "description": "Your ORCID number",
+          "type": "string"
+        },
+        "linkedin": {
+          "description": "Your LinkedIn username, as displayed in the URL",
+          "type": "string"
+        },
+        "pdf": {
+          "description": "Path to the PDF version of the CV",
+          "type": "string"
+        },
+        "website": {
+          "description": "Website URL",
+          "type": "string"
+        }
+      }
+    },
     "event": {
       "description": "An event",
       "type": "object",
@@ -245,149 +310,136 @@
     },
     "awards": {
       "description": "Your awards",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/award"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/award"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/award"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/award"
+          }
+        }
+      ]
     },
     "contact": {
       "description": "Contact information",
-      "type": "object",
-      "properties": {
-        "address": {
-          "description": "The postal address",
+      "oneOf": [
+        {
+          "description": "When using subsections",
           "type": "object",
           "required": [
-            "street",
-            "zipcode",
-            "city",
-            "country"
+            "order"
           ],
           "properties": {
-            "street": {
-              "type": "string"
-            },
-            "zipcode": {
-              "type": [
-                "string",
-                "integer"
-              ]
-            },
-            "city": {
-              "type": "string"
-            },
-            "country": {
-              "type": "string"
-            },
-            "link": {
-              "description": "A link to a map",
-              "type": "string"
+            "order": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/contact"
           }
         },
-        "email": {
-          "type": [
-            "string",
-            "array"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "github": {
-          "description": "Your GitHub username",
-          "type": "string"
-        },
-        "orcid": {
-          "description": "Your ORCID number",
-          "type": "string"
-        },
-        "linkedin": {
-          "description": "Your LinkedIn username, as displayed in the URL",
-          "type": "string"
-        },
-        "pdf": {
-          "description": "Path to the PDF version of the CV",
-          "type": "string"
-        },
-        "website": {
-          "description": "Website URL",
-          "type": "string"
+        {
+          "description": "When not using subsections",
+          "$ref": "#/definitions/contact"
         }
-      }
+      ]
     },
     "events": {
       "description": "List of attended events",
       "type": "array",
       "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/event"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/event"
-              }
-            }
-          }
-        ]
+        "$ref": "#/definitions/event"
       }
     },
     "jobs": {
       "description": "The list of past and current positions",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/job"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/job"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/job"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/job"
+          }
+        }
+      ]
     },
     "languages": {
       "description": "List of known languages",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/language"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/language"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/language"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/language"
+          }
+        }
+      ]
     },
     "logos": {
       "description": "The logos to display",
@@ -425,63 +477,102 @@
     },
     "projects": {
       "description": "Your projects",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/project"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/project"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/project"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/project"
+          }
+        }
+      ]
     },
     "publications": {
       "description": "Your publications",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/publication"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/publication"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/publication"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/publication"
+          }
+        }
+      ]
     },
     "supervision": {
       "description": "The students/projects you supervised",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/supervision"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/supervision"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/supervision"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/supervision"
+          }
+        }
+      ]
     },
     "summary": {
       "description": "A short biography, for instance",
@@ -490,41 +581,42 @@
     "teaching": {
       "description": "Your teaching duties",
       "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/teaching"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/teaching"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/teaching"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/teaching"
+          }
+        }
+      ]
     },
     "talks": {
       "description": "Your talks",
       "type": "array",
       "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/talk"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/talk"
-              }
-            }
-          }
-        ]
+        "$ref": "#/definitions/talk"
       }
     }
   }

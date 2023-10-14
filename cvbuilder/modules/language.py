@@ -29,8 +29,9 @@ class LanguageModule(mod.Module):
         level: int = 1,
         section: str = "Languages",
         icon: str = "iconoir-chat-bubble-translate",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def _load(self, json_object) -> Language:
         return Language(**json_object)

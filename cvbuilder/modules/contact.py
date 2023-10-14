@@ -138,8 +138,9 @@ class ContactModule(mod.Module):
         level: int = 1,
         section: str = "Contact",
         icon: str = "iconoir-hand-card",
+        use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def to_latex(self, context: "contexts.latex.LaTeXContext") -> str:
         latex = ""

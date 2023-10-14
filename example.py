@@ -49,7 +49,7 @@ main_html.add_module(
 )
 main_html.add_module("talks", TalkModule())
 main_html.add_module("teaching", TeachModule())
-main_html.add_module("supervision", SupervisionModule())
+main_html.add_module("supervision", SupervisionModule(use_subsections=False))
 main_html.add_module("projects", ProjectModule())
 main_html.add_module("events", EventModule())
 main_html.add_module("awards", AwardModule())
@@ -69,6 +69,8 @@ publication_html.set_title_fct(lambda personal: f"{personal.name} - Publications
 publication_html.add_css_file("resources/css/style.css")
 publication_html.add_css_file("resources/css/sidebar.css")
 
+publication_html.add_module("contact", ContactModule(), "sidebar")
+publication_html.add_module("languages", LanguageModule(), "sidebar")
 publication_html.add_module("publications", PublicationModule())
 
 # LaTeX output
@@ -82,7 +84,7 @@ latex.add_module("jobs", JobModule())
 latex.add_module("publications", PublicationModule())
 latex.add_module("talks", TalkModule())
 latex.add_module("teaching", TeachModule())
-latex.add_module("supervision", SupervisionModule())
+latex.add_module("supervision", SupervisionModule(use_subsections=False))
 latex.add_module("projects", ProjectModule())
 
 # Markdown
@@ -107,7 +109,7 @@ markdown.add_module(
     ),
 )
 markdown.add_module("teaching", TeachModule())
-markdown.add_module("supervision", SupervisionModule())
+markdown.add_module("supervision", SupervisionModule(use_subsections=False))
 
 # Build every context from the file
 builder.build(

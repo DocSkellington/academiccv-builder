@@ -67,8 +67,9 @@ class TeachModule(mod.Module):
         level: int = 1,
         section: str = "Teaching",
         icon: str = "iconoir-graduation-cap",
+        use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def _load(self, json_object) -> Teach:
         return Teach(**json_object)

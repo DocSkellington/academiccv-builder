@@ -1,27 +1,27 @@
 {
   "$schema": "../schema.json",
-  "jobs": [
-    {
-      "Current positions": [
-        {
-          "start": "2016-01-01",
-          "end": "Present",
-          "title": "Job position 2"
-        }
-      ]
-    },
-    {
-      "Past positions": [
-        {
-          "start": "2010-05-10",
-          "end": "2015-12-30",
-          "title": "Job position 1",
-          "organization": "Somewhere",
-          "description": "Something"
-        }
-      ]
-    }
-  ],
+  "jobs": {
+    "order": [
+      "Current positions",
+      "Past positions"
+    ],
+    "Current positions": [
+      {
+        "start": "2016-01-01",
+        "end": "Present",
+        "title": "Job position 2"
+      }
+    ],
+    "Past positions": [
+      {
+        "start": "2010-05-10",
+        "end": "2015-12-30",
+        "title": "Job position 1",
+        "organization": "Somewhere",
+        "description": "Something"
+      }
+    ]
+  },
   "talks": [
     {
       "date": "2005/04/30",

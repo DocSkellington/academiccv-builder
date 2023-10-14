@@ -80,34 +80,58 @@ class Description(Data):
 class Module(ABC):
     """Base class for modules."""
 
-    def __init__(self, level: int, section: str, section_icon: str = "") -> None:
+    def __init__(
+        self,
+        level: int,
+        section: str,
+        section_icon: str = "",
+        use_subsections: bool = True,
+    ) -> None:
         self.level = level
         self.section = section
         self.data: list[tuple[None | str, list[Data]]] = []
         self.section_icon = section_icon
+        self.use_subsections = use_subsections
 
     def load(self, json_value) -> None:
         """Loads the module's data from the given JSON value.
 
-        The value can define subsections.
+        If the module is set to use subsections, the loading function assumes that the value looks like
+        ```
+        {
+            "order": ["sub1", "sub2", ..., "subn"],
+            "sub1": [ ... ],
+            "sub2": [ ... ],
+            ...,
+            "subn": [ ... ],
+        }
+        ```
+        (the order of the "subi" keys do not matter).
+        The value of each "subi" must be an array containing objects, which follow the module-specific data format.
+
+        If the module is set to not use subsections, the loading function assumes that the value is simply a list of objects, following the module-specific data format.
 
         Arguments:
             json_value -- The JSON value to load the data from.
         """
-        for value in json_value:
-            if len(value) == 1:
-                key = list(value)[0]
+        if self.use_subsections:
+            if "order" not in json_value:
+                raise ValueError(
+                    f"A module ({self.__class__}) is configured to use subsections but the 'order' field is missing"
+                )
+            order = json_value["order"]
+            for subsection in order:
                 data_list = []
-                for values in value.values():
-                    for job_object in values:
-                        data_list.append(self._load(job_object))
-                self.data.append((key, data_list))
-            else:
-                data = self._load(value)
-                if len(self.data) > 0 and self.data[-1][0] is None:
-                    self.data[-1][1].append(data)
-                else:
-                    self.data.append([None, [data]])
+                for data_object in json_value[subsection]:
+                    data_list.append(self._load(data_object))
+                if subsection == "None":
+                    subsection = None
+                self.data.append((subsection, data_list))
+        else:
+            data_list = []
+            for data_object in json_value:
+                data_list.append(self._load(data_object))
+            self.data.append((None, data_list))
 
     def _load(self, json_object) -> Data:
         """Creates a single data instance from the json_value.
@@ -155,7 +179,7 @@ class Module(ABC):
         for section, data_list in self.data:
             if section is not None:
                 markdown += context.open_section(2, section)
-            
+
             for data in data_list:
                 markdown += data.to_markdown(context)
 

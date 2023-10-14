@@ -43,26 +43,27 @@ class EventModule(mod.Module):
         level: int = 0,
         section: str = "Attended events",
         icon: str = "iconoir-calendar",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def load(self, json_value: list[dict[str, Any]]) -> None:
         events = list(map(self._load, json_value))
 
-        # If you wish to disable the subsections, replace the rest of this function by
-        # talks.sort(lambda talk: talk.date.year)
-        # self.data.append((None, talks))
+        if self.use_subsections:
+            years = sorted(
+                list(set(map(lambda event: str(event.year), events))), reverse=True
+            )
 
-        years = sorted(
-            list(set(map(lambda event: str(event.year), events))), reverse=True
-        )
-
-        for year in years:
-            data = []
-            for event in events:
-                if str(event.year) == str(year):
-                    data.append(event)
-            self.data.append((str(year), data))
+            for year in years:
+                data = []
+                for event in events:
+                    if str(event.year) == str(year):
+                        data.append(event)
+                self.data.append((str(year), data))
+        else:
+            events.sort(lambda event: event.date.year)
+            self.data.append((None, events))
 
     def _load(self, json_object) -> Event:
         # year = (

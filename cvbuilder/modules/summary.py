@@ -30,8 +30,9 @@ class SummaryModule(mod.Module):
         level: int = 0,
         section: str = "Summary",
         icon: str = "iconoir-chat-bubble",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def load(self, json_value) -> None:
         self.data.append((None, [self._load(json_value)]))

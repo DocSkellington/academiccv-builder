@@ -57,25 +57,31 @@ class TalkModule(mod.Module):
     """
 
     def __init__(
-        self, level: int = 1, section: str = "Talks", icon: str = "iconoir-sound-high"
+        self,
+        level: int = 1,
+        section: str = "Talks",
+        icon: str = "iconoir-sound-high",
+        use_subsections: bool = True,
     ) -> None:
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def load(self, json_value: list[dict[str, Any]]) -> None:
         talks = list(map(self._load, json_value))
 
-        # If you wish to disable the subsections, replace the rest of this function by
-        # talks.sort(lambda talk: talk.date.year)
-        # self.data.append((None, talks))
+        if self.use_subsections:
+            years = sorted(
+                list(set(map(lambda talk: talk.date.year, talks))), reverse=True
+            )
 
-        years = sorted(list(set(map(lambda talk: talk.date.year, talks))), reverse=True)
-
-        for year in years:
-            data = []
-            for talk in talks:
-                if talk.date.year == year:
-                    data.append(talk)
-            self.data.append((str(year), data))
+            for year in years:
+                data = []
+                for talk in talks:
+                    if talk.date.year == year:
+                        data.append(talk)
+                self.data.append((str(year), data))
+        else:
+            talks.sort(lambda talk: talk.date.year)
+            self.data.append((None, talks))
 
     def _load(self, json_object) -> Talk:
         date = (

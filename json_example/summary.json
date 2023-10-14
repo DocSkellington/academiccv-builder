@@ -20,24 +20,28 @@
     "orcid": "0000-0000-0000-0000",
     "pdf": "resources/CV.pdf"
   },
-  "languages": [
-    {
-      "name": "English",
-      "level": "B2"
-    },
-    {
-      "name": "French",
-      "level": "Native speaker"
-    },
-    {
-      "Computer": [
-        {
-          "name": "C++",
-          "level": "Beginner"
-        }
-      ]
-    }
-  ],
+  "languages": {
+    "order": [
+      "None",
+      "Computer"
+    ],
+    "None": [
+      {
+        "name": "English",
+        "level": "B2"
+      },
+      {
+        "name": "French",
+        "level": "Native speaker"
+      }
+    ],
+    "Computer": [
+      {
+        "name": "C++",
+        "level": "Beginner"
+      }
+    ]
+  },
   "logos": [
     "resources/photo.png",
     "resources/photo.png",

@@ -13,7 +13,7 @@ class TextModule(Module):
     """
 
     def __init__(self, section: str, text: str, level: int = 2, icon: str = "") -> None:
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, False)
         self.text = text
 
     def to_latex(self, _context: contexts.latex.LaTeXContext) -> str:
@@ -31,7 +31,11 @@ class TextModule(Module):
         return html
 
     def to_markdown(self, context: contexts.markdown.MarkdownContext) -> str:
-        return context.open_section(self.level, self.section) + self.text + context.close_block()
+        return (
+            context.open_section(self.level, self.section)
+            + self.text
+            + context.close_block()
+        )
 
 
 class LinkModule(Module):
@@ -51,9 +55,9 @@ class LinkModule(Module):
         icon: str = "",
     ) -> None:
         if section == "":
-            super().__init__(0, "", icon)
+            super().__init__(0, "", icon, False)
         else:
-            super().__init__(level, section, icon)
+            super().__init__(level, section, icon, False)
 
         self.section = section
         self.before = before
@@ -88,4 +92,8 @@ class LinkModule(Module):
     def to_markdown(self, context: contexts.markdown.MarkdownContext) -> str:
         content = self.before + context.link(self.link, self.text) + self.after
 
-        return context.open_section(self.level, self.section) + content + context.close_block()
+        return (
+            context.open_section(self.level, self.section)
+            + content
+            + context.close_block()
+        )

@@ -47,8 +47,9 @@ class AwardModule(mod.Module):
         level: int = 1,
         section: str = "Awards",
         icon: str = "iconoir-trophy",
+        use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def _load(self, json_object) -> Award:
         return Award(**json_object)

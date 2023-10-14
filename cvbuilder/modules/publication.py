@@ -97,8 +97,9 @@ class PublicationModule(mod.Module):
         level: int = 1,
         section: str = "Publications",
         icon: str = "iconoir-journal",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def _load(self, json_object):
         return Publication(**json_object)

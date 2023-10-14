@@ -59,8 +59,9 @@ class ProjectModule(mod.Module):
         level: int = 1,
         section: str = "Projects",
         icon: str = "iconoir-light-bulb",
+        use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(level, section, icon, use_subsections)
 
     def _load(self, json_object) -> Project:
         return Project(**json_object)

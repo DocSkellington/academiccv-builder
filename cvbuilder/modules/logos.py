@@ -10,9 +10,7 @@ class Logos(mod.Data):
         self.logos = logos
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
-        raise NotImplementedError(
-            "Logos module does not support the LaTeX context"
-        )
+        raise NotImplementedError("Logos module does not support the LaTeX context")
 
     def to_html(self, context: contexts.html.HTMLContext) -> str:
         html = context.open_div("logos")
@@ -33,7 +31,7 @@ class LogosModule(mod.Module):
     def __init__(
         self,
     ):
-        super().__init__(0, "", "")
+        super().__init__(0, "", "", False)
 
     def load(self, json_value) -> None:
         self.data.append((None, [self._load(json_value)]))
@@ -42,6 +40,8 @@ class LogosModule(mod.Module):
         raise NotImplementedError("Logos module is not implemented for LaTeX")
 
     def to_html(self, context: contexts.html.HTMLContext) -> str:
+        if len(self.data) == 0:
+            return ""
         return self.data[0][1][0].to_html(context)
 
     def _load(self, json_object) -> Logos:
