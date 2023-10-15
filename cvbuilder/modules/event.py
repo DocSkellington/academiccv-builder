@@ -9,8 +9,8 @@ from .. import contexts
 @dataclass
 class Event(modules.Data):
     year: str | int = None
-    name: str = None
-    where: str = None
+    name: modules.description.Description = modules.description.DescriptionDescriptor()
+    where: modules.description.Description = modules.description.DescriptionDescriptor()
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         raise NotImplementedError(

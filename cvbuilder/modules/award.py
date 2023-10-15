@@ -8,12 +8,10 @@ from .. import contexts
 @dataclass
 class Award(modules.Data):
     year: str = None
-    description: modules.description.Description = None
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = modules.description.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\award{\n"

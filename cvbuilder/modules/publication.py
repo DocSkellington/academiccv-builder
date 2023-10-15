@@ -16,12 +16,16 @@ class Publication(modules.Data):
     title: str
     authors: str
     year: str | int
-    reference: str = None
-    where: str = None
-    shortWhere: str = None
+    reference: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    where: modules.description.Description = modules.description.DescriptionDescriptor()
+    shortWhere: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     doi: str = None
     arxiv: str = None
-    note: str = None
+    note: modules.description.Description = modules.description.DescriptionDescriptor()
     style: contexts.latex.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
@@ -47,10 +51,10 @@ class Publication(modules.Data):
 
         html += context.open_div("align")
 
-        if self.reference is not None:
+        if not self.reference.is_empty():
             html += context.simple_div_block(
                 "title",
-                context.span_block("reference", f"[{self.reference}]")
+                context.span_block("reference", f"[{self.reference.to_html()}]")
                 + " "
                 + self.title,
             )
@@ -62,10 +66,12 @@ class Publication(modules.Data):
         html += context.close_block()  # align
 
         details = context.span_block("authors", self.authors + ". ")
-        if self.where is not None:
-            details += context.span_block("where", self.where + ". ")
-        if self.shortWhere is not None:
-            details += context.span_block("shortWhere", self.shortWhere + ". ")
+        if not self.where.is_empty():
+            details += context.span_block("where", self.where.to_html() + ". ")
+        if not self.shortWhere.is_empty():
+            details += context.span_block(
+                "shortWhere", self.shortWhere.to_html() + ". "
+            )
         if self.doi is not None:
             details += context.link_block(
                 "doi",
@@ -80,8 +86,8 @@ class Publication(modules.Data):
                 "arXiv: " + self.arxiv,
                 ". ",
             )
-        if self.note is not None:
-            details += context.span_block("note", self.note + ". ")
+        if not self.note.is_empty():
+            details += context.span_block("note", self.note.to_html() + ". ")
 
         html += context.paragraph_block("details", details)
 

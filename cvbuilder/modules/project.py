@@ -7,26 +7,22 @@ from .. import contexts
 
 @dataclass
 class Project(modules.Data):
-    shortName: str = None
-    name: str = None
-    role: str = None
-    description: modules.description.Description = None
+    shortName: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    name: modules.description.Description = modules.description.DescriptionDescriptor()
+    role: modules.description.Description = modules.description.DescriptionDescriptor()
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = modules.description.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\project{\n"
-        latex += context.format_variable(
-            "shortName", context.format_date(self.shortName)
-        )
-        latex += context.format_variable("name", context.format_date(self.name))
+        latex += context.format_variable("shortName", self.shortName)
+        latex += context.format_variable("name", self.name)
         latex += context.format_variable("role", self.role)
-        latex += context.format_variable(
-            "description", self.description.to_latex()
-        )
+        latex += context.format_variable("description", self.description)
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
         )
@@ -47,7 +43,7 @@ class Project(modules.Data):
 
         html += context.simple_div_block("role", self.role)
 
-        html += context.simple_div_block("details", self.description.to_html())
+        html += context.simple_div_block("details", self.description)
 
         html += context.close_block()  # item
 

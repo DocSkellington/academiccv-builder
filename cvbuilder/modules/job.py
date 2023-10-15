@@ -15,14 +15,14 @@ class Job(modules.Data):
 
     start: str = None
     end: str = None
-    title: str = None
-    organization: str = None
-    description: modules.description.Description = None
+    title: modules.description.Description = modules.description.DescriptionDescriptor()
+    organization: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = modules.description.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\job{\n"

@@ -9,8 +9,8 @@ from .. import contexts
 class Language(modules.Data):
     """Dataclass for a single language"""
 
-    name: str
-    level: str
+    name: modules.description.Description = modules.description.DescriptionDescriptor()
+    level: modules.description.Description = modules.description.DescriptionDescriptor()
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         raise NotImplementedError("Languages module does not support the LaTeX context")

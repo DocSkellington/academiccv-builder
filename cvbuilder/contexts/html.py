@@ -69,6 +69,8 @@ class HTMLStack:
         if content is None:
             return ""
         if isinstance(content, modules.description.Description):
+            if content.is_empty():
+                return ""
             content = content.to_html()
         div = self.open_div(class_name)
         div += "\t" * self._get_indent() + content + "\n"
@@ -81,6 +83,8 @@ class HTMLStack:
         if content is None:
             return ""
         if isinstance(content, modules.description.Description):
+            if content.is_empty():
+                return ""
             content = content.to_html()
         indent = self._get_indent()
         p = "\t" * indent + f'<p class="{class_name}">\n'
@@ -88,9 +92,15 @@ class HTMLStack:
         p += "\t" * indent + "</p>\n"
         return p
 
-    def span_block(self, class_name: str, content: str) -> str:
+    def span_block(
+        self, class_name: str, content: str | modules.description.Description
+    ) -> str:
         if content is None:
             return ""
+        if isinstance(content, modules.description.Description):
+            if content.is_empty():
+                return ""
+            content = content.to_html()
 
         return f'<span class="{class_name}">{content}</span>'
 
@@ -106,10 +116,14 @@ class HTMLStack:
         self.stack.append((tag, indent))
         return "\t" * indent + f'<{tag} class="{class_name}">\n'
 
-    def list_item(self, class_name: str, content: str | modules.description.Description) -> str:
+    def list_item(
+        self, class_name: str, content: str | modules.description.Description
+    ) -> str:
         if content is None:
             return ""
         if isinstance(content, modules.description.Description):
+            if content.is_empty():
+                return ""
             content = content.to_html()
         return "\t" * self._get_indent() + f'<li class="{class_name}">{content}</li>\n'
 

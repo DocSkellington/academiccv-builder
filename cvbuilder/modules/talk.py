@@ -11,9 +11,11 @@ from .. import contexts
 @dataclass
 class Talk(modules.Data):
     date: datetime.datetime = None
-    title: str = None
-    conference: str = None
-    where: str = None
+    title: modules.description.Description = modules.description.DescriptionDescriptor()
+    conference: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    where: modules.description.Description = modules.description.DescriptionDescriptor()
     style: contexts.latex.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
@@ -40,10 +42,12 @@ class Talk(modules.Data):
         html += context.close_block()  # align
 
         details = ""
-        if self.conference is not None:
-            details += context.span_block("conference", self.conference + ". ")
-        if self.where is not None:
-            details += context.span_block("where", self.where + ".")
+        if not self.conference.is_empty():
+            details += context.span_block(
+                "conference", self.conference.to_html() + ". "
+            )
+        if not self.where.is_empty():
+            details += context.span_block("where", self.where.to_html() + ".")
 
         html += context.paragraph_block("details", details)
 

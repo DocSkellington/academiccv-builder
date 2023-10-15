@@ -7,21 +7,21 @@ from .. import contexts
 
 @dataclass
 class Supervision(modules.Data):
-    year: str = None
-    name: str = None
-    role: str = None
-    organization: str = None
-    description: modules.description.Description = None
+    when: modules.description.Description = modules.description.DescriptionDescriptor()
+    name: modules.description.Description = modules.description.DescriptionDescriptor()
+    role: modules.description.Description = modules.description.DescriptionDescriptor()
+    organization: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = modules.description.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\supervision{\n"
-        latex += context.format_variable("year", context.format_date(self.year))
-        latex += context.format_variable("name", context.format_date(self.name))
+        latex += context.format_variable("year", self.when)
+        latex += context.format_variable("name", self.name)
         latex += context.format_variable("role", self.role)
         latex += context.format_variable("organization", self.organization)
         latex += context.format_variable("description", self.description)
@@ -47,7 +47,7 @@ class Supervision(modules.Data):
 
         html += context.simple_div_block("organization", self.organization)
 
-        html += context.simple_div_block("time", self.year)
+        html += context.simple_div_block("time", self.when)
 
         html += context.close_block()  # align
 

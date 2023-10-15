@@ -108,10 +108,10 @@
           ]
         },
         "name": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "where": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         }
       }
     },
@@ -127,10 +127,10 @@
           "type": "string"
         },
         "title": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "organization": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "description": {
           "$ref": "#/definitions/description"
@@ -149,10 +149,10 @@
       ],
       "properties": {
         "name": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "level": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         }
       }
     },
@@ -161,13 +161,13 @@
       "additionalProperties": false,
       "properties": {
         "shortName": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "name": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "role": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "description": {
           "$ref": "#/definitions/description"
@@ -192,15 +192,15 @@
           "type": "string"
         },
         "reference": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "where": {
           "description": "The journal/conference name",
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "shortWhere": {
           "description": "The acronym of the journal/conference",
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "doi": {
           "type": "string"
@@ -211,7 +211,7 @@
         },
         "note": {
           "description": "A remark on the paper (for instance, best paper award)",
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "style": {
           "$ref": "#/definitions/style"
@@ -222,23 +222,23 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "year": {
-          "type": "string"
+        "when": {
+          "$ref": "#/definitions/description"
         },
         "name": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "role": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "organization": {
-          "type": "string"
-        },
-        "style": {
-          "$ref": "#/definitions/style"
+          "$ref": "#/definitions/description"
         },
         "description": {
           "$ref": "#/definitions/description"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
         }
       }
     },
@@ -247,20 +247,20 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "year": {
-          "type": "string"
+        "when": {
+          "$ref": "#/definitions/description"
         },
         "course": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "role": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "level": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "organization": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "description": {
           "$ref": "#/definitions/description"
@@ -278,13 +278,13 @@
           "type": "string"
         },
         "title": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "conference": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "where": {
-          "type": "string"
+          "$ref": "#/definitions/description"
         },
         "style": {
           "$ref": "#/definitions/style"

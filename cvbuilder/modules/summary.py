@@ -1,23 +1,16 @@
 from __future__ import annotations
+from dataclasses import dataclass
 
 from .. import modules
 from .. import contexts
 
 
+@dataclass
 class Summary(modules.Data):
-    def __init__(
-        self,
-        text: modules.description.Description,
-    ):
-        if text is not None:
-            self.text = modules.description.Description(text)
-        else:
-            self.text = None
+    text: modules.description.Description = modules.description.DescriptionDescriptor()
 
-    def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
-        raise NotImplementedError(
-            "The summary module does not support the LaTeX context"
-        )
+    def to_latex(self, _context: contexts.latex.LaTeXContext) -> str:
+        return self.text.to_latex()
 
     def to_html(self, context: contexts.html.HTMLContext) -> str:
         return context.simple_div_block("details", self.text)

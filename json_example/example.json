@@ -18,7 +18,7 @@
         "end": "2015-12-30",
         "title": "Job position 1",
         "organization": "Somewhere",
-        "description": "Something"
+        "description": "Something\n\n  1. Numbered list\n  2. Continued."
       }
     ]
   },
@@ -64,7 +64,7 @@
   ],
   "teaching": [
     {
-      "year": "Academic years 2005 to 2010",
+      "when": "Academic years 2005 to 2010",
       "course": "Writing and Acting",
       "role": "Teacher",
       "level": "First year of Physics Science, Second year of Computer Science, Third year of Mathematical Science, Fourth year of Long Line Science",
@@ -74,7 +74,7 @@
   ],
   "supervision": [
     {
-      "year": "1980",
+      "when": "1980",
       "name": "I forgot his name",
       "role": "PhD advisor",
       "organization": "Union of Nine Intermediate Torsos"
