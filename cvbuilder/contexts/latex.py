@@ -46,11 +46,13 @@ class LaTeXContext(Context):
         if value is not None:
             string = f"\t{name} = "
             if value is True:
-                string += "true"
+                string += "{true}"
             elif value is False:
-                string += "false"
+                string += "{false}"
             elif isinstance(value, modules.description.Description):
-                string += value.to_latex()
+                if value.is_empty():
+                    return ""
+                string += f"{{{value.to_latex()}}}"
             else:
                 string += f"{{{value}}}"
             return string + ",\n"
