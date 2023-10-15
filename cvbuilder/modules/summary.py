@@ -1,16 +1,16 @@
 from __future__ import annotations
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
-class Summary(mod.Data):
+class Summary(modules.Data):
     def __init__(
         self,
-        text: mod.Description,
+        text: modules.description.Description,
     ):
         if text is not None:
-            self.text = mod.Description(text)
+            self.text = modules.description.Description(text)
         else:
             self.text = None
 
@@ -26,7 +26,7 @@ class Summary(mod.Data):
         return context.paragraph(self.text)
 
 
-class SummaryModule(mod.Module):
+class SummaryModule(modules.Module):
     def __init__(
         self,
         level: int = 0,

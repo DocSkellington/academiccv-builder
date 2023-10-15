@@ -2,12 +2,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Event(mod.Data):
+class Event(modules.Data):
     year: str | int = None
     name: str = None
     where: str = None
@@ -32,7 +32,7 @@ class Event(mod.Data):
         return html
 
 
-class EventModule(mod.Module):
+class EventModule(modules.Module):
     """Event module.
 
     Events are automatically sorted and grouped by year.

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
-class Logos(mod.Data):
+class Logos(modules.Data):
     def __init__(
         self,
         logos: list[str],
@@ -29,7 +29,7 @@ class Logos(mod.Data):
         return html
 
 
-class LogosModule(mod.Module):
+class LogosModule(modules.Module):
     def __init__(
         self,
     ):

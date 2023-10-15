@@ -6,11 +6,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .. import contexts
-from .. import modules as mod
+from .. import modules
 
 
 @dataclass
-class Publication(mod.Data):
+class Publication(modules.Data):
     """A publication must have a title, authors, and a publication year."""
 
     title: str
@@ -90,7 +90,7 @@ class Publication(mod.Data):
         return html
 
 
-class PublicationModule(mod.Module):
+class PublicationModule(modules.Module):
     """Publication module, holding data for the job positions defined in the JSON file."""
 
     def __init__(

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from pathlib import Path
 
 from . import Context, PersonalData, html
@@ -24,12 +25,12 @@ class MarkdownContext(Context, html.HTMLStack):
             return "\n" + "#" * level + " " + name + "\n\n"
         return ""
 
-    def paragraph(self, contents: str | modules.Description) -> str:
+    def paragraph(self, contents: str | modules.description.Description) -> str:
         if contents is None:
             return ""
 
-        if isinstance(contents, modules.Description):
-            return contents.to_markdown(self)
+        if isinstance(contents, modules.description.Description):
+            return contents.to_markdown()
         return contents
 
     def link(self, url: str, text: str) -> str:

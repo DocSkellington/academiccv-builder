@@ -47,13 +47,5 @@
     "resources/photo.png",
     "resources/photo.png"
   ],
-  "summary": [
-    "Do you know who I am?",
-    [
-      "I am an idiot...",
-      "With a blue box!",
-      "And a screwdriver."
-    ],
-    "Do you want a jelly baby?"
-  ]
+  "summary": "Do you know who I am?\n\n  * I am an idiot...\n  * With a blue box!\n  * And a screwdriver.\n\nDo you want a jelly baby?"
 }

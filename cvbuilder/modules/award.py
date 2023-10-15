@@ -1,19 +1,19 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Award(mod.Data):
+class Award(modules.Data):
     year: str = None
-    description: mod.Description = None
+    description: modules.description.Description = None
     style: contexts.latex.Style = None
 
     def __post_init__(self) -> None:
         if self.description is not None:
-            self.description = mod.Description(self.description)
+            self.description = modules.description.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\award{\n"
@@ -42,7 +42,7 @@ class Award(mod.Data):
         return html
 
 
-class AwardModule(mod.Module):
+class AwardModule(modules.Module):
     def __init__(
         self,
         level: int = 1,

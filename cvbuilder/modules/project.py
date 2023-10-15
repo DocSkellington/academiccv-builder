@@ -1,21 +1,21 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Project(mod.Data):
+class Project(modules.Data):
     shortName: str = None
     name: str = None
     role: str = None
-    description: mod.Description = None
+    description: modules.description.Description = None
     style: contexts.latex.Style = None
 
     def __post_init__(self) -> None:
         if self.description is not None:
-            self.description = mod.Description(self.description)
+            self.description = modules.description.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\project{\n"
@@ -25,7 +25,7 @@ class Project(mod.Data):
         latex += context.format_variable("name", context.format_date(self.name))
         latex += context.format_variable("role", self.role)
         latex += context.format_variable(
-            "description", self.description.to_latex(context)
+            "description", self.description.to_latex()
         )
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
@@ -47,14 +47,14 @@ class Project(mod.Data):
 
         html += context.simple_div_block("role", self.role)
 
-        html += context.simple_div_block("details", self.description.to_html(context))
+        html += context.simple_div_block("details", self.description.to_html())
 
         html += context.close_block()  # item
 
         return html
 
 
-class ProjectModule(mod.Module):
+class ProjectModule(modules.Module):
     def __init__(
         self,
         level: int = 1,

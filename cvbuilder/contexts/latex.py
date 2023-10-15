@@ -4,6 +4,7 @@ LaTeX context and utilities.
 The produced document relies on the academiccv package.
 """
 
+from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
@@ -40,7 +41,7 @@ class LaTeXContext(Context):
         self.styles: dict[str, Style] = {}
 
     def format_variable(
-        self, name: str, value: bool | str | modules.Description
+        self, name: str, value: bool | str | modules.description.Description
     ) -> str:
         if value is not None:
             string = f"\t{name} = "
@@ -48,8 +49,8 @@ class LaTeXContext(Context):
                 string += "true"
             elif value is False:
                 string += "false"
-            elif isinstance(value, modules.Description):
-                string += value.to_latex(self)
+            elif isinstance(value, modules.description.Description):
+                string += value.to_latex()
             else:
                 string += f"{{{value}}}"
             return string + ",\n"

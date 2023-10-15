@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Callable
 from pathlib import Path
 
@@ -63,24 +64,24 @@ class HTMLStack:
         return "\t" * indent + f'<div class="{class_name}">\n'
 
     def simple_div_block(
-        self, class_name: str, content: str | modules.Description
+        self, class_name: str, content: str | modules.description.Description
     ) -> str:
         if content is None:
             return ""
-        if isinstance(content, modules.Description):
-            content = content.to_html(self)
+        if isinstance(content, modules.description.Description):
+            content = content.to_html()
         div = self.open_div(class_name)
         div += "\t" * self._get_indent() + content + "\n"
         div += self.close_block()
         return div
 
     def paragraph_block(
-        self, class_name: str, content: str | modules.Description
+        self, class_name: str, content: str | modules.description.Description
     ) -> str:
         if content is None:
             return ""
-        if isinstance(content, modules.Description):
-            content = content.to_html(self)
+        if isinstance(content, modules.description.Description):
+            content = content.to_html()
         indent = self._get_indent()
         p = "\t" * indent + f'<p class="{class_name}">\n'
         p += "\t" * (indent + 1) + content + "\n"
@@ -105,11 +106,11 @@ class HTMLStack:
         self.stack.append((tag, indent))
         return "\t" * indent + f'<{tag} class="{class_name}">\n'
 
-    def list_item(self, class_name: str, content: str | modules.Description) -> str:
+    def list_item(self, class_name: str, content: str | modules.description.Description) -> str:
         if content is None:
             return ""
-        if isinstance(content, modules.Description):
-            content = content.to_html(self)
+        if isinstance(content, modules.description.Description):
+            content = content.to_html()
         return "\t" * self._get_indent() + f'<li class="{class_name}">{content}</li>\n'
 
     def img_block(self, class_name: str, img: str, alt: str) -> str:

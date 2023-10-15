@@ -4,12 +4,12 @@ from typing import Any
 import datetime
 import dateutil.parser
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Talk(mod.Data):
+class Talk(modules.Data):
     date: datetime.datetime = None
     title: str = None
     conference: str = None
@@ -51,7 +51,7 @@ class Talk(mod.Data):
         return html
 
 
-class TalkModule(mod.Module):
+class TalkModule(modules.Module):
     """Talk module.
 
     Talks are automatically sorted by their date, and grouped together by year.

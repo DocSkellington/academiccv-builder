@@ -5,7 +5,7 @@ Languages module.
 from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
@@ -21,7 +21,7 @@ class Address:
 
 
 @dataclass
-class Contact(mod.Data):
+class Contact(modules.Data):
     email: str | list[str] = None
     website: str = None
     github: str = None
@@ -133,7 +133,7 @@ class Contact(mod.Data):
         return html
 
 
-class ContactModule(mod.Module):
+class ContactModule(modules.Module):
     def __init__(
         self,
         level: int = 1,

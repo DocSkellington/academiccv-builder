@@ -1,10 +1,6 @@
-"""
-Defines default modules that can be used in the builder.
-"""
-
 from abc import ABC
-from typing import Any
 
+from ..modules import description
 
 class Data(ABC):
     """Base class for data held by modules."""
@@ -17,64 +13,6 @@ class Data(ABC):
 
     def to_markdown(self, context: "contexts.markdown.MarkdownContext") -> str:
         return self.to_html(context)
-
-
-class Description(Data):
-    """A description is a type of data that can produce lists.
-
-    More precisely, the data can be a string or a list.
-    In the first case, the produce output is the string itself.
-    In the second case, each string of the list is produced as-is.
-    However, if the list contains a list, then that inner list is transformed into an unnumbered list.
-    """
-
-    def __init__(self, description: str | list[Any]) -> None:
-        self.description = description
-
-    def to_latex(self, context: "contexts.latex.LaTeXContext") -> str:
-        if isinstance(self.description, str):
-            return f"{{{self.description}}}"
-        elif isinstance(self.description, list):
-            latex = ""
-            for part in self.description:
-                if isinstance(part, str):
-                    latex += f"{{{part}}}\n"
-                elif isinstance(part, list):
-                    latex += "\\begin{itemize}\n"
-                    for line in part:
-                        latex += f"\t\\item {{{line}}}\n"
-                    latex += "\\end{itemize}\n"
-            return latex
-
-    def to_html(self, context: "contexts.html.HTMLContext") -> str:
-        if isinstance(self.description, str):
-            return self.description
-        if isinstance(self.description, list):
-            html = ""
-            for part in self.description:
-                if isinstance(part, str):
-                    html += part + "\n"
-                elif isinstance(part, list):
-                    html += context.open_list(False, "description-list")
-                    for line in part:
-                        html += context.list_item("description-list-item", line)
-                    html += context.close_block()
-            return html
-
-    def to_markdown(self, context: "contexts.markdown.MarkdownContext") -> str:
-        if isinstance(self.description, str):
-            return self.description
-        if isinstance(self.description, list):
-            markdown = ""
-            for part in self.description:
-                if isinstance(part, str):
-                    markdown += part
-                elif isinstance(part, list):
-                    markdown += "\n\n"
-                    for line in part:
-                        markdown += " * " + line + "\n"
-                    markdown += "\n"
-            return markdown
 
 
 class Module(ABC):

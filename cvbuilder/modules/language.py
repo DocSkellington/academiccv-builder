@@ -1,12 +1,12 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Language(mod.Data):
+class Language(modules.Data):
     """Dataclass for a single language"""
 
     name: str
@@ -24,7 +24,7 @@ class Language(mod.Data):
         )
 
 
-class LanguageModule(mod.Module):
+class LanguageModule(modules.Module):
     def __init__(
         self,
         level: int = 1,
