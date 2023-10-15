@@ -4,7 +4,7 @@ from cvbuilder import Builder
 from cvbuilder.contexts.latex import LaTeXContext, Style
 from cvbuilder.contexts.html import HTMLContext
 from cvbuilder.contexts.markdown import MarkdownContext
-from cvbuilder.modules.text import TextModule, LinkModule
+from cvbuilder.modules.text import TextModule
 from cvbuilder.modules.job import JobModule
 from cvbuilder.modules.talk import TalkModule
 from cvbuilder.modules.teach import TeachModule
@@ -38,12 +38,9 @@ main_html.add_module("summary", SummaryModule())
 main_html.add_module("jobs", JobModule())
 main_html.add_module(
     None,
-    LinkModule(
+    TextModule(
         section="Publications",
-        before="Consult the ",
-        link="publications.html",
-        text="Publications",
-        after=" page.",
+        text="Consult the [Publications](publications.html) page.",
         icon="iconoir-journal",
     ),
 )
@@ -57,7 +54,7 @@ main_html.add_module(
     None,
     TextModule(
         section="Closing Words",
-        text="Doctor, I let you go.",
+        text="Doctor, I let *you* **go**.",
     ),
 )
 
@@ -100,12 +97,9 @@ markdown.add_module("publications", PublicationModule())
 markdown.add_module("talks", TalkModule())
 markdown.add_module(
     None,
-    LinkModule(
+    TextModule(
         section="Events",
-        before="Consult the ",
-        link="events.md",
-        text="Events",
-        after=" page.",
+        text="Consult the [Events](events.md) page.",
     ),
 )
 markdown.add_module("teaching", TeachModule())
