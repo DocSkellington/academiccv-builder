@@ -1,6 +1,8 @@
 from abc import ABC
+from dataclasses import dataclass
 
 from ..modules import description
+
 
 class Data(ABC):
     """Base class for data held by modules."""
@@ -15,19 +17,36 @@ class Data(ABC):
         return self.to_html(context)
 
 
+@dataclass
+class SimpleText:
+    text: description.Description = description.DescriptionDescriptor()
+
+    def to_latex(self) -> str:
+        return self.text.to_latex()
+
+    def to_html(self) -> str:
+        return self.text.to_html()
+
+    def to_markdown(self) -> str:
+        return self.text.to_markdown()
+
+
 class Module(ABC):
     """Base class for modules."""
 
     def __init__(
         self,
+        *,
         level: int,
         section: str,
-        section_icon: str = "",
-        use_subsections: bool = True,
+        introduction_text: str,
+        section_icon: str,
+        use_subsections: bool,
     ) -> None:
         self.level = level
         self.section = section
         self.data: list[tuple[None | str, list[Data]]] = []
+        self.introduction_text = SimpleText(introduction_text)
         self.section_icon = section_icon
         self.use_subsections = use_subsections
 
@@ -81,6 +100,7 @@ class Module(ABC):
 
     def to_latex(self, context: "contexts.latex.LaTeXContext") -> str:
         latex = context.open_section(self.level, self.section)
+        latex += self.introduction_text.to_latex()
         for section, data_list in self.data:
             if section is not None:
                 latex += context.open_section(self.level + 1, section)
@@ -95,12 +115,12 @@ class Module(ABC):
         html = context.open_section(
             self.level + 1, self.section, f"{class_name}", self.section_icon
         )
-        section_level = self.level + 2
 
+        html += self.introduction_text.to_html()
         for section, data_list in self.data:
             if section is not None:
                 html += context.open_section(
-                    section_level, section, section.lower().replace(" ", "-")
+                    self.level + 2, section, section.lower().replace(" ", "-")
                 )
 
             for data in data_list:
@@ -114,6 +134,7 @@ class Module(ABC):
 
     def to_markdown(self, context: "contexts.markdown.MarkdownContext") -> str:
         markdown = context.open_section(1, self.section)
+        markdown += self.introduction_text.to_markdown()
         for section, data_list in self.data:
             if section is not None:
                 markdown += context.open_section(2, section)

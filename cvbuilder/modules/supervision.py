@@ -63,10 +63,17 @@ class SupervisionModule(modules.Module):
         self,
         level: int = 1,
         section: str = "Supervision",
+        introduction_text: str = "",
         icon: str = "iconoir-path-arrow",
         use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon, use_subsections)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def _load(self, json_object) -> Supervision:
         return Supervision(**json_object)

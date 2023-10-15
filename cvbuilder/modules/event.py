@@ -43,10 +43,17 @@ class EventModule(modules.Module):
         self,
         level: int = 0,
         section: str = "Attended events",
+        introduction_text: str = "",
         icon: str = "iconoir-calendar",
         use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon, use_subsections)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def load(self, json_value: list[dict[str, Any]]) -> None:
         events = list(map(self._load, json_value))

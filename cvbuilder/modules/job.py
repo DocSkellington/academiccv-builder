@@ -76,10 +76,17 @@ class JobModule(modules.Module):
         self,
         level: int = 1,
         section: str = "Research Experience",
+        introduction_text: str = "",
         icon: str = "iconoir-brain-research",
         use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon, use_subsections)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def _load(self, json_object) -> Job:
         return Job(**json_object)

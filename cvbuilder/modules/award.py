@@ -45,10 +45,17 @@ class AwardModule(modules.Module):
         self,
         level: int = 1,
         section: str = "Awards",
+        introduction_text: str = "",
         icon: str = "iconoir-trophy",
         use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon, use_subsections)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def _load(self, json_object) -> Award:
         return Award(**json_object)

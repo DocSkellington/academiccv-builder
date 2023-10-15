@@ -33,7 +33,13 @@ class LogosModule(modules.Module):
     def __init__(
         self,
     ):
-        super().__init__(0, "", "", False)
+        super().__init__(
+            level=0,
+            section="",
+            introduction_text="",
+            section_icon="",
+            use_subsections=False,
+        )
 
     def load(self, json_value) -> None:
         self.data.append((None, [self._load(json_value)]))

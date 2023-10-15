@@ -24,10 +24,17 @@ class SummaryModule(modules.Module):
         self,
         level: int = 0,
         section: str = "Summary",
+        introduction_text: str = "",
         icon: str = "iconoir-chat-bubble",
         use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon, use_subsections)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def load(self, json_value) -> None:
         self.data.append((None, [self._load(json_value)]))

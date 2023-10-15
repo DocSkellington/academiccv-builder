@@ -55,10 +55,17 @@ class ProjectModule(modules.Module):
         self,
         level: int = 1,
         section: str = "Projects",
+        introduction_text: str = "",
         icon: str = "iconoir-light-bulb",
         use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon, use_subsections)
+        super().__init__(
+            level=level,
+            section=section,
+            introduction_text=introduction_text,
+            section_icon=icon,
+            use_subsections=use_subsections,
+        )
 
     def _load(self, json_object) -> Project:
         return Project(**json_object)
