@@ -294,6 +294,12 @@
         "where": {
           "$ref": "#/definitions/description"
         },
+        "pdf": {
+          "type": "string"
+        },
+        "video": {
+          "type": "string"
+        },
         "style": {
           "$ref": "#/definitions/style"
         }

@@ -27,7 +27,9 @@
       "date": "2005/04/30",
       "title": "Oldest talk",
       "conference": "Some conference",
-      "where": "Somewhere in the universe"
+      "where": "Somewhere in the universe",
+      "pdf": "resources/talks/Oldest.pdf",
+      "video": "resources/talks/Oldest.mp4"
     },
     {
       "date": "2023/02/21",

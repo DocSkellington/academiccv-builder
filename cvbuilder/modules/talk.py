@@ -16,6 +16,8 @@ class Talk(modules.Data):
         modules.description.DescriptionDescriptor()
     )
     where: modules.description.Description = modules.description.DescriptionDescriptor()
+    pdf: str = None
+    video: str = None
     style: contexts.latex.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
@@ -47,9 +49,18 @@ class Talk(modules.Data):
                 "conference", self.conference.to_html() + ". "
             )
         if not self.where.is_empty():
-            details += context.span_block("where", self.where.to_html() + ".")
+            details += context.span_block("where", self.where.to_html() + ". ")
+        if self.pdf is not None:
+            details += context.link_block(
+                "pdf", link=self.pdf, content="Link to PDF", after=". "
+            )
+        if self.video is not None:
+            details += context.link_block(
+                "pdf", link=self.video, content="Link to video", after=". "
+            )
 
-        html += context.paragraph_block("details", details)
+        if details != "":
+            html += context.paragraph_block("details", details)
 
         html += context.close_block()  # item
         return html
@@ -101,20 +112,24 @@ class TalkModule(modules.Module):
             if "date" in json_object
             else Talk.date
         )
-        title = json_object["title"] if "title" in json_object else Talk.title
-        conference = (
-            json_object["conference"]
-            if "conference" in json_object
-            else Talk.conference
-        )
-        where = json_object["where"] if "where" in json_object else Talk.where
+        title = json_object.get("title", Talk.title)
+        conference = json_object.get("conference", Talk.conference)
+        where = json_object.get("where", Talk.where)
+        pdf = json_object.get("pdf", Talk.pdf)
+        video = json_object.get("video", Talk.video)
         style = (
             contexts.latex.Style(**json_object["style"])
             if "style" in json_object
             else Talk.style
         )
         return Talk(
-            date=date, title=title, conference=conference, where=where, style=style
+            date=date,
+            title=title,
+            conference=conference,
+            where=where,
+            pdf=pdf,
+            video=video,
+            style=style,
         )
 
     def _get_class_name(self) -> str:
