@@ -15,6 +15,8 @@ class Project(modules.Data):
     description: modules.description.Description = (
         modules.description.DescriptionDescriptor()
     )
+    homepage: str = ""
+    artifact: str = ""
     style: contexts.latex.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
@@ -23,6 +25,8 @@ class Project(modules.Data):
         latex += context.format_variable("name", self.name)
         latex += context.format_variable("role", self.role)
         latex += context.format_variable("description", self.description)
+        latex += context.format_variable("homepage", self.homepage)
+        latex += context.format_variable("artifact", self.artifact)
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
         )
@@ -43,7 +47,10 @@ class Project(modules.Data):
 
         html += context.simple_div_block("role", self.role)
 
-        html += context.simple_div_block("details", self.description)
+        description = self.description.to_html() + "\n"
+        description += context.link_block("homepage", self.homepage, "Project homepage", ".") + "\n"
+        description += context.link_block("artifact", self.artifact, "Project artifact", ".")
+        html += context.simple_div_block("details", description)
 
         html += context.close_block()  # item
 

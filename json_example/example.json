@@ -85,7 +85,9 @@
       "name": "A Top Secret Project",
       "shortName": "Project",
       "role": "Developer",
-      "description": "I love lists\n\n  * Here is a proof.\n  * Did I already say that this is a top secret project?\n  * The fact that you are reading non-sense is not tied to that!\n\nTime to go!"
+      "description": "I love lists\n\n  * Here is a proof.\n  * Did I already say that this is a top secret project?\n  * The fact that you are reading non-sense is not tied to that!\n\nTime to go!",
+      "homepage": "https://github.com/DocSkellington/academiccv-builder",
+      "artifact": "https://github.com/DocSkellington/academiccv-builder/releases"
     }
   ],
   "awards": [

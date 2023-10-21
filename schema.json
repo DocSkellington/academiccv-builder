@@ -172,6 +172,14 @@
         "description": {
           "$ref": "#/definitions/description"
         },
+        "homepage": {
+          "description": "Link to the project's repository or homepage",
+          "type": "string"
+        },
+        "artifact": {
+          "description": "Link to the project's artifact",
+          "type": "string"
+        },
         "style": {
           "$ref": "#/definitions/style"
         }
