@@ -44,7 +44,12 @@ main_html.add_module(
         icon="iconoir-journal",
     ),
 )
-main_html.add_module("talks", TalkModule())
+main_html.add_module(
+    "talks",
+    TalkModule(
+        introduction_text="Talks are automatically sorted by date and grouped by year."
+    ),
+)
 main_html.add_module("teaching", TeachModule())
 main_html.add_module("supervision", SupervisionModule(use_subsections=False))
 main_html.add_module("projects", ProjectModule())
