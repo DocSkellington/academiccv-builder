@@ -105,7 +105,7 @@ class HTMLStack:
         return f'<span class="{class_name}">{content}</span>'
 
     def link_block(self, class_name: str, link: str, content: str, after: str) -> str:
-        if content is None:
+        if content is None or link == "":
             return ""
 
         return f'<a class="{class_name}" href="{link}">{content}</a>{after}'

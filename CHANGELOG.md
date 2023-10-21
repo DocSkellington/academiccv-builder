@@ -12,6 +12,7 @@
 
 ## Bug fixes
   - Type annotations do not cause missing imports errors (#3).
+  - HTML: an `a` tag (link block) is not constructed when the link is empty.
 
 ## Code details
   - Use Python 3.9+ syntax for type annotations
