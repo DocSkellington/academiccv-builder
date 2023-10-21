@@ -47,10 +47,16 @@ class Project(modules.Data):
 
         html += context.simple_div_block("role", self.role)
 
-        description = self.description.to_html() + "\n"
-        description += context.link_block("homepage", self.homepage, "Project homepage", ".") + "\n"
-        description += context.link_block("artifact", self.artifact, "Project artifact", ".")
-        html += context.simple_div_block("details", description)
+        html += context.open_div("align")
+
+        html += context.paragraph_block("details", self.description.to_html())
+
+        links = context.link_block("homepage", self.homepage, "Project homepage", ".") + "<br/>"
+        links += context.link_block("artifact", self.artifact, "Project artifact", ".")
+        if links != "":
+            html += context.simple_div_block("links", links)
+
+        html += context.close_block()
 
         html += context.close_block()  # item
 

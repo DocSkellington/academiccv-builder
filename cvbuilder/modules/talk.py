@@ -43,6 +43,8 @@ class Talk(modules.Data):
 
         html += context.close_block()  # align
 
+        html += context.open_div("align")
+
         details = ""
         if not self.conference.is_empty():
             details += context.span_block(
@@ -50,17 +52,22 @@ class Talk(modules.Data):
             )
         if not self.where.is_empty():
             details += context.span_block("where", self.where.to_html() + ". ")
-        if self.pdf is not None:
-            details += context.link_block(
-                "pdf", link=self.pdf, content="Link to PDF", after=". "
-            )
-        if self.video is not None:
-            details += context.link_block(
-                "pdf", link=self.video, content="Link to video", after=". "
-            )
-
         if details != "":
             html += context.paragraph_block("details", details)
+
+        links = ""
+        if self.pdf is not None:
+            links += context.link_block(
+                "pdf", link=self.pdf, content="PDF", after=". "
+            )
+        if self.video is not None:
+            links += context.link_block(
+                "pdf", link=self.video, content="Video", after=". "
+            )
+        if links != "":
+            html += context.simple_div_block("links", links)
+
+        html += context.close_block()  # align
 
         html += context.close_block()  # item
         return html
