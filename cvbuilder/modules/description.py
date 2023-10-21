@@ -37,7 +37,7 @@ class Description:
         html = markdown.markdown(self.description, output_format="html")
         # To obtain a better output, we remove all the p tags.
         # This allows text to flow more naturally, without line breaks.
-        return re.sub("^<p>|</p>$", "", html)
+        return re.sub("(<p>|</p>)", "", html)
 
     def to_markdown(self) -> str:
         if self.is_empty():
