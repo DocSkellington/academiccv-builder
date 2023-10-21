@@ -8,8 +8,8 @@ dependencies:
 release: build
 	pipenv run python -m build
 	zip release -r \
-		dist/academiccv_builder-1.0.0-py3-none-any.whl \
-		dist/academiccv_builder-1.0.0.tar.gz \
+		dist/academiccv_builder-2.0.0-py3-none-any.whl \
+		dist/academiccv_builder-2.0.0.tar.gz \
 		example.py example.json output/ resources/ \
 		README.md License
 
