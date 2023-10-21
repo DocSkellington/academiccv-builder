@@ -64,6 +64,10 @@ div.item .align {
     width: 100%;
 }
 
+div.item .align p {
+    margin: 0;
+}
+
 div.item .align:first-child div:first-child {
     font-weight: bold;
     color: black;
@@ -88,6 +92,7 @@ div.item .align div:last-child {
     max-width: 30%;
     position: absolute;
     box-sizing: border-box;
+    text-align: right;
     right: 0;
     /* The following puts the text at the top of the box. Replace top by bottom to align at the bottom */
     top: 0;
