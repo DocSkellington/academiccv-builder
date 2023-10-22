@@ -9,6 +9,7 @@
     - Most of the fields are now instances of `modules.description.Description`
   - Most modules allow an introductory text, put between the section header and the data's output (#7).
   - Links to PDF and video for talks, and to homepage and artifact for projects (#4).
+  - Award: only the year is displayed.
 
 ## Bug fixes
   - Type annotations do not cause missing imports errors (#3).

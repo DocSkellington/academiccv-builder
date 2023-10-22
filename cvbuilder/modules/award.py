@@ -15,7 +15,7 @@ class Award(modules.Data):
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\award{\n"
-        latex += context.format_variable("year", context.format_date(self.year))
+        latex += context.format_variable("year", context.format_date(self.year, date_output_format="%Y"))
         latex += context.format_variable("description", self.description)
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
@@ -31,7 +31,7 @@ class Award(modules.Data):
 
         html += context.simple_div_block("title", self.description)
 
-        html += context.simple_div_block("details", self.year)
+        html += context.simple_div_block("details", context.format_date(self.year, date_output_format="%Y"))
 
         html += context.close_block()  # align
 
