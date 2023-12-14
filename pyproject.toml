@@ -31,3 +31,6 @@ dependencies = [
 
 [tool.hatch.build]
 exclude = ["example.py", "/tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["cvbuilder"]

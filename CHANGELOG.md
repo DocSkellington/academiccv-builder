@@ -14,6 +14,7 @@
 ## Bug fixes
   - Type annotations do not cause missing imports errors (#3).
   - HTML: an `a` tag (link block) is not constructed when the link is empty.
+  - Fixed an error produced by Hatch(ling) when building the wheel file.
 
 ## Code details
   - Use Python 3.9+ syntax for type annotations
