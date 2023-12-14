@@ -2,26 +2,30 @@
 Module for publications.
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import Union
 
 from .. import contexts
-from .. import modules as mod
+from .. import modules
 
 
 @dataclass
-class Publication(mod.Data):
+class Publication(modules.Data):
     """A publication must have a title, authors, and a publication year."""
 
     title: str
     authors: str
-    year: Union[str, int]
-    reference: str = None
-    where: str = None
-    shortWhere: str = None
+    year: str | int
+    reference: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    where: modules.description.Description = modules.description.DescriptionDescriptor()
+    shortWhere: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     doi: str = None
     arxiv: str = None
-    note: str = None
+    note: modules.description.Description = modules.description.DescriptionDescriptor()
     style: contexts.latex.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
@@ -47,10 +51,10 @@ class Publication(mod.Data):
 
         html += context.open_div("align")
 
-        if self.reference is not None:
+        if not self.reference.is_empty():
             html += context.simple_div_block(
                 "title",
-                context.span_block("reference", f"[{self.reference}]")
+                context.span_block("reference", f"[{self.reference.to_html()}]")
                 + " "
                 + self.title,
             )
@@ -62,10 +66,12 @@ class Publication(mod.Data):
         html += context.close_block()  # align
 
         details = context.span_block("authors", self.authors + ". ")
-        if self.where is not None:
-            details += context.span_block("where", self.where + ". ")
-        if self.shortWhere is not None:
-            details += context.span_block("shortWhere", self.shortWhere + ". ")
+        if not self.where.is_empty():
+            details += context.span_block("where", self.where.to_html() + ". ")
+        if not self.shortWhere.is_empty():
+            details += context.span_block(
+                "shortWhere", self.shortWhere.to_html() + ". "
+            )
         if self.doi is not None:
             details += context.link_block(
                 "doi",
@@ -80,8 +86,8 @@ class Publication(mod.Data):
                 "arXiv: " + self.arxiv,
                 ". ",
             )
-        if self.note is not None:
-            details += context.span_block("note", self.note + ". ")
+        if not self.note.is_empty():
+            details += context.span_block("note", self.note.to_html() + ". ")
 
         html += context.paragraph_block("details", details)
 
@@ -90,16 +96,24 @@ class Publication(mod.Data):
         return html
 
 
-class PublicationModule(mod.Module):
+class PublicationModule(modules.Module):
     """Publication module, holding data for the job positions defined in the JSON file."""
 
     def __init__(
         self,
         level: int = 1,
         section: str = "Publications",
+        introduction_text: str = "",
         icon: str = "iconoir-journal",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def _load(self, json_object):
         return Publication(**json_object)

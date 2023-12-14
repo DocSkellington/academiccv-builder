@@ -3,13 +3,20 @@ Defines default contexts that can be used in the builder.
 """
 
 from abc import ABC
-from typing import List, Union, Dict, Any
+from typing import Any
 from dataclasses import dataclass, field
 from pathlib import Path
 import dateutil.parser
 import datetime
 
-from .. import modules as mod
+from .. import modules
+
+
+@dataclass
+class ModuleDescriptor:
+    in_json: str
+    module: modules.Module
+    category: str
 
 
 @dataclass
@@ -33,7 +40,7 @@ class Context(ABC):
     def __init__(
         self,
         name: str,
-        output_path: Union[Path, str],
+        output_path: Path | str,
         date_output_format: str = "%d %b %Y",
     ) -> None:
         if isinstance(output_path, str):
@@ -42,6 +49,22 @@ class Context(ABC):
             self.output_path = output_path
         self.name = name
         self.date_output_format = date_output_format
+        self.modules: list[ModuleDescriptor] = []
+
+    def add_module(
+        self, in_json: str, module: modules.Module, category: str = "default"
+    ) -> None:
+        """Adds a new module.
+
+        Each module is filled from data stored in the JSON file.
+        The 'in_json' argument defines which key contains the data to be used for this module.
+        If None, no value is read.
+
+        Arguments:
+            in_json -- The JSON key
+            module -- The module
+        """
+        self.modules.append(ModuleDescriptor(in_json, module, category))
 
     def format_variable(self, name: str, value: str) -> str:
         """Constructs a string to set the variable named "name" to the given value, in the appropriate manner for the context.
@@ -58,7 +81,7 @@ class Context(ABC):
         )
 
     def format_date(
-        self, date_input: Union[datetime.datetime, str], date_output_format: str = None
+        self, date_input: datetime.datetime | str, date_output_format: str = None
     ) -> str:
         """Format a date to the requested format.
 
@@ -90,9 +113,12 @@ class Context(ABC):
         except dateutil.parser.ParserError:
             return date_input
 
-    def write_output(
-        self, modules: List["ModuleDescriptor"], personal: PersonalData
-    ) -> None:
+    def load_data_from_document(self, json_document: dict[str, Any]) -> None:
+        for module in self.modules:
+            if module.in_json is not None and module.in_json in json_document:
+                module.module.load(json_document[module.in_json])
+
+    def write_output(self, personal: PersonalData) -> None:
         """Writes the output of this context into a single file.
 
         Arguments:
@@ -102,13 +128,11 @@ class Context(ABC):
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
 
         with self.output_path.open(mode="w", encoding="UTF8") as file:
-            file.write(self._build_output(modules, personal))
+            file.write(self._build_output(personal))
 
-    def _run_modules(
-        self, modules: List["ModuleDescriptor"], category: str = "default"
-    ) -> str:
+    def _run_modules(self, category: str = "default") -> str:
         output = ""
-        for module in modules:
+        for module in self.modules:
             if module.category != category:
                 continue
 
@@ -123,5 +147,5 @@ class Context(ABC):
             output += method(self)
         return output
 
-    def _build_output(self, modules: List[mod.Module], personal: PersonalData) -> str:
+    def _build_output(self, personal: PersonalData) -> str:
         raise NotImplementedError("Context classes must implement build_output")

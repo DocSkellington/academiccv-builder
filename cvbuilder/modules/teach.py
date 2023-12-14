@@ -1,27 +1,30 @@
+from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Teach(mod.Data):
-    year: str = None
-    course: str = None
-    role: str = None
-    level: str = None
-    organization: str = None
-    description: mod.Description = None
+class Teach(modules.Data):
+    when: modules.description.Description = modules.description.DescriptionDescriptor()
+    course: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    role: modules.description.Description = modules.description.DescriptionDescriptor()
+    level: modules.description.Description = modules.description.DescriptionDescriptor()
+    organization: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = mod.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\teach{\n"
-        latex += context.format_variable("year", context.format_date(self.year))
-        latex += context.format_variable("course", context.format_date(self.course))
+        latex += context.format_variable("year", self.when)
+        latex += context.format_variable("course", self.course)
         latex += context.format_variable("role", self.role)
         latex += context.format_variable("level", self.level)
         latex += context.format_variable("organization", self.organization)
@@ -48,7 +51,7 @@ class Teach(mod.Data):
 
         html += context.simple_div_block("level", self.level)
 
-        html += context.simple_div_block("time", self.year)
+        html += context.simple_div_block("time", self.when)
 
         html += context.close_block()  # align
 
@@ -61,14 +64,22 @@ class Teach(mod.Data):
         return html
 
 
-class TeachModule(mod.Module):
+class TeachModule(modules.Module):
     def __init__(
         self,
         level: int = 1,
         section: str = "Teaching",
+        introduction_text: str = "",
         icon: str = "iconoir-graduation-cap",
+        use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def _load(self, json_object) -> Teach:
         return Teach(**json_object)

@@ -1,22 +1,21 @@
+from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Award(mod.Data):
+class Award(modules.Data):
     year: str = None
-    description: mod.Description = None
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = mod.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\award{\n"
-        latex += context.format_variable("year", context.format_date(self.year))
+        latex += context.format_variable("year", context.format_date(self.year, date_output_format="%Y"))
         latex += context.format_variable("description", self.description)
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
@@ -32,7 +31,7 @@ class Award(mod.Data):
 
         html += context.simple_div_block("title", self.description)
 
-        html += context.simple_div_block("details", self.year)
+        html += context.simple_div_block("details", context.format_date(self.year, date_output_format="%Y"))
 
         html += context.close_block()  # align
 
@@ -41,14 +40,22 @@ class Award(mod.Data):
         return html
 
 
-class AwardModule(mod.Module):
+class AwardModule(modules.Module):
     def __init__(
         self,
         level: int = 1,
         section: str = "Awards",
+        introduction_text: str = "",
         icon: str = "iconoir-trophy",
+        use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def _load(self, json_object) -> Award:
         return Award(**json_object)

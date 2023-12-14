@@ -1,15 +1,16 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Dict, Any, Union
+from typing import Any
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Event(mod.Data):
-    year: Union[str, int] = None
-    name: str = None
-    where: str = None
+class Event(modules.Data):
+    year: str | int = None
+    name: modules.description.Description = modules.description.DescriptionDescriptor()
+    where: modules.description.Description = modules.description.DescriptionDescriptor()
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         raise NotImplementedError(
@@ -31,7 +32,7 @@ class Event(mod.Data):
         return html
 
 
-class EventModule(mod.Module):
+class EventModule(modules.Module):
     """Event module.
 
     Events are automatically sorted and grouped by year.
@@ -42,27 +43,35 @@ class EventModule(mod.Module):
         self,
         level: int = 0,
         section: str = "Attended events",
+        introduction_text: str = "",
         icon: str = "iconoir-calendar",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
-
-    def load(self, json_value: List[Dict[str, Any]]) -> None:
-        events = list(map(self._load, json_value))
-
-        # If you wish to disable the subsections, replace the rest of this function by
-        # talks.sort(lambda talk: talk.date.year)
-        # self.data.append((None, talks))
-
-        years = sorted(
-            list(set(map(lambda event: str(event.year), events))), reverse=True
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
         )
 
-        for year in years:
-            data = []
-            for event in events:
-                if str(event.year) == str(year):
-                    data.append(event)
-            self.data.append((str(year), data))
+    def load(self, json_value: list[dict[str, Any]]) -> None:
+        events = list(map(self._load, json_value))
+
+        if self.use_subsections:
+            years = sorted(
+                list(set(map(lambda event: str(event.year), events))), reverse=True
+            )
+
+            for year in years:
+                data = []
+                for event in events:
+                    if str(event.year) == str(year):
+                        data.append(event)
+                self.data.append((str(year), data))
+        else:
+            events.sort(lambda event: event.date.year)
+            self.data.append((None, events))
 
     def _load(self, json_object) -> Event:
         # year = (

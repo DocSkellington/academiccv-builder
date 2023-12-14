@@ -1,20 +1,18 @@
-from typing import List
+from __future__ import annotations
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
-class Logos(mod.Data):
+class Logos(modules.Data):
     def __init__(
         self,
-        logos: List[str],
+        logos: list[str],
     ):
         self.logos = logos
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
-        raise NotImplementedError(
-            "Logos module does not support the LaTeX context"
-        )
+        raise NotImplementedError("Logos module does not support the LaTeX context")
 
     def to_html(self, context: contexts.html.HTMLContext) -> str:
         html = context.open_div("logos")
@@ -31,11 +29,17 @@ class Logos(mod.Data):
         return html
 
 
-class LogosModule(mod.Module):
+class LogosModule(modules.Module):
     def __init__(
         self,
     ):
-        super().__init__(0, "", "")
+        super().__init__(
+            level=0,
+            section="",
+            introduction_text="",
+            section_icon="",
+            use_subsections=False,
+        )
 
     def load(self, json_value) -> None:
         self.data.append((None, [self._load(json_value)]))
@@ -44,6 +48,8 @@ class LogosModule(mod.Module):
         raise NotImplementedError("Logos module is not implemented for LaTeX")
 
     def to_html(self, context: contexts.html.HTMLContext) -> str:
+        if len(self.data) == 0:
+            return ""
         return self.data[0][1][0].to_html(context)
 
     def _load(self, json_object) -> Logos:

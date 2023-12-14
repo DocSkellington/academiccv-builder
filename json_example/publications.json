@@ -1,0 +1,29 @@
+{
+  "$schema": "../schema.json",
+  "publications": {
+    "order": [
+      "Proceedings",
+      "Preprint"
+    ],
+    "Proceedings": [
+      {
+        "title": "Publication 2 with a Rather Long Title Intended to Provoke an Overflow With the Year and Show that, In Fact, No Overflow Occurs",
+        "reference": "Aut22",
+        "authors": "Authors 2",
+        "year": "2022",
+        "where": "Somewhere",
+        "shortWhere": "SW",
+        "doi": "0000",
+        "arxiv": "0000",
+        "note": "Best paper"
+      }
+    ],
+    "Preprint": [
+      {
+        "title": "Publication 1",
+        "authors": "Authors 1",
+        "year": "2023"
+      }
+    ]
+  }
+}
