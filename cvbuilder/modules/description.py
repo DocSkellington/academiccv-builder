@@ -35,7 +35,7 @@ class Description:
         if self.is_empty():
             return ""
         description = re.sub("\n\n", "<br/>", self.description)
-        html = markdown.markdown(description, output_format="html", extensions="smarty")
+        html = markdown.markdown(description, output_format="html", extensions=["smarty"])
         # To obtain a better output, we remove all the p tags.
         # This allows text to flow more naturally, without line breaks.
         return re.sub("(<p>|</p>)", "", html)
