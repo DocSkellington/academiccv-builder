@@ -11,6 +11,7 @@
   - Links to PDF and video for talks, and to homepage and artifact for projects (#4).
   - Award: only the year is displayed.
   - Added Services.
+  - Talks and events are now grouped per year, and sorted by date within each year.
 
 ## Bug fixes
   - Type annotations do not cause missing imports errors (#3).

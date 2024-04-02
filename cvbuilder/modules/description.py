@@ -29,6 +29,7 @@ class Description:
     def to_latex(self) -> str:
         if self.is_empty():
             return ""
+        # TODO: use smarty for LaTeX
         return markdown.markdown(self.description, output_format="latex")
 
     def to_html(self) -> str:

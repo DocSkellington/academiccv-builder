@@ -57,9 +57,7 @@ class Talk(modules.Data):
 
         links = ""
         if self.pdf is not None:
-            links += context.link_block(
-                "pdf", link=self.pdf, content="PDF", after=". "
-            )
+            links += context.link_block("pdf", link=self.pdf, content="PDF", after=". ")
         if self.video is not None:
             links += context.link_block(
                 "pdf", link=self.video, content="Video", after=". "
@@ -99,16 +97,10 @@ class TalkModule(modules.Module):
         talks = list(map(self._load, json_value))
 
         if self.use_subsections:
-            years = sorted(
-                list(set(map(lambda talk: talk.date.year, talks))), reverse=True
+            self.data = modules.sort_by_date(
+                modules.group_per_year(talks, lambda talk: talk.date),
+                lambda talk: talk.date,
             )
-
-            for year in years:
-                data = []
-                for talk in talks:
-                    if talk.date.year == year:
-                        data.append(talk)
-                self.data.append((str(year), data))
         else:
             talks.sort(lambda talk: talk.date.year)
             self.data.append((None, talks))

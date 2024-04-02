@@ -1,6 +1,8 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
+import datetime
+import dateutil.parser
 
 from .. import modules
 from .. import contexts
@@ -8,7 +10,7 @@ from .. import contexts
 
 @dataclass
 class Event(modules.Data):
-    year: str | int = None
+    year: datetime.datetime = None
     name: modules.description.Description = modules.description.DescriptionDescriptor()
     where: modules.description.Description = modules.description.DescriptionDescriptor()
 
@@ -41,7 +43,7 @@ class EventModule(modules.Module):
 
     def __init__(
         self,
-        level: int = 0,
+        level: int = 1,
         section: str = "Attended events",
         introduction_text: str = "",
         icon: str = "iconoir-calendar",
@@ -59,30 +61,23 @@ class EventModule(modules.Module):
         events = list(map(self._load, json_value))
 
         if self.use_subsections:
-            years = sorted(
-                list(set(map(lambda event: str(event.year), events))), reverse=True
+            self.data = modules.sort_by_date(
+                modules.group_per_year(events, lambda event: event.year),
+                lambda event: event.year,
             )
-
-            for year in years:
-                data = []
-                for event in events:
-                    if str(event.year) == str(year):
-                        data.append(event)
-                self.data.append((str(year), data))
         else:
-            events.sort(lambda event: event.date.year)
+            events.sort(lambda event: event.year)
             self.data.append((None, events))
 
     def _load(self, json_object) -> Event:
-        # year = (
-        #     dateutil.parser.parse(json_object["year"])
-        #     if "year" in json_object
-        #     else Event.year
-        # )
-        # name = json_object["name"] if "name" in json_object else Event.name
-        # where = json_object["where"] if "where" in json_object else Event.where
-        # return Event(year=year, name=name, where=where)
-        return Event(**json_object)
+        year = (
+            dateutil.parser.parse(str(json_object["year"]))
+            if "year" in json_object
+            else Event.year
+        )
+        name = json_object["name"] if "name" in json_object else Event.name
+        where = json_object["where"] if "where" in json_object else Event.where
+        return Event(year=year, name=name, where=where)
 
     def _get_class_name(self) -> str:
         return "event"

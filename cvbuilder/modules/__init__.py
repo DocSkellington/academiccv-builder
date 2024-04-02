@@ -1,5 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
+from typing import Callable
+import datetime
 
 from ..modules import description
 
@@ -146,3 +148,29 @@ class Module(ABC):
 
     def _get_class_name(self) -> str:
         raise NotImplementedError()
+
+
+def group_per_year(
+    data: list[Data], get_date: Callable[[Data], datetime.datetime]
+) -> list[tuple[int, list[Data]]]:
+    return [
+        (str(year), [d for d in data if get_date(d).year == year])
+        for year in sorted(
+            list(set(map(lambda d: get_date(d).year, data))), reverse=True
+        )
+    ]
+
+
+def sort_by_date(
+    data: list[tuple[int, list[Data]]], get_date: Callable[[Data], datetime.datetime]
+) -> list[tuple[int, list[Data]]]:
+    return [
+        (year, sorted(data_year, key=get_date, reverse=True))
+        for year, data_year in data
+    ]
+
+
+def group_and_sort_by_date(
+    data: list[Data], get_date: Callable[[Data], datetime.datetime]
+) -> list[tuple[int, list[Data]]]:
+    return sort_by_date(group_per_year(data, get_date), get_date)

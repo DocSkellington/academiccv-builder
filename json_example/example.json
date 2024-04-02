@@ -42,6 +42,12 @@
       "where": "Earth"
     },
     {
+      "date": "2023-12-31",
+      "title": "A talk to celebrate New Year's Eve",
+      "conference": "The last day",
+      "where": "Earth"
+    },
+    {
       "date": "2010/11/03",
       "title": "Middle talk",
       "conference": "Some other conference"
@@ -54,12 +60,12 @@
       "where": "United Kingdom"
     },
     {
-      "year": "2022",
+      "year": 2022,
       "name": "Some earlier event",
       "where": "I forgot"
     },
     {
-      "year": "2023",
+      "year": 2023,
       "name": "Another event?!",
       "where": "Fragmented Empire"
     }
