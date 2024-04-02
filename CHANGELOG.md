@@ -18,6 +18,7 @@
   - HTML: an `a` tag (link block) is not constructed when the link is empty.
   - Fixed an error produced by Hatch(ling) when building the wheel file.
   - Fixed an error when calling `markdown` (ModuleNotFoundError: No module named 's').
+  - Replaced `iconoir-pin-alt` (not defined anymore) by `iconoir-map-pin`.
 
 ## Code details
   - Use Python 3.9+ syntax for type annotations

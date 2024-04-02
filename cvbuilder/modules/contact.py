@@ -66,7 +66,7 @@ class Contact(modules.Data):
         if self.address is not None:
             html += context.list_item(
                 "address",
-                context.idiomatic_block("contact-icon iconoir-pin-alt", "")
+                context.idiomatic_block("contact-icon iconoir-map-pin", "")
                 + context.link_block(
                     "address-link",
                     self.address.link,
