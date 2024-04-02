@@ -37,6 +37,7 @@ class LaTeXContext(Context):
     def __init__(self, output_path: Path | str) -> None:
         super().__init__("latex", output_path)
         self.packages: list[str] = []
+        self.class_options: list[str] = []
         self.other_preamble: list[str] = []
         self.styles: dict[str, Style] = {}
 
@@ -107,6 +108,14 @@ class LaTeXContext(Context):
         """
         self.packages.append(package)
 
+    def add_class_option(self, option: str) -> None:
+        """Adds a new class option.
+
+        Arguments:
+            option -- The new option.
+        """
+        self.class_options.append(option)
+
     def add_to_preamble(self, other: str) -> None:
         """Adds something to the preamble.
 
@@ -132,7 +141,7 @@ class LaTeXContext(Context):
         raise ValueError(f"LaTeX context: heading of level {level} is invalid.")
 
     def _build_output(self, personal: PersonalData) -> str:
-        latex = "\\documentclass{academiccv}\n\n"
+        latex = "\\documentclass[" + ", ".join(self.class_options) + "]{academiccv}\n\n"
 
         for package in self.packages:
             latex += f"\\usepackage{package}\n"
