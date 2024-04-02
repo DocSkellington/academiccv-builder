@@ -97,5 +97,18 @@
       "year": "2023",
       "description": "Best paper award for *some reason*."
     }
-  ]
+  ],
+  "services": {
+    "order": ["Presidencies"],
+    "Presidencies": [
+      {
+        "description": "President of the Earth",
+        "year": "2015-2020"
+      },
+      {
+        "description": "President of a planet",
+        "year": "2017"
+      }
+    ]
+  }
 }

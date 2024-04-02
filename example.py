@@ -15,6 +15,7 @@ from cvbuilder.modules.summary import SummaryModule
 from cvbuilder.modules.logos import LogosModule
 from cvbuilder.modules.event import EventModule
 from cvbuilder.modules.award import AwardModule
+from cvbuilder.modules.services import ServiceModule
 from cvbuilder.modules.language import LanguageModule
 from cvbuilder.modules.contact import ContactModule
 
@@ -55,6 +56,7 @@ main_html.add_module("supervision", SupervisionModule(use_subsections=False))
 main_html.add_module("projects", ProjectModule())
 main_html.add_module("events", EventModule())
 main_html.add_module("awards", AwardModule())
+main_html.add_module("services", ServiceModule())
 main_html.add_module(
     None,
     TextModule(
@@ -88,6 +90,7 @@ latex.add_module("talks", TalkModule())
 latex.add_module("teaching", TeachModule())
 latex.add_module("supervision", SupervisionModule(use_subsections=False))
 latex.add_module("projects", ProjectModule())
+latex.add_module("services", ServiceModule())
 
 # Markdown
 markdown = MarkdownContext("output/markdown/index.md", "Academic CV")
@@ -109,6 +112,7 @@ markdown.add_module(
 )
 markdown.add_module("teaching", TeachModule())
 markdown.add_module("supervision", SupervisionModule(use_subsections=False))
+markdown.add_module("services", ServiceModule())
 
 # Build every context from the file
 builder.build(

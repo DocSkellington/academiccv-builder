@@ -226,6 +226,24 @@
         }
       }
     },
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "year": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
+        }
+      }
+    },
     "supervision": {
       "type": "object",
       "additionalProperties": false,
@@ -539,6 +557,39 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/publication"
+          }
+        }
+      ]
+    },
+    "services": {
+      "description": "Your collective and administrative responsibilities (services to society)",
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/service"
+            }
+          }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/service"
           }
         }
       ]
