@@ -26,7 +26,7 @@ builder = Builder()
 
 # Main page of HTML
 main_html = HTMLContext("output/html/index.html")
-builder.add_context(main_html)
+builder.register_context(main_html)
 
 main_html.add_css_file("resources/css/style.css")
 main_html.add_css_file("resources/css/sidebar.css")
@@ -67,7 +67,7 @@ main_html.add_module(
 
 # HTML publications page
 publication_html = HTMLContext("output/html/publications.html")
-builder.add_context(publication_html)
+builder.register_context(publication_html)
 
 publication_html.set_title_fct(lambda personal: f"{personal.name} - Publications")
 publication_html.add_css_file("resources/css/style.css")
@@ -79,7 +79,7 @@ publication_html.add_module("publications", PublicationModule())
 
 # LaTeX output
 latex = LaTeXContext("output/latex/example.tex")
-builder.add_context(latex)
+builder.register_context(latex)
 
 latex.set_style("title", Style({"author": "\\bfseries"}))
 
@@ -94,7 +94,7 @@ latex.add_module("services", ServiceModule())
 
 # Markdown
 markdown = MarkdownContext("output/markdown/index.md", "Academic CV")
-builder.add_context(markdown)
+builder.register_context(markdown)
 
 markdown.add_module("logos", LogosModule())
 markdown.add_module("summary", SummaryModule())

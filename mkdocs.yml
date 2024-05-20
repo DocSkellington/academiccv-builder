@@ -1,0 +1,29 @@
+site_name: CV Builder
+theme:
+  name: readthedocs
+  locale: en
+  collapse_navigation: false
+  titles_only: false
+  analytics:
+    gtag: null
+
+extra_css:
+  - style.css
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            separate_signature: true
+            show_signature_annotations: true
+            heading_level: 2
+  - search
+  - literate-nav:
+      nav_file: NAVIGATION.md
+  - section-index
+
+markdown_extensions:
+  - toc:
+      permalink: true

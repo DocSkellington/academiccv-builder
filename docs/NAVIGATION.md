@@ -1,0 +1,2 @@
+- [Index](index.md)
+- [API docs](api/)
