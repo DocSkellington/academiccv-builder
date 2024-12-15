@@ -1,0 +1,120 @@
+{
+  "$schema": "../schema.json",
+  "jobs": {
+    "order": [
+      "Current positions",
+      "Past positions"
+    ],
+    "Current positions": [
+      {
+        "start": "2016-01-01",
+        "end": "Present",
+        "title": "Job position 2"
+      }
+    ],
+    "Past positions": [
+      {
+        "start": "2010-05-10",
+        "end": "2015-12-30",
+        "title": "Job position 1",
+        "organization": "Somewhere",
+        "description": "Something\n\n  1. Numbered list\n  2. Continued."
+      }
+    ]
+  },
+  "talks": [
+    {
+      "date": "2005/04/30",
+      "title": "Oldest talk",
+      "conference": "Some conference",
+      "where": "Somewhere in the universe",
+      "pdf": "resources/talks/Oldest.pdf",
+      "video": "resources/talks/Oldest.mp4"
+    },
+    {
+      "date": "2023/02/21",
+      "title": "Newest talk"
+    },
+    {
+      "date": "2023/02/20",
+      "title": "Two talks the same year!",
+      "conference": "Some conference again",
+      "where": "Earth"
+    },
+    {
+      "date": "2023-12-31",
+      "title": "A talk to celebrate New Year's Eve",
+      "conference": "The last day",
+      "where": "Earth"
+    },
+    {
+      "date": "2010/11/03",
+      "title": "Middle talk",
+      "conference": "Some other conference"
+    }
+  ],
+  "events": [
+    {
+      "year": 2023,
+      "name": "Some very nice event",
+      "where": "United Kingdom"
+    },
+    {
+      "year": 2022,
+      "name": "Some earlier event",
+      "where": "I forgot"
+    },
+    {
+      "year": 2023,
+      "name": "Another event?!",
+      "where": "Fragmented Empire"
+    }
+  ],
+  "teaching": [
+    {
+      "when": "Academic years 2005 to 2010",
+      "course": "Writing and Acting",
+      "role": "Teacher",
+      "level": "First year of Physics Science, Second year of Computer Science, Third year of Mathematical Science, Fourth year of Long Line Science",
+      "organization": "Bright Brilliant Courses",
+      "description": "Teach"
+    }
+  ],
+  "supervision": [
+    {
+      "when": "1980",
+      "name": "I forgot his name",
+      "role": "PhD advisor",
+      "organization": "Union of Nine Intermediate Torsos"
+    }
+  ],
+  "projects": [
+    {
+      "name": "A Top Secret Project",
+      "shortName": "Project",
+      "role": "Developer",
+      "description": "I love lists\n\n  * Here is a proof.\n  * Did I already say that this is a top secret project?\n  * The fact that you are reading non-sense is not tied to that!\n\nTime to go!",
+      "homepage": "https://github.com/DocSkellington/academiccv-builder",
+      "artifact": "https://github.com/DocSkellington/academiccv-builder/releases"
+    }
+  ],
+  "awards": [
+    {
+      "year": "2023",
+      "description": "Best paper award for *some reason*."
+    }
+  ],
+  "services": {
+    "order": ["Presidencies"],
+    "Presidencies": [
+      {
+        "description": "President of the Earth",
+        "year": "2015-2020"
+      },
+      {
+        "description": "President of a planet",
+        "year": "2017"
+      }
+    ]
+  }
+}

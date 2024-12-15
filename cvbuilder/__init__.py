@@ -3,70 +3,83 @@ The CV builder reads a JSON file and uses this file to produce new documents.
 """
 
 from dataclasses import dataclass
-from typing import List, Union
 from pathlib import Path
+import sys
 import json
 from . import modules, contexts
 
-@dataclass
-class ModuleDescriptor:
-    in_json: str
-    module: modules.Module
-    category: str
 
-# Modules are processed in the order they are added
 class Builder:
-    """The builder reads a JSON file to create documents in other formats, dictated by 'contexts'.
+    """The builder orchestrates the whole process of reading JSON files to produce a CV.
 
-    For each loaded context, it produces one (or multiple, depending on the context) documents.
-    These documents are built from modules. Each one processes a specific part of the JSON file.
-    The modules and contexts are treated *in the order they are passed to the builder*.
+    Once contexts are registered, it suffices to call the `build` function with the JSON file(s) to use.
+    Each context will then load the data from the JSON file(s) before producing their output document(s).
+
+    The builder also loads data that appear under the key `self.personal_key` (by default, `"personal"`; `see `__init__`).
+    These data can then be used by the context when producing the output file(s), without needing an explicit module.
+    This can be useful to define meta-properties (such as the document's author or title), for instance.
+
+    Warning:
+        A builder requires (at least) one *context*.
+        Otherwise, an error message is displayed and nothing is performed.
+
+    Warning:
+        The behavior of the program when the same key appears in multiple files is undefined.
+
+    Note:
+        The contexts are treated *in the order they are passed to the builder*.
     """
 
-    def __init__(self) -> None:
-        self.modules: List[ModuleDescriptor] = []
-        self.contexts: List[contexts.Context] = []
+    def __init__(self, personal_key: str = "personal") -> None:
+        """Initializes a new builder, without any context.
 
-    def add_context(self, context: contexts.Context) -> None:
-        """Adds a new context to the builder.
+        Args:
+            personal_key: . Defaults to "personal".
+        """
+        self.contexts: list[contexts.Context] = []
+        self.personal_key = personal_key
 
-        Arguments:
-            context -- The context
+    def register_context(self, context: contexts.Context) -> None:
+        """Registers a new context.
+
+        Modules can still be added to the context after its registration.
+
+        Args:
+            context: the context to register.
         """
         self.contexts.append(context)
 
-    def add_module(self, in_json: str, module: modules.Module, category: str = "default") -> None:
-        """Adds a new module.
+    def build(self, json_file_paths: Path | str | list[Path | str]) -> None:
+        """Builds the documents from the JSON file(s) at the given location(s).
 
-        Each module is filled from data stored in the JSON file.
-        The 'in_json' argument defines which key contains the data to be used for this module.
-        If None, no value is read.
+        The contents of the JSON file(s) are passed to each context, in the same order they were registered.
 
-        Arguments:
-            in_json -- The JSON key
-            module -- The module
+        Warning:
+            Having the same key in more than one file is an undefined behavior.
+
+        Args:
+            json_file_paths: The path(s) to the JSON file(s)
         """
-        self.modules.append(ModuleDescriptor(in_json, module, category))
+        if len(self.contexts) == 0:
+            print("Builder: nothing to do, as there is no context", file=sys.stderr)
+            return
 
-    def build(self, json_file_path: Union[Path, str]) -> None:
-        """Builds the documents from the JSON file at the given location.
+        if not isinstance(json_file_paths, list):
+            json_file_paths = [json_file_paths]
 
-        Modules and contexts are treated in the same order they were added.
+        personal = None
+        for json_file_path in json_file_paths:
+            if isinstance(json_file_path, str):
+                json_file_path = Path(json_file_path)
 
-        Arguments:
-            json_file -- The path to the JSON file
-        """
-        if isinstance(json_file_path, str):
-            json_file_path = Path(json_file_path)
+            with json_file_path.open(encoding="UTF8") as file:
+                content = json.load(file)
 
-        with json_file_path.open(encoding="UTF8") as file:
-            content = json.load(file)
+            if self.personal_key in content:
+                personal = contexts.PersonalData(**content[self.personal_key])
 
-        personal = contexts.PersonalData(**content["personal"])
-
-        for module in self.modules:
-            if module.in_json is not None:
-                module.module.load(content[module.in_json])
+            for context in self.contexts:
+                context.load_data_from_document(content)
 
         for context in self.contexts:
-            context.write_output(self.modules, personal)
+            context.write_output(personal)

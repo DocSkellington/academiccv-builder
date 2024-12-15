@@ -4,13 +4,17 @@ build:
 dependencies:
 	mkdir .venv
 	pipenv install --dev
+	
+documentation: dependencies
+	pipenv run python -m mkdocs build
 
-release: build
+release: documentation
 	pipenv run python -m build
 	zip release -r \
-		dist/academiccv_builder-1.0.0-py3-none-any.whl \
-		dist/academiccv_builder-1.0.0.tar.gz \
-		example.py example.json output/ resources/ \
+		dist/academiccv_builder-2.0.0-py3-none-any.whl \
+		dist/academiccv_builder-2.0.0.tar.gz \
+		example.pyjson_example/ output/ resources/ \
+		site/ \
 		README.md License
 
 clean:

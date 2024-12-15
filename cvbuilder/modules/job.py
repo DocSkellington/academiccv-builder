@@ -2,26 +2,27 @@
 Job module.
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Job(mod.Data):
+class Job(modules.Data):
     """Dataclass for a single job"""
 
     start: str = None
     end: str = None
-    title: str = None
-    organization: str = None
-    description: mod.Description = None
+    title: modules.description.Description = modules.description.DescriptionDescriptor()
+    organization: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = mod.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\job{\n"
@@ -68,16 +69,24 @@ class Job(mod.Data):
         return html
 
 
-class JobModule(mod.Module):
+class JobModule(modules.Module):
     """Job module, holding data for the job positions defined in the JSON file."""
 
     def __init__(
         self,
         level: int = 1,
         section: str = "Research Experience",
+        introduction_text: str = "",
         icon: str = "iconoir-brain-research",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def _load(self, json_object) -> Job:
         return Job(**json_object)

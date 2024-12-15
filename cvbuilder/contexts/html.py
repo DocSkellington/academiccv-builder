@@ -1,9 +1,9 @@
-from typing import List, Union, Callable, Tuple
+from __future__ import annotations
+from typing import Callable
 from pathlib import Path
 
 from . import Context, PersonalData
-from .. import modules as mod
-from .. import ModuleDescriptor
+from .. import modules
 
 
 class HTMLStack:
@@ -13,7 +13,7 @@ class HTMLStack:
     """
 
     def __init__(self) -> None:
-        self.stack: List[Tuple[str, int]] = []
+        self.stack: list[tuple[str, int]] = []
 
     def close_block(self) -> str:
         if len(self.stack) > 0:
@@ -63,35 +63,49 @@ class HTMLStack:
         self.stack.append(("div", indent))
         return "\t" * indent + f'<div class="{class_name}">\n'
 
-    def simple_div_block(self, class_name: str, content: str) -> str:
+    def simple_div_block(
+        self, class_name: str, content: str | modules.description.Description
+    ) -> str:
         if content is None:
             return ""
-        if isinstance(content, mod.Description):
-            content = content.to_html(self)
+        if isinstance(content, modules.description.Description):
+            if content.is_empty():
+                return ""
+            content = content.to_html()
         div = self.open_div(class_name)
         div += "\t" * self._get_indent() + content + "\n"
         div += self.close_block()
         return div
 
-    def paragraph_block(self, class_name: str, content: str) -> str:
+    def paragraph_block(
+        self, class_name: str, content: str | modules.description.Description
+    ) -> str:
         if content is None:
             return ""
-        if isinstance(content, mod.Description):
-            content = content.to_html(self)
+        if isinstance(content, modules.description.Description):
+            if content.is_empty():
+                return ""
+            content = content.to_html()
         indent = self._get_indent()
         p = "\t" * indent + f'<p class="{class_name}">\n'
         p += "\t" * (indent + 1) + content + "\n"
         p += "\t" * indent + "</p>\n"
         return p
 
-    def span_block(self, class_name: str, content: str) -> str:
+    def span_block(
+        self, class_name: str, content: str | modules.description.Description
+    ) -> str:
         if content is None:
             return ""
+        if isinstance(content, modules.description.Description):
+            if content.is_empty():
+                return ""
+            content = content.to_html()
 
         return f'<span class="{class_name}">{content}</span>'
 
     def link_block(self, class_name: str, link: str, content: str, after: str) -> str:
-        if content is None:
+        if content is None or link == "":
             return ""
 
         return f'<a class="{class_name}" href="{link}">{content}</a>{after}'
@@ -102,11 +116,15 @@ class HTMLStack:
         self.stack.append((tag, indent))
         return "\t" * indent + f'<{tag} class="{class_name}">\n'
 
-    def list_item(self, class_name: str, content: Union[str, mod.Description]) -> str:
+    def list_item(
+        self, class_name: str, content: str | modules.description.Description
+    ) -> str:
         if content is None:
             return ""
-        if isinstance(content, mod.Description):
-            content = content.to_html(self)
+        if isinstance(content, modules.description.Description):
+            if content.is_empty():
+                return ""
+            content = content.to_html()
         return "\t" * self._get_indent() + f'<li class="{class_name}">{content}</li>\n'
 
     def img_block(self, class_name: str, img: str, alt: str) -> str:
@@ -120,13 +138,13 @@ class HTMLStack:
 
 
 class HTMLContext(Context, HTMLStack):
-    def __init__(self, output_path: Union[Path, str]) -> None:
+    def __init__(self, output_path: Path | str) -> None:
         Context.__init__(self, "html", output_path)
         HTMLStack.__init__(self)
         self.css_files = []
         self.title_fct = None
 
-    def add_css_file(self, css_path: Union[Path, str]) -> None:
+    def add_css_file(self, css_path: Path | str) -> None:
         if isinstance(css_path, str):
             css_path = Path(css_path)
         self.css_files.append(css_path)
@@ -139,13 +157,11 @@ class HTMLContext(Context, HTMLStack):
     def set_title_fct(self, title_fct: Callable[[PersonalData], str]) -> None:
         self.title_fct = title_fct
 
-    def _build_output(
-        self, modules: List[ModuleDescriptor], personal: PersonalData
-    ) -> str:
+    def _build_output(self, personal: PersonalData) -> str:
         html = '<!DOCTYPE html>\n<html lang="en">\n'
         html += self._head(personal)
         html += "\n"
-        html += self._body(modules, personal)
+        html += self._body(personal)
         html += "</html>"
         return html
 
@@ -172,25 +188,25 @@ class HTMLContext(Context, HTMLStack):
         head += "\t</head>\n"
         return head
 
-    def _body(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
+    def _body(self, personal: PersonalData) -> str:
         body = "\t<body>\n"
-        body += self._header(modules, personal)
-        body += self._main(modules, personal)
-        body += self._footer(modules, personal)
+        body += self._header(personal)
+        body += self._main(personal)
+        body += self._footer(personal)
         body += "\t</body>\n"
         return body
 
-    def _header(self, _modules: ModuleDescriptor, _personal: PersonalData) -> str:
+    def _header(self, _personal: PersonalData) -> str:
         return ""
 
-    def _main(self, modules: List[ModuleDescriptor], personal: PersonalData) -> str:
+    def _main(self, personal: PersonalData) -> str:
         main = "\t\t<main>\n"
-        main += self._sidebar(modules, personal)
-        main += self._run_modules(modules)
+        main += self._sidebar(personal)
+        main += self._run_modules()
         main += "\t\t</main>\n"
         return main
 
-    def _sidebar(self, modules: ModuleDescriptor, personal: PersonalData) -> str:
+    def _sidebar(self, personal: PersonalData) -> str:
         if personal is None:
             return ""
 
@@ -206,10 +222,10 @@ class HTMLContext(Context, HTMLStack):
 
         sidebar += self.close_block()  # profile-container
 
-        sidebar += self._run_modules(modules, "sidebar")
+        sidebar += self._run_modules("sidebar")
 
         sidebar += self.close_block() + "\n"  # sidebar
         return sidebar
 
-    def _footer(self, _modules: List[ModuleDescriptor], _personal: PersonalData) -> str:
+    def _footer(self, _personal: PersonalData) -> str:
         return ""

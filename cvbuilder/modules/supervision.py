@@ -1,26 +1,27 @@
+from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Supervision(mod.Data):
-    year: str = None
-    name: str = None
-    role: str = None
-    organization: str = None
-    description: mod.Description = None
+class Supervision(modules.Data):
+    when: modules.description.Description = modules.description.DescriptionDescriptor()
+    name: modules.description.Description = modules.description.DescriptionDescriptor()
+    role: modules.description.Description = modules.description.DescriptionDescriptor()
+    organization: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = mod.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\supervision{\n"
-        latex += context.format_variable("year", context.format_date(self.year))
-        latex += context.format_variable("name", context.format_date(self.name))
+        latex += context.format_variable("year", self.when)
+        latex += context.format_variable("name", self.name)
         latex += context.format_variable("role", self.role)
         latex += context.format_variable("organization", self.organization)
         latex += context.format_variable("description", self.description)
@@ -46,7 +47,7 @@ class Supervision(mod.Data):
 
         html += context.simple_div_block("organization", self.organization)
 
-        html += context.simple_div_block("time", self.year)
+        html += context.simple_div_block("time", self.when)
 
         html += context.close_block()  # align
 
@@ -57,14 +58,22 @@ class Supervision(mod.Data):
         return html
 
 
-class SupervisionModule(mod.Module):
+class SupervisionModule(modules.Module):
     def __init__(
         self,
         level: int = 1,
         section: str = "Supervision",
+        introduction_text: str = "",
         icon: str = "iconoir-path-arrow",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def _load(self, json_object) -> Supervision:
         return Supervision(**json_object)

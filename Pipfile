@@ -5,9 +5,14 @@ name = "pypi"
 
 [packages]
 python-dateutil = "*"
+markdown = "*"
 
 [dev-packages]
 build = "*"
+mkdocs = "*"
+mkdocstrings = {extras = ["python"], version = "*"}
+mkdocs-literate-nav = "*"
+mkdocs-section-index = "*"
 
 [requires]
-python_version = "3.11"
+python_version = "3.12"

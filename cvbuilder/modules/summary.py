@@ -1,21 +1,16 @@
-from .. import modules as mod
+from __future__ import annotations
+from dataclasses import dataclass
+
+from .. import modules
 from .. import contexts
 
 
-class Summary(mod.Data):
-    def __init__(
-        self,
-        text: mod.Description,
-    ):
-        if text is not None:
-            self.text = mod.Description(text)
-        else:
-            self.text = None
+@dataclass
+class Summary(modules.Data):
+    text: modules.description.Description = modules.description.DescriptionDescriptor()
 
-    def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
-        raise NotImplementedError(
-            "The summary module does not support the LaTeX context"
-        )
+    def to_latex(self, _context: contexts.latex.LaTeXContext) -> str:
+        return self.text.to_latex()
 
     def to_html(self, context: contexts.html.HTMLContext) -> str:
         return context.simple_div_block("details", self.text)
@@ -24,14 +19,22 @@ class Summary(mod.Data):
         return context.paragraph(self.text)
 
 
-class SummaryModule(mod.Module):
+class SummaryModule(modules.Module):
     def __init__(
         self,
         level: int = 0,
         section: str = "Summary",
+        introduction_text: str = "",
         icon: str = "iconoir-chat-bubble",
+        use_subsections: bool = True,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def load(self, json_value) -> None:
         self.data.append((None, [self._load(json_value)]))

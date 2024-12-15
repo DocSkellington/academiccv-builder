@@ -1,29 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/DocSkellington/academiccv-builder/schema.json",
+  "$id": "https://github.com/DocSkellington/academiccv-builder/blob/main/schema.json",
   "title": "academiccv-builder",
   "description": "Schema for a JSON file containing the academic CV of a researcher",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "personal"
-  ],
   "definitions": {
     "description": {
-      "description": "A string or a list of strings or lists. Nested lists are converted into lists in the output (ul for HTML, itemize for LaTeX, and so on)",
-      "type": [
-        "array",
-        "string"
-      ],
-      "items": {
-        "type": [
-          "array",
-          "string"
-        ],
-        "items": {
-          "type": "string"
-        }
-      }
+      "description": "A text written in Markdown",
+      "type": "string"
     },
     "style": {
       "type": "object"
@@ -46,225 +31,7 @@
         }
       }
     },
-    "event": {
-      "description": "An event",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "year": {
-          "type": [
-            "integer",
-            "string"
-          ]
-        },
-        "name": {
-          "type": "string"
-        },
-        "where": {
-          "type": "string"
-        }
-      }
-    },
-    "job": {
-      "description": "A job",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "start": {
-          "type": "string"
-        },
-        "end": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "organization": {
-          "type": "string"
-        },
-        "description": {
-          "$ref": "#/definitions/description"
-        },
-        "style": {
-          "$ref": "#/definitions/style"
-        }
-      }
-    },
-    "language": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "name",
-        "level"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "level": {
-          "type": "string"
-        }
-      }
-    },
-    "project": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "shortName": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "role": {
-          "type": "string"
-        },
-        "description": {
-          "$ref": "#/definitions/description"
-        },
-        "style": {
-          "$ref": "#/definitions/style"
-        }
-      }
-    },
-    "publication": {
-      "description": "A publication",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "authors": {
-          "type": "string"
-        },
-        "year": {
-          "type": "string"
-        },
-        "reference": {
-          "type": "string"
-        },
-        "where": {
-          "description": "The journal/conference name",
-          "type": "string"
-        },
-        "shortWhere": {
-          "description": "The acronym of the journal/conference",
-          "type": "string"
-        },
-        "doi": {
-          "type": "string"
-        },
-        "arxiv": {
-          "description": "The arXiv DOI",
-          "type": "string"
-        },
-        "note": {
-          "description": "A remark on the paper (for instance, best paper award)",
-          "type": "string"
-        },
-        "style": {
-          "$ref": "#/definitions/style"
-        }
-      }
-    },
-    "supervision": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "year": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "role": {
-          "type": "string"
-        },
-        "organization": {
-          "type": "string"
-        },
-        "style": {
-          "$ref": "#/definitions/style"
-        }
-      }
-    },
-    "teaching": {
-      "description": "A single course",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "year": {
-          "type": "string"
-        },
-        "course": {
-          "type": "string"
-        },
-        "role": {
-          "type": "string"
-        },
-        "level": {
-          "type": "string"
-        },
-        "organization": {
-          "type": "string"
-        },
-        "description": {
-          "$ref": "#/definitions/description"
-        },
-        "style": {
-          "$ref": "#/definitions/style"
-        }
-      }
-    },
-    "talk": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "date": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "conference": {
-          "type": "string"
-        },
-        "where": {
-          "type": "string"
-        },
-        "style": {
-          "$ref": "#/definitions/style"
-        }
-      }
-    }
-  },
-  "properties": {
-    "$schema": {
-      "type": "string"
-    },
-    "awards": {
-      "description": "Your awards",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/award"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/award"
-              }
-            }
-          }
-        ]
-      }
-    },
     "contact": {
-      "description": "Contact information",
       "type": "object",
       "properties": {
         "address": {
@@ -322,68 +89,377 @@
         "pdf": {
           "description": "Path to the PDF version of the CV",
           "type": "string"
+        },
+        "website": {
+          "description": "Website URL",
+          "type": "string"
         }
       }
+    },
+    "event": {
+      "description": "An event",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "year": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "name": {
+          "$ref": "#/definitions/description"
+        },
+        "where": {
+          "$ref": "#/definitions/description"
+        }
+      }
+    },
+    "job": {
+      "description": "A job",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "title": {
+          "$ref": "#/definitions/description"
+        },
+        "organization": {
+          "$ref": "#/definitions/description"
+        },
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
+        }
+      }
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "level"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/description"
+        },
+        "level": {
+          "$ref": "#/definitions/description"
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "shortName": {
+          "$ref": "#/definitions/description"
+        },
+        "name": {
+          "$ref": "#/definitions/description"
+        },
+        "role": {
+          "$ref": "#/definitions/description"
+        },
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "homepage": {
+          "description": "Link to the project's repository or homepage",
+          "type": "string"
+        },
+        "artifact": {
+          "description": "Link to the project's artifact",
+          "type": "string"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
+        }
+      }
+    },
+    "publication": {
+      "description": "A publication",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "authors": {
+          "type": "string"
+        },
+        "year": {
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/definitions/description"
+        },
+        "where": {
+          "description": "The journal/conference name",
+          "$ref": "#/definitions/description"
+        },
+        "shortWhere": {
+          "description": "The acronym of the journal/conference",
+          "$ref": "#/definitions/description"
+        },
+        "doi": {
+          "type": "string"
+        },
+        "arxiv": {
+          "description": "The arXiv DOI",
+          "type": "string"
+        },
+        "note": {
+          "description": "A remark on the paper (for instance, best paper award)",
+          "$ref": "#/definitions/description"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "year": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
+        }
+      }
+    },
+    "supervision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "when": {
+          "$ref": "#/definitions/description"
+        },
+        "name": {
+          "$ref": "#/definitions/description"
+        },
+        "role": {
+          "$ref": "#/definitions/description"
+        },
+        "organization": {
+          "$ref": "#/definitions/description"
+        },
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
+        }
+      }
+    },
+    "teaching": {
+      "description": "A single course",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "when": {
+          "$ref": "#/definitions/description"
+        },
+        "course": {
+          "$ref": "#/definitions/description"
+        },
+        "role": {
+          "$ref": "#/definitions/description"
+        },
+        "level": {
+          "$ref": "#/definitions/description"
+        },
+        "organization": {
+          "$ref": "#/definitions/description"
+        },
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
+        }
+      }
+    },
+    "talk": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "title": {
+          "$ref": "#/definitions/description"
+        },
+        "conference": {
+          "$ref": "#/definitions/description"
+        },
+        "where": {
+          "$ref": "#/definitions/description"
+        },
+        "pdf": {
+          "type": "string"
+        },
+        "video": {
+          "type": "string"
+        },
+        "style": {
+          "$ref": "#/definitions/style"
+        }
+      }
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "awards": {
+      "description": "Your awards",
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/award"
+            }
+          }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/award"
+          }
+        }
+      ]
+    },
+    "contact": {
+      "description": "Contact information",
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/contact"
+          }
+        },
+        {
+          "description": "When not using subsections",
+          "$ref": "#/definitions/contact"
+        }
+      ]
     },
     "events": {
       "description": "List of attended events",
       "type": "array",
       "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/event"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/event"
-              }
-            }
-          }
-        ]
+        "$ref": "#/definitions/event"
       }
     },
     "jobs": {
       "description": "The list of past and current positions",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/job"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/job"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/job"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/job"
+          }
+        }
+      ]
     },
     "languages": {
       "description": "List of known languages",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/language"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/language"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/language"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/language"
+          }
+        }
+      ]
     },
     "logos": {
       "description": "The logos to display",
@@ -421,63 +497,135 @@
     },
     "projects": {
       "description": "Your projects",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/project"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/project"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/project"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/project"
+          }
+        }
+      ]
     },
     "publications": {
       "description": "Your publications",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/publication"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/publication"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/publication"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/publication"
+          }
+        }
+      ]
+    },
+    "services": {
+      "description": "Your collective and administrative responsibilities (services to society)",
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/service"
+            }
+          }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/service"
+          }
+        }
+      ]
     },
     "supervision": {
       "description": "The students/projects you supervised",
-      "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/supervision"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/supervision"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/supervision"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/supervision"
+          }
+        }
+      ]
     },
     "summary": {
       "description": "A short biography, for instance",
@@ -486,41 +634,42 @@
     "teaching": {
       "description": "Your teaching duties",
       "type": "array",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/teaching"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
+      "oneOf": [
+        {
+          "description": "When using subsections",
+          "type": "object",
+          "required": [
+            "order"
+          ],
+          "properties": {
+            "order": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/teaching"
+                "type": "string"
               }
             }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/teaching"
+            }
           }
-        ]
-      }
+        },
+        {
+          "description": "When not using subsections",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/teaching"
+          }
+        }
+      ]
     },
     "talks": {
       "description": "Your talks",
       "type": "array",
       "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/talk"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/talk"
-              }
-            }
-          }
-        ]
+        "$ref": "#/definitions/talk"
       }
     }
   }

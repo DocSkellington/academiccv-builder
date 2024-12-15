@@ -1,31 +1,32 @@
+from __future__ import annotations
 from dataclasses import dataclass
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
 @dataclass
-class Project(mod.Data):
-    shortName: str = None
-    name: str = None
-    role: str = None
-    description: mod.Description = None
+class Project(modules.Data):
+    shortName: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    name: modules.description.Description = modules.description.DescriptionDescriptor()
+    role: modules.description.Description = modules.description.DescriptionDescriptor()
+    description: modules.description.Description = (
+        modules.description.DescriptionDescriptor()
+    )
+    homepage: str = ""
+    artifact: str = ""
     style: contexts.latex.Style = None
-
-    def __post_init__(self) -> None:
-        if self.description is not None:
-            self.description = mod.Description(self.description)
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
         latex = "\\project{\n"
-        latex += context.format_variable(
-            "shortName", context.format_date(self.shortName)
-        )
-        latex += context.format_variable("name", context.format_date(self.name))
+        latex += context.format_variable("shortName", self.shortName)
+        latex += context.format_variable("name", self.name)
         latex += context.format_variable("role", self.role)
-        latex += context.format_variable(
-            "description", self.description.to_latex(context)
-        )
+        latex += context.format_variable("description", self.description)
+        latex += context.format_variable("homepage", self.homepage)
+        latex += context.format_variable("artifact", self.artifact)
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
         )
@@ -46,21 +47,38 @@ class Project(mod.Data):
 
         html += context.simple_div_block("role", self.role)
 
-        html += context.simple_div_block("details", self.description.to_html(context))
+        html += context.open_div("align")
+
+        html += context.paragraph_block("details", self.description.to_html())
+
+        links = context.link_block("homepage", self.homepage, "Project homepage", ".") + "<br/>"
+        links += context.link_block("artifact", self.artifact, "Project artifact", ".")
+        if links != "":
+            html += context.simple_div_block("links", links)
+
+        html += context.close_block()
 
         html += context.close_block()  # item
 
         return html
 
 
-class ProjectModule(mod.Module):
+class ProjectModule(modules.Module):
     def __init__(
         self,
         level: int = 1,
         section: str = "Projects",
+        introduction_text: str = "",
         icon: str = "iconoir-light-bulb",
+        use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(
+            level=level,
+            section=section,
+            introduction_text=introduction_text,
+            section_icon=icon,
+            use_subsections=use_subsections,
+        )
 
     def _load(self, json_object) -> Project:
         return Project(**json_object)

@@ -6,7 +6,7 @@ from .. import contexts
 
 
 @dataclass
-class Award(modules.Data):
+class Service(modules.Data):
     year: str = None
     description: modules.description.Description = (
         modules.description.DescriptionDescriptor()
@@ -14,8 +14,8 @@ class Award(modules.Data):
     style: contexts.latex.Style = None
 
     def to_latex(self, context: contexts.latex.LaTeXContext) -> str:
-        latex = "\\award{\n"
-        latex += context.format_variable("year", context.format_date(self.year, date_output_format="%Y"))
+        latex = "\\service{\n"
+        latex += context.format_variable("year", self.year)
         latex += context.format_variable("description", self.description)
         latex += context.format_style(
             self.style, before="style = ", indent=1, comma=True
@@ -31,7 +31,7 @@ class Award(modules.Data):
 
         html += context.simple_div_block("title", self.description)
 
-        html += context.simple_div_block("details", context.format_date(self.year, date_output_format="%Y"))
+        html += context.simple_div_block("details", self.year)
 
         html += context.close_block()  # align
 
@@ -40,14 +40,14 @@ class Award(modules.Data):
         return html
 
 
-class AwardModule(modules.Module):
+class ServiceModule(modules.Module):
     def __init__(
         self,
         level: int = 1,
-        section: str = "Awards",
+        section: str = "Collective and administrative responsibilities",
         introduction_text: str = "",
-        icon: str = "iconoir-trophy",
-        use_subsections: bool = False,
+        icon: str = "iconoir-stats-report",
+        use_subsections: bool = True,
     ):
         super().__init__(
             level=level,
@@ -57,8 +57,8 @@ class AwardModule(modules.Module):
             introduction_text=introduction_text,
         )
 
-    def _load(self, json_object) -> Award:
-        return Award(**json_object)
+    def _load(self, json_object) -> Service:
+        return Service(**json_object)
 
     def _get_class_name(self) -> str:
-        return "awards"
+        return "services"

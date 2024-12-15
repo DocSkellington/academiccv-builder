@@ -2,10 +2,10 @@
 Languages module.
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import Union, List
 
-from .. import modules as mod
+from .. import modules
 from .. import contexts
 
 
@@ -14,15 +14,15 @@ class Address:
     """The address"""
 
     street: str
-    zipcode: Union[str, int]
+    zipcode: str | int
     city: str
     country: str
     link: str = None
 
 
 @dataclass
-class Contact(mod.Data):
-    email: Union[str, List[str]] = None
+class Contact(modules.Data):
+    email: str | list[str] = None
     website: str = None
     github: str = None
     orcid: str = None
@@ -66,7 +66,7 @@ class Contact(mod.Data):
         if self.address is not None:
             html += context.list_item(
                 "address",
-                context.idiomatic_block("contact-icon iconoir-pin-alt", "")
+                context.idiomatic_block("contact-icon iconoir-map-pin", "")
                 + context.link_block(
                     "address-link",
                     self.address.link,
@@ -133,14 +133,22 @@ class Contact(mod.Data):
         return html
 
 
-class ContactModule(mod.Module):
+class ContactModule(modules.Module):
     def __init__(
         self,
         level: int = 1,
         section: str = "Contact",
+        introduction_text: str = "",
         icon: str = "iconoir-hand-card",
+        use_subsections: bool = False,
     ):
-        super().__init__(level, section, icon)
+        super().__init__(
+            level=level,
+            section=section,
+            section_icon=icon,
+            use_subsections=use_subsections,
+            introduction_text=introduction_text,
+        )
 
     def to_latex(self, context: "contexts.latex.LaTeXContext") -> str:
         latex = ""
